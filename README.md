@@ -2,6 +2,9 @@
 
 This is based on the "2020-08-20-raspios-buster-armhf-lite" image.
 
+This script will install NodeJS 9, configure HiFiBerry-HAT if you choose to, or set HDMI-as default for audio out, and installs PlexAmp.
+Card used for testing is this: https://www.fasttech.com/p/5137000
+
 Burn the OS-image to the Micro-SD card using etcher (or app of your choice).
  
 How to enable SSH:
@@ -9,16 +12,19 @@ For security reasons, as of the November 2016 release, Raspbian has the SSH serv
 1. Mount your SD card on your computer.
 2. Create or copy a file called ssh in /boot.
 
+On most Linux-distros, after re-mount of micro-SD-card, run:
+touch /media/$user/boot/ssh
+
 On MacOS, after re-mount of micro-SD-card, run:
 touch /Volumes/boot/ssh
 
+Then unmount and insert card into Raspberry Pi and boot it.
+
+After ssh-ing to it and looked in:
 Change to root (sudo -i) and run script with:
-bash <(wget http://mywebsite.com/myscript.txt)
+bash <(wget https://github.com/odinb/bash-plexamp-installer/blob/main/install_Plexamp_pi.sh)
 
 
 SSH access:
 User: pi
 Password: raspberry
-
-This script will install NodeJS 9, configure HiFiBerry-HAT if you choose to, or set HDMI-as default for audio out, and installs PlexAmp.
-Card used for testing is this: https://www.fasttech.com/p/5137000
