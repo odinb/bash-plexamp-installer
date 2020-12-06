@@ -22,7 +22,7 @@ Then unmount and insert card into Raspberry Pi and boot it.
 
 After ssh-ing to it and logged in:
 Change to root (sudo -i) and run script with:
-wget -O - https://github.com/odinb/bash-plexamp-installer/blob/main/install_Plexamp_pi.sh | bash
+bash <(wget -qO- https://raw.githubusercontent.com/odinb/bash-plexamp-installer/main/install_Plexamp_pi.sh)
 
 
 SSH access:
