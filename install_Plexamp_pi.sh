@@ -18,7 +18,7 @@
 # Copy over this script to the root folder and make executable, i.e. chmod +x setup-pi_Plexamp.sh
 # Run with ./install_configure_Plexamp_pi.sh
 #
-# Revision update: 2020-11-29 EPKODIN
+# Revision update: 2020-12-06 ODIN
 # Added "First version"
 
 #####
@@ -65,11 +65,11 @@ echo -n "Do you want to create a new user to use for the install [y/N]: "
 read answer
 answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
+echo " "
 read -e -p "User to create and install PlexAmp under (default is $USER): " -i "$USER" USER
 echo " "
 read -e -p "Password for user to create and install PlexAmp under (default is $PASSWORD): " -i "$PASSWORD" PASSWORD
 PASSWORDCRYPTED=$(echo "$PASSWORD" | openssl passwd -6 -stdin)
-echo " "
 fi
 echo " "
 echo Now it is time to choose Timezone, pick the number for the Timezone you want, exit with 5.
@@ -139,7 +139,6 @@ echo " "
 echo --== Checking the rpi-eeprom service ==--
 systemctl status rpi-eeprom-update.service
 echo " "
-echo " "
 echo -n "Do you want to install and set vim as your default editor [y/N]: "
 read answer
 answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
@@ -151,11 +150,11 @@ echo " "
 update-alternatives --set editor /usr/bin/vim.basic
 echo " "
 fi
-echo " "
 echo -n "Do you want to disable IPv6 [y/N]: "
 read answer
 answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
+echo " "
 echo --== Disable IPv6 ==--
 if [ ! -f /etc/sysctl.d/disable-ipv6.conf ]; then
 cat >> /etc/sysctl.d/disable-ipv6.conf << EOF
@@ -171,9 +170,7 @@ usermod -aG adm,dialout,cdrom,sudo,audio,video,plugdev,games,users,input,netdev,
 usermod -aG audio $USER
 usermod --shell /bin/bash $USER
 passwd -d pi
-fi
 echo " "
-if [ ! -d /home/$USER ]; then
 echo --== Disable default user "pi" from logging in ==--
 usermod -s /sbin/nologin pi
 passwd -d pi
@@ -226,7 +223,6 @@ echo " "
 echo --== Check WiFi-status and enable WiFi ==--
 echo --== Before ==--
 rfkill list all
-echo " "
 rfkill unblock 0
 echo " "
 echo --== After ==--
@@ -275,7 +271,6 @@ sed -i 's/^[ \t]*//' /boot/config.txt # Remove empty spaces infront of line.
 sed -i ':a; /^\n*$/{ s/\n//; N;  ba};' /boot/config.txt # Remove if two consecutive blank lines and replace with one in a file.
 sed -i '/Berry/{N;s/\n$//}' /boot/config.txt # Remove blank line after match.
 sed -i '${/^$/d}' /boot/config.txt # Remove last blank line in file.
-echo " "
 fi
 echo " "
 echo --== Fix HDMI-audio setup ==--
@@ -292,7 +287,6 @@ read answer
 answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
 sed -i '/#hdmi_drive=2/s/^# *//' /boot/config.txt
-echo " "
 fi
 echo " "
 if [ ! -f /etc/apt/sources.list.d/nodesource.list ]; then
