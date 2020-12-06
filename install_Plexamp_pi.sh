@@ -380,7 +380,7 @@ fi
 chown -R $USER:$USER /home/$USER
 chmod 600 /home/$USER/.config/Plexamp/server.json
 echo " "
-echo -n "Do you want to run full OS-update [y/N]: "
+echo -n "Do you want to run full OS-update? This is recommended [y/N]: "
 read answer
 answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
