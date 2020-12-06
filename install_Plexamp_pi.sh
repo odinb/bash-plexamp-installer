@@ -19,7 +19,7 @@
 # Run with ./install_configure_Plexamp_pi.sh
 #
 # Revision update: 2020-12-06 ODIN
-# Added "First version"
+# 
 
 #####
 # Variable(s), updated if needed before execution of script.
@@ -289,6 +289,11 @@ if [ "$answer" = "y" ]; then
 sed -i '/#hdmi_drive=2/s/^# *//' /boot/config.txt
 fi
 echo " "
+echo -n "Do you want to install and configure NodeJS9 and PlexAmp v2.0.0-rPi-beta.2 [y/N]: "
+read answer
+answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
+if [ "$answer" = "y" ]; then
+echo " "
 if [ ! -f /etc/apt/sources.list.d/nodesource.list ]; then
 echo --== Install nodejs 9 ==--
 apt-mark unhold nodejs
@@ -369,6 +374,7 @@ if [ "$playername" -a "$playerid" -a "$userid" -a "$usertoken" ]; then
 else
   echo -e "$ERROR At least one of the parameters were empty - Please try again"
   echo "       Call: `pwd`/`basename $0`"
+fi
 fi
 fi
 chown -R $USER:$USER /home/$USER
