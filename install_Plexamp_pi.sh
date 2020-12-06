@@ -396,6 +396,7 @@ echo --== Fix PlexAmp server.json setup ==--
 echo -e "$INFO Please note!!! If you did not run the server.json setup:"
 echo    "      To get working server, you need to:"
 echo    "      Copy "server.json" to "/home/$USER/.config/Plexamp" folder."
+echo    "      Optionally you can edit it with your custom values."
 echo    "      This file can only be extracted from a running installation of PlexAmp 1.1.0 for Windows."
 echo    "      The token is located under: c:\Users\MyUser\AppData\Local\Plexamp\server.json on Windows"
 echo    "      Which can still be found at: https://plexamp.plex.tv/plexamp.plex.tv/Plexamp%20Setup%201.1.0.exe"
