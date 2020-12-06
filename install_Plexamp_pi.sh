@@ -374,6 +374,17 @@ fi
 chown -R $USER:$USER /home/$USER
 chmod 600 /home/$USER/.config/Plexamp/server.json
 echo " "
+echo -n "Do you want to run full OS-update [y/N]: "
+read answer
+answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
+if [ "$answer" = "y" ]; then
+echo " "
+echo --== Perform OS-update ==--
+apt update --allow-releaseinfo-change
+apt-get -y update ; apt-get -y upgrade ; apt-get -y dist-upgrade
+apt-get -y install deborphan
+apt-get clean ; apt-get autoclean ; apt-get autoremove ; deborphan | xargs apt-get -y remove --purge
+fi
 echo " "
 echo --== Fix PlexAmp server.json setup ==--
 echo -e "$INFO Please note!!! If you did not run the server.json setup:"
