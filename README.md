@@ -2,8 +2,9 @@
 
 This is based on the "2020-08-20-raspios-buster-armhf-lite" image.
 
-This script will install NodeJS 9, configure HiFiBerry-HAT if you choose to, or set HDMI-as default for audio out, and installs PlexAmp.
-Card used for testing is this: https://www.fasttech.com/p/5137000
+This script will install NodeJS 9, configure HiFiBerry-HAT if you choose to, or set HDMI-as default for audio out, and installs Plexamp-v2.0.0-rPi-beta.2.
+
+The soundcard used for testing: https://www.fasttech.com/p/5137000
 
 Burn the OS-image to the Micro-SD card using etcher (or app of your choice).
  
