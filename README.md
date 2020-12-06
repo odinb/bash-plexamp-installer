@@ -2,9 +2,9 @@
 
 This is based on the "2020-08-20-raspios-buster-armhf-lite" image.
 
-Release-notes: https://forums.plex.tv/t/plexamp-for-raspberry-pi-release-notes/368282
-
 This script will install NodeJS 9, configure HiFiBerry-HAT if you choose to, or set HDMI-as default for audio out, and installs Plexamp-v2.0.0-rPi-beta.2.
+
+Release-notes: https://forums.plex.tv/t/plexamp-for-raspberry-pi-release-notes/368282
 
 The soundcard used for testing: https://www.fasttech.com/p/5137000
 
