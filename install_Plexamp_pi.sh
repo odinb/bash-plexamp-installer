@@ -338,7 +338,7 @@ cat >> /home/$USER/.config/Plexamp/server.json << EOF
  "logging": {
     "level": "warn"
   }
- }
+}
 EOF
 fi
 echo " "
