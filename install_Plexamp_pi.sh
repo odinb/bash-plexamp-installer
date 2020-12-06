@@ -350,7 +350,7 @@ echo    "      The token is located under: c:\Users\MyUser\AppData\Local\Plexamp
 echo    "      You can only extract it from a running installation of PlexAmp 1.1.0 for Windows."
 echo    "      which can still be found at: https://plexamp.plex.tv/plexamp.plex.tv/Plexamp%20Setup%201.1.0.exe"
 echo    " "
-echo    "      The below placeholders will not work, you need your own numbers from a working player!"
+echo    "      The below placeholders will not work (except for Player Name), you need your own numbers from a working player!"
 echo
 echo -n "Do you want to configure server.json with your information [y/N]: "
 read answer
