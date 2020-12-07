@@ -38,8 +38,8 @@ To get working server, you need to:
 copy "server.json" to "/home/$USER/.config/Plexamp" folder.
 Optionally you can edit it with your custom values during install.
 This file can currentyly only be extracted from a running installation of PlexAmp 1.1.0 for Windows.
-The token is located under: c:\Users\MyUser\AppData\Local\Plexamp\server.json on Windows
-Which can still be found at: https://plexamp.plex.tv/plexamp.plex.tv/Plexamp%20Setup%201.1.0.exe
+The token is located under: c:\Users\MyUser\AppData\Local\Plexamp\server.json on Windows after logging in.
+It can still be found at: https://plexamp.plex.tv/plexamp.plex.tv/Plexamp%20Setup%201.1.0.exe
 then restart the PlexAmp service with command: systemctl restart plexamp
 once done, you can cast to it from existing Plex/PlexAmp instances!
 
