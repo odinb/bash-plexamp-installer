@@ -13,13 +13,9 @@ Burn the OS-image to the Micro-SD card using etcher (or app of your choice).
 How to enable SSH:
 For security reasons, as of the November 2016 release, Raspbian has the SSH server disabled by default. You will have to enable it manually.
 1. Mount your SD card on your computer.
-2. Create or copy a file called ssh in /boot.
-
-On most Linux-distros, after re-mount of micro-SD-card, run:
-touch /media/$user/boot/ssh
-
-On MacOS, after re-mount of micro-SD-card, run:
-touch /Volumes/boot/ssh
+2. Create or copy a file called ssh in /boot. 
+On most Linux-distros, after re-mount of micro-SD-card, run: "touch /media/$user/boot/ssh".
+On MacOS, after re-mount of micro-SD-card, run: "touch /Volumes/boot/ssh".
 
 Then unmount and insert card into Raspberry Pi and boot it.
 
