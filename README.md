@@ -38,6 +38,7 @@ To get working server, you need to:
 copy "server.json" to "/home/$USER/.config/Plexamp" folder.
 Optionally you can edit it with your custom values during install.
 This file can currently only be extracted from a running installation of an older version of PlexAmp v1.x.x for MacOS/Windows.
+
 On MacOS, the token is located under: /System/Volumes/Data/Users/MyUser/Library/Application Support/Plexamp after logging in.
 On Windows, the token is located under: c:\Users\MyUser\AppData\Local\Plexamp\server.json after logging in.
 Please remember to substitute MyUser for your actual username!
