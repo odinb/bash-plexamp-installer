@@ -37,15 +37,20 @@ Password: raspberry
 To get working server, you need to:
 copy "server.json" to "/home/$USER/.config/Plexamp" folder.
 Optionally you can edit it with your custom values during install.
-This file can currentyly only be extracted from a running installation of PlexAmp 1.1.0 for Windows.
-The token is located under: c:\Users\MyUser\AppData\Local\Plexamp\server.json on Windows after logging in.
-It can still be found at: https://plexamp.plex.tv/plexamp.plex.tv/Plexamp%20Setup%201.1.0.exe
-then restart the PlexAmp service with command: systemctl restart plexamp
-once done, you can cast to it from existing Plex/PlexAmp instances!
+This file can currently only be extracted from a running installation of an older version of PlexAmp v1.x.x for MacOS/Windows.
+On MacOS, the token is located under: /System/Volumes/Data/Users/MyUser/Library/Application Support/Plexamp after logging in.
+On Windows, the token is located under: c:\Users\MyUser\AppData\Local\Plexamp\server.json after logging in.
+Please remember to substitute MyUser for your actual username!
 
-Please remember, you need to remove/delete the c:\Users\MyUser\AppData\Local\Plexamp folder from
-your Windows installation, or you will get weird behaviour, and end up with a non-functioning PlexAmp
-due to 2 or more clients using the same ID/tokens!
+The installer-files can still be found for MacOs at: https://plexamp.plex.tv/plexamp.plex.tv/Plexamp-1.1.0.dmg
+For Windows at: https://plexamp.plex.tv/plexamp.plex.tv/Plexamp%20Setup%201.1.0.exe
+
+After adding/updating with your name/identifier/id/token, restart the PlexAmp service with command: systemctl restart plexamp
+Once done, you can cast to it from existing Plex/PlexAmp instances!
+
+Please remember, you need to remove/delete the Plexamp folder from your MacOS/Windows installation,
+or you will get weird behaviour, and end up with a non-functioning PlexAmp due to 2 or more clients using the same ID/tokens!
+
 If the service (systemctl status plexamp) is not starting with error: code=exited, status=1/FAILURE,
 it is most likely due to invalid configuration in /home/$USER/.config/Plexamp/server.json
 Fix the server.json file, and restart the service (systemctl restart plexamp).
