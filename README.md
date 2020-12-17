@@ -3,6 +3,8 @@
 This is based on the "2020-08-20-raspios-buster-armhf-lite" image.
 
 This script will install NodeJS 9, configure HiFiBerry-HAT if you choose to, or set HDMI-as default for audio out, and installs Plexamp-v2.0.0-rPi-beta.2.
+Plexamp will then runb headless on the Raspberry Pi.
+It can be controlled with a Plexamp client on another device, like your smartphone or desktop computer.
 
 Release-notes: https://forums.plex.tv/t/plexamp-for-raspberry-pi-release-notes/368282
 
