@@ -30,8 +30,8 @@ Password: raspberry
 
 =====================================
 
-To get working server, you need to:
-copy "server.json" to "/home/$USER/.config/Plexamp" folder.
+To get working server:
+You will need to copy the token to /home/MyUser/.config/Plexamp/server.json
 Optionally you can edit it with your custom values during install.
 This file can currently only be extracted from a running installation of an older version of PlexAmp v1.x.x for MacOS/Windows.
 
