@@ -195,6 +195,7 @@ useradd -m -p $PASSWORDCRYPTED $USER
 usermod --shell /bin/bash $USER > /dev/null 2>&1
 usermod -aG adm,dialout,cdrom,sudo,audio,video,plugdev,games,users,input,netdev,spi,i2c,gpio $USER
 if [ -d /home/pi ]; then
+echo " "
 echo --== Disable default user "pi" from logging in ==--
 usermod -s /sbin/nologin pi
 passwd -d pi
@@ -381,6 +382,7 @@ if [ "$playername" -a "$playerid" -a "$userid" -a "$usertoken" ]; then
   sed -i "s/userid/$userid/" /home/$USER/.config/Plexamp/server.json
   sed -i "s/usertoken/$usertoken/" /home/$USER/.config/Plexamp/server.json
   sleep 5
+  echo " "
   echo -e "$INFO Starting Plexamp"
   systemctl start plexamp.service
 else
