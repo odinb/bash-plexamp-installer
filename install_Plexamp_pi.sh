@@ -45,7 +45,9 @@ usertoken="zyxwvutsrqponmlkjihg"				        # Dummy placeholders for server.json
 #####
 echo " "
 echo --== For your information ==--
-echo -e "$INFO This script is verifed on the "2020-08-20-raspios-buster-armhf-lite" image."
+echo -e "$INFO This script is verifed on the "2020-08-20-raspios-buster-armhf-lite" and"
+echo    "      "2020-12-02-raspios-buster-armhf-lite" image."
+echo    "      It should also work on the "DietPi_RPi-ARMv6-Buster" image, but cannot be guaranteed."
 echo    "      It cannot be guaranteed to run on other version of the image without fixes."
 echo    "      Installation assumes armv7l HW, and was testen on a Raspberry Pi 4 Model B."
 echo    "      Installation also assumes a HiFiBerry HAT or one of its clones installed."
