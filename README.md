@@ -1,6 +1,8 @@
 # PlexAmp-installer for Raspberry Pi with armv7l HW.
 
-This is based on the "2020-08-20-raspios-buster-armhf-lite" image.
+This is based on the "Raspberry Pi OS Lite" image.
+It has been tested on the "2020-08-20-raspios-buster-armhf-lite" and "2020-12-02-raspios-buster-armhf-lite" image.
+It should also work on the "DietPi_RPi-ARMv6-Buster" image, but cannot be guaranteed.
 
 This script will install NodeJS 9, configure HiFiBerry-HAT if you choose to, or set HDMI-as default for audio out, and installs Plexamp-v2.0.0-rPi-beta.2.
 Plexamp will then runb headless on the Raspberry Pi.
