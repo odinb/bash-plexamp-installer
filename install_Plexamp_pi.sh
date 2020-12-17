@@ -192,7 +192,7 @@ if [ ! -d /home/$USER ]; then
 echo " "
 echo --== Add user and enable sudo ==--
 useradd -m -p $PASSWORDCRYPTED $USER
-usermod --shell /bin/bash $USER
+usermod --shell /bin/bash $USER > /dev/null 2>&1
 usermod -aG adm,dialout,cdrom,sudo,audio,video,plugdev,games,users,input,netdev,spi,i2c,gpio $USER
 if [ -d /home/pi ]; then
 echo --== Disable default user "pi" from logging in ==--
