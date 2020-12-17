@@ -136,8 +136,8 @@ echo " "
 echo --== Verify CPUs ==--
 lscpu
 echo " "
-echo --== Verify alsa-utils installed ==--
 if [ -f /boot/dietpi.txt ]; then
+echo --== Verify alsa-utils installed ==--
 apt-get -y install alsa-utils > /dev/null 2>&1
 echo " "
 fi
