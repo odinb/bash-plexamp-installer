@@ -53,5 +53,5 @@ Please remember, you need to remove/delete the Plexamp folder from your MacOS/Wi
 or you will get weird behaviour, and end up with a non-functioning PlexAmp due to 2 or more clients using the same ID/tokens!
 
 If the service (systemctl status plexamp) is not starting with error: code=exited, status=1/FAILURE,
-it is most likely due to invalid configuration in /home/$USER/.config/Plexamp/server.json
+it is most likely due to invalid configuration in /home/$MyUser/.config/Plexamp/server.json
 Fix the server.json file, and restart the service (systemctl restart plexamp).
