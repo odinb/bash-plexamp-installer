@@ -27,7 +27,7 @@ SSH access on "Raspberry Pi OS": User/pass: pi/raspberry
 
 SSH access on "DietPi OS": User/pass: root/dietpi
 
-After SSH-ing to the SBC, on the "Raspberry Pi OS", change to root (sudo -i) and run script with:
+After SSH-ing to the SBC, on the "Raspberry Pi OS", change to root ("sudo -i") and run script with:
 
 bash <(wget -qO- https://raw.githubusercontent.com/odinb/bash-plexamp-installer/main/install_Plexamp_pi.sh)
 
@@ -35,23 +35,23 @@ bash <(wget -qO- https://raw.githubusercontent.com/odinb/bash-plexamp-installer/
 =====================================
 
 To get working server:
-You will need to copy the token to /home/MyUser/.config/Plexamp/server.json
+You will need to copy the token to "/home/MyUser/.config/Plexamp/server.json".
 Optionally you can edit it with your custom values during install.
 This file can currently only be extracted from a running installation of an older version of PlexAmp v1.x.x for MacOS/Windows.
 
-On MacOS, the token is located under: /System/Volumes/Data/Users/MyUser/Library/Application Support/Plexamp after logging in.
-On Windows, the token is located under: c:\Users\MyUser\AppData\Local\Plexamp\server.json after logging in.
+On MacOS, the token is located under: "/System/Volumes/Data/Users/MyUser/Library/Application Support/Plexamp/server.json" after logging in.
+On Windows, the token is located under: "c:\Users\MyUser\AppData\Local\Plexamp\server.json" after logging in.
 Please remember to substitute MyUser for your actual username!
 
 The installer-files can still be found for MacOs at: https://plexamp.plex.tv/plexamp.plex.tv/Plexamp-1.1.0.dmg
 For Windows at: https://plexamp.plex.tv/plexamp.plex.tv/Plexamp%20Setup%201.1.0.exe
 
-After adding/updating with your name/identifier/id/token, restart the PlexAmp service with command: systemctl restart plexamp
+After adding/updating with your name/identifier/id/token, restart the PlexAmp service with command: "systemctl restart plexamp".
 Once done, you can cast to it from existing Plex/PlexAmp instances!
 
 Please remember, you need to remove/delete the Plexamp folder from your MacOS/Windows installation,
 or you will get weird behaviour, and end up with a non-functioning PlexAmp due to 2 or more clients using the same ID/tokens!
 
-If the service (systemctl status plexamp) is not starting with error: code=exited, status=1/FAILURE,
-it is most likely due to invalid configuration in /home/$MyUser/.config/Plexamp/server.json
-Fix the server.json file, and restart the service (systemctl restart plexamp).
+If the service (systemctl status plexamp) is not starting with error: "code=exited, status=1/FAILURE",
+it is most likely due to invalid configuration in "/home/MyUser/.config/Plexamp/server.json"
+Fix the errors in the "server.json" file, and restart the service ("systemctl restart plexamp").
