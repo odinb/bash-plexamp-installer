@@ -23,14 +23,14 @@ On MacOS, after re-mount of micro-SD-card, run: "touch /Volumes/boot/ssh".
 
 Then unmount and insert card into Raspberry Pi and boot it.
 
-After SSH-ing to it and logged in, Change to root (sudo -i) and run script with:
+SSH access on "Raspberry Pi OS": User/pass: pi/raspberry
+
+SSH access on "DietPi OS": User/pass: root/dietpi
+
+After SSH-ing to the SBC, on the "Raspberry Pi OS", change to root (sudo -i) and run script with:
 
 bash <(wget -qO- https://raw.githubusercontent.com/odinb/bash-plexamp-installer/main/install_Plexamp_pi.sh)
 
-
-SSH access:
-User: pi
-Password: raspberry
 
 =====================================
 
