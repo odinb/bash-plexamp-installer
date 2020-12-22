@@ -60,3 +60,5 @@ Fix the errors in the "server.json" file, and restart the service ("systemctl re
 
 The script can be re-run to fix configuration/setup errors, just say no/bypass the sections you do not want to re-run!
 
+For hostname-change, please make sure to reboot inbetween, or you might face issues.
+
