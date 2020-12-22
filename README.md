@@ -55,3 +55,8 @@ or you will get weird behaviour, and end up with a non-functioning PlexAmp due t
 If the service (systemctl status plexamp) is not starting with error: "code=exited, status=1/FAILURE",
 it is most likely due to invalid configuration in "/home/MyUser/.config/Plexamp/server.json"
 Fix the errors in the "server.json" file, and restart the service ("systemctl restart plexamp").
+
+=====================================
+
+The script can be re-run to fix configuration/setup errors, just say no/bypass the sections you do not want to re-run!
+
