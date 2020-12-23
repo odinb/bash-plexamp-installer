@@ -394,9 +394,9 @@ else
   echo "       Call: `pwd`/`basename $0`"
 fi
 fi
-fi
 chown -R $USER:$USER /home/$USER
 chmod 600 /home/$USER/.config/Plexamp/server.json
+fi
 echo " "
 echo -n "Do you want to run full OS-update? This is recommended [y/N]: "
 read answer
