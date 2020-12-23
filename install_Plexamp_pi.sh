@@ -46,8 +46,8 @@ usertoken="zyxwvutsrqponmlkjihg"				        # Dummy placeholders for server.json
 echo " "
 echo --== For your information ==--
 echo -e "$INFO This script is verifed on the following images:"
-echo    "      "2020-08-20-raspios-buster-armhf-lite"
-echo    "      "2020-12-02-raspios-buster-armhf-lite"
+echo    "      2020-08-20-raspios-buster-armhf-lite"
+echo    "      2020-12-02-raspios-buster-armhf-lite"
 echo " "
 echo    "      It should also work on the "DietPi_RPi-ARMv6-Buster" image, but cannot be guaranteed."
 echo    "      It cannot be guaranteed to run on other version of the image without fixes."
