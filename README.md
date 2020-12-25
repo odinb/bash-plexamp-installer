@@ -29,7 +29,7 @@ SSH access on "DietPi OS": User/pass: root/dietpi
 
 After SSH-ing to the SBC, on the "Raspberry Pi OS", change to root ("sudo -i") and run script with:
 
-bash <(wget -qO- https://raw.githubusercontent.com/odinb/bash-plexamp-installer/main/install_Plexamp_pi.sh)
+`bash <(wget -qO- https://raw.githubusercontent.com/odinb/bash-plexamp-installer/main/install_Plexamp_pi.sh)`
 
 
 =====================================
