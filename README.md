@@ -1,22 +1,33 @@
 # PlexAmp-installer for Raspberry Pi with armv7l HW.
 
-This is based on the "Raspberry Pi OS Lite" image.
-It has been tested on the "2020-08-20-raspios-buster-armhf-lite" and "2020-12-02-raspios-buster-armhf-lite" image.
-It should also work on the "DietPi_RPi-ARMv6-Buster" image, but cannot be guaranteed.
+This is based on the "Raspberry Pi OS Lite" image.<br />
+It has been tested on the "2020-08-20-raspios-buster-armhf-lite" and "2020-12-02-raspios-buster-armhf-lite" image.<br />
+It should also work on the "DietPi_RPi-ARMv6-Buster" image, but cannot be guaranteed.<br />
 
 This script will install NodeJS 9, configure HiFiBerry-HAT if you choose to, or set HDMI-as default for audio out, and installs Plexamp-v2.0.0-rPi-beta.2.
 Plexamp will then runb headless on the Raspberry Pi.
 It can be controlled with a Plexamp client on another device, like your smartphone or desktop computer.
 
-Release-notes: https://forums.plex.tv/t/plexamp-for-raspberry-pi-release-notes/368282
+Release-notes:<br /> https://forums.plex.tv/t/plexamp-for-raspberry-pi-release-notes/368282
 
-The soundcard used for testing: https://www.fasttech.com/p/5137000
+The soundcard (PiFi Digi+) used for testing:<br /> https://www.fasttech.com/p/5137000
 
-More info on the card: https://www.nielsmayer.com/xwiki/bin/view/Raspberry+Pi/Kodi+Audio+Heaven+With+PiFi+Digi+SPDIF+HAT+and+External+DAC
+More info on the card:<br /> https://www.nielsmayer.com/xwiki/bin/view/Raspberry+Pi/Kodi+Audio+Heaven+With+PiFi+Digi+SPDIF+HAT+and+External+DAC
 
+Alternative budget (PiFi DAC+) card:<br /> https://www.fasttech.com/p/5136900
+
+Optional, not part of script:<br />
+Both of these PiFi-cards come with IR-sensor that works with lirc. However, there's GPIO conflicts by default.<br />
+To disable: in /etc/modprobe.d/raspi-blacklist.conf, add:<br />
+`blacklist lirc_rpi`<br />
+To enable: in /boot/config.txt, add:<br />
+`dtoverlay=lirc-rpi,gpio_in_pin=26`<br />
+
+## Burning the image.
 Burn the OS-image to the Micro-SD card using etcher (or app of your choice).
- 
-How to enable SSH:
+
+## Enable SSH.
+How to enable SSH:<br />
 For security reasons, as of the November 2016 release, Raspbian has the SSH server disabled by default. You will have to enable it manually.
 1. Mount your SD card on your computer.
 2. Create or copy a file called ssh in /boot. 
@@ -25,13 +36,12 @@ On MacOS, after re-mount of micro-SD-card, run: "touch /Volumes/boot/ssh".
 
 Then unmount and insert card into Raspberry Pi and boot it.
 
-SSH access on "Raspberry Pi OS": User/pass: pi/raspberry
-
-SSH access on "DietPi OS": User/pass: root/dietpi
+SSH access on "Raspberry Pi OS": User/pass: pi/raspberry<br />
+SSH access on "DietPi OS": User/pass: root/dietpi<br />
 
 After SSH-ing to the SBC, on the "Raspberry Pi OS", change to root ("sudo -i") and run script with:
 
-`bash <(wget -qO- https://raw.githubusercontent.com/odinb/bash-plexamp-installer/main/install_Plexamp_pi.sh)`
+```bash <(wget -qO- https://raw.githubusercontent.com/odinb/bash-plexamp-installer/main/install_Plexamp_pi.sh)```
 
 
 =====================================
