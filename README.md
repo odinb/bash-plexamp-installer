@@ -18,10 +18,12 @@ Alternative budget (PiFi DAC+) card:<br /> https://www.fasttech.com/p/5136900
 
 Optional, not part of script:<br />
 Both of these PiFi-cards come with IR-sensor that works with lirc. However, there's GPIO conflicts by default.<br />
-To disable: in /etc/modprobe.d/raspi-blacklist.conf, add:<br />
+To disable/remove conflict: in /etc/modprobe.d/raspi-blacklist.conf, add:<br />
 `blacklist lirc_rpi`<br />
-To enable: in /boot/config.txt, add:<br />
+To enable: in /boot/config.txt, for Wheezy and older, add:<br />
 `dtoverlay=lirc-rpi,gpio_in_pin=26`<br />
+To enable: in /boot/config.txt, for Jesse and newer, add:<br />
+`dtoverlay=lirc-rpi:gpio_in_pin=26`<br />
 
 [GPIO](https://raw.githubusercontent.com/odinb/bash-plexamp-installer/main/GPIO.png "ALT TEXT")
 
