@@ -12,6 +12,8 @@ Release-notes: https://forums.plex.tv/t/plexamp-for-raspberry-pi-release-notes/3
 
 The soundcard used for testing: https://www.fasttech.com/p/5137000
 
+More info on the card: https://www.nielsmayer.com/xwiki/bin/view/Raspberry+Pi/Kodi+Audio+Heaven+With+PiFi+Digi+SPDIF+HAT+and+External+DAC
+
 Burn the OS-image to the Micro-SD card using etcher (or app of your choice).
  
 How to enable SSH:
