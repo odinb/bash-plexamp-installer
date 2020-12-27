@@ -23,6 +23,8 @@ To disable: in /etc/modprobe.d/raspi-blacklist.conf, add:<br />
 To enable: in /boot/config.txt, add:<br />
 `dtoverlay=lirc-rpi,gpio_in_pin=26`<br />
 
+[GPIO](https://raw.githubusercontent.com/odinb/bash-plexamp-installer/main/GPIO.png "ALT TEXT")
+
 ## Burning the image.
 Burn the OS-image to the Micro-SD card using etcher (or app of your choice).
 
