@@ -5,7 +5,7 @@ For more information, see here:<br /> https://github.com/odinb/bash-plexamp-inst
 ## Burning the image.
 Burn the OS-image to the Micro-SD card using etcher (or app of your choice).
 
-## Enable SSH.
+### Enable SSH.
 How to enable SSH:<br />
 For security reasons, as of the November 2016 release, Raspbian has the SSH server disabled by default. You will have to enable it manually.
 1. Mount your SD card on your computer.
@@ -23,7 +23,7 @@ After SSH-ing to the SBC, on the "Raspberry Pi OS", change to root ("sudo -i") a
 ```bash <(wget -qO- https://raw.githubusercontent.com/odinb/bash-plexamp-installer/main/install_Plexamp_pi.sh)```
 
 
-=====================================
+### Get working server with "server.json"
 
 To get working server:
 You will need to copy the token to "/home/MyUser/.config/Plexamp/server.json".
@@ -47,9 +47,8 @@ If the service (systemctl status plexamp) is not starting with error: "code=exit
 it is most likely due to invalid configuration in "/home/MyUser/.config/Plexamp/server.json"
 Fix the errors in the "server.json" file, and restart the service ("systemctl restart plexamp").
 
-=====================================
+### Re-running the script
 
 The script can be re-run to fix configuration/setup errors, just say no/bypass the sections you do not want to re-run!
 
 For hostname-change, please make sure to reboot inbetween, or you might face issues.
-
