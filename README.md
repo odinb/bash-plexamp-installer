@@ -1,31 +1,6 @@
 # PlexAmp-installer for Raspberry Pi with armv7l HW.
 
-This is based on the "Raspberry Pi OS Lite" image.<br />
-It has been tested on the "2020-08-20-raspios-buster-armhf-lite" and "2020-12-02-raspios-buster-armhf-lite" image.<br />
-It should also work on the "DietPi_RPi-ARMv6-Buster" image, but cannot be guaranteed.<br />
-
-This script will install NodeJS 9, configure HiFiBerry-HAT if you choose to, or set HDMI-as default for audio out, and installs Plexamp-v2.0.0-rPi-beta.2.
-Plexamp will then runb headless on the Raspberry Pi.
-It can be controlled with a Plexamp client on another device, like your smartphone or desktop computer.
-
-Release-notes:<br /> https://forums.plex.tv/t/plexamp-for-raspberry-pi-release-notes/368282
-
-The soundcard (PiFi Digi+) used for testing:<br /> https://www.fasttech.com/p/5137000
-
-More info on the card:<br /> https://www.nielsmayer.com/xwiki/bin/view/Raspberry+Pi/Kodi+Audio+Heaven+With+PiFi+Digi+SPDIF+HAT+and+External+DAC
-
-Alternative budget (PiFi DAC+) card:<br /> https://www.fasttech.com/p/5136900
-
-Optional, not part of script:<br />
-Both of these PiFi-cards come with IR-sensor that works with lirc. However, there's GPIO conflicts by default.<br />
-To disable/remove conflict: in /etc/modprobe.d/raspi-blacklist.conf, add:<br />
-`blacklist lirc_rpi`<br />
-To enable: in /boot/config.txt, for Wheezy and older, add:<br />
-`dtoverlay=lirc-rpi,gpio_in_pin=26`<br />
-To enable: in /boot/config.txt, for Jesse and newer, add:<br />
-`dtoverlay=lirc-rpi:gpio_in_pin=26`<br />
-
-[GPIO](https://raw.githubusercontent.com/odinb/bash-plexamp-installer/main/GPIO.png "ALT TEXT")
+For more information, see here:<br /> https://github.com/odinb/bash-plexamp-installer/wiki
 
 ## Burning the image.
 Burn the OS-image to the Micro-SD card using etcher (or app of your choice).
