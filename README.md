@@ -1,6 +1,6 @@
 # PlexAmp-installer for Raspberry Pi with armv7l HW.
 
-For more information, see here:<br /> https://github.com/odinb/bash-plexamp-installer/wiki
+For more information and hardware used, see here:<br /> https://github.com/odinb/bash-plexamp-installer/wiki
 
 ## Burning the image.
 Burn the OS-image to the Micro-SD card using etcher (or app of your choice).
