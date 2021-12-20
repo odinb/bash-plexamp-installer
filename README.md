@@ -5,6 +5,10 @@ For more information and hardware used, see here:<br /> https://github.com/odinb
 ## Burning the image.
 Burn the OS-image to the Micro-SD card using etcher (or app of your choice).
 
+This will currently NOT work on Bullseye or newer due to requirement on Node.js 9.
+Images can be found here:
+https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2021-05-28/
+
 ### Enable SSH.
 How to enable SSH:<br />
 For security reasons, as of the November 2016 release, Raspbian has the SSH server disabled by default. You will have to enable it manually.
