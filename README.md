@@ -40,8 +40,8 @@ For Windows at: https://plexamp.plex.tv/plexamp.plex.tv/Plexamp%20Setup%201.1.0.
 After adding/updating with your name/identifier/id/token, restart the PlexAmp service with command: "systemctl restart plexamp".
 Once done, you can cast to it from existing Plex/PlexAmp instances!
 
-Please remember, you need to remove/delete the Plexamp folder from your MacOS/Windows installation,
-or you will get weird behaviour, and end up with a non-functioning PlexAmp due to 2 or more clients using the same ID/tokens!
+Please remember, you need to remove/delete the Plexamp folder from your MacOS/Windows installation, or logout/re-login on your MacOS/Windows
+installation, or you will get weird behaviour, and end up with a non-functioning PlexAmp due to 2 or more clients using the same ID/tokens!
 
 If the service (systemctl status plexamp) is not starting with error: "code=exited, status=1/FAILURE",
 it is most likely due to invalid configuration in "/home/MyUser/.config/Plexamp/server.json"
