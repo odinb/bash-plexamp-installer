@@ -1,4 +1,4 @@
-# PlexAmp-installer for Raspberry Pi with armv7l HW.
+# PlexAmp-installer for Raspberry Pi with ARMv7 & ARMv8 HW.
 
 For more information and hardware used, see here:<br /> https://github.com/odinb/bash-plexamp-installer/wiki
 
