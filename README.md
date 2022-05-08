@@ -31,7 +31,7 @@ After reboot, as your regular user please run the command:
 
 ```node /home/USER/plexamp/js/index.js```
 where USER is your user, normally pi.
-At this point, go to the URL provided in response, and enter he claim token at prompt.
+At this point, go to the URL provided in response, and enter the claim token at prompt.
 
 Once entered, the web-GUI should be available on the ip-of-plexamp-pi:32500 from a browser.
 On that GUI you will be asked to login to your Plex-acoount for security-reasons,
