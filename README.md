@@ -3,7 +3,7 @@
 For more information and hardware used, see here:<br /> https://github.com/odinb/bash-plexamp-installer/wiki
 
 ## Burning the image.
-Burn the OS-image to the Micro-SD card using etcher (or app of your choice).
+Burn the OS-image to the Micro-SD card using Raspberry pi imager, etcher (or app of your choice).
 
 This will currently only work with 64-bit capable Raspberry Pi and Pi OS that is 64-bit.
 Images for Bullseye can be found here:
