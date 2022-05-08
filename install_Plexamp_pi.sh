@@ -24,6 +24,7 @@
 # Revision update: 2020-12-16 ODIN - Added MacOS information for Plexamp V1.x.x and workarounds for DietPi
 # Revision update: 2022-05-04 ODIN - Changed to new version of Pi OS (64-bit), Plexamp V4.2.2. Not tested on DietPi.
 # Revision update: 2022-05-07 ODIN - Fixed systemd user instance terminating at logout of user.
+# Revision update: 2022-05-08 ODIN - Updated to using "Plexamp-Linux-arm64-v4.2.2-beta.3" and corrected service-file.
 # 
 #
 # Log for debugging is located in: ~/.cache/Plexamp/log/Plexamp.log,
