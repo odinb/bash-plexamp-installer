@@ -14,15 +14,15 @@ How to enable SSH:<br />
 For security reasons, as of the November 2016 release, Raspbian OS has the SSH server disabled by default. You will have to enable it manually.
 1. Mount your SD card on your computer.
 2. Create or copy a file called ssh in /boot. 
-On most Linux-distros, after re-mount of micro-SD-card, run: "touch /media/$user/boot/ssh".
-On MacOS, after re-mount of micro-SD-card, run: "touch /Volumes/boot/ssh".
+On most Linux-distros, after re-mount of micro-SD-card, run: ```touch /media/$user/boot/ssh```.
+On MacOS, after re-mount of micro-SD-card, run: ```touch /Volumes/boot/ssh```.
 
 Then unmount and insert card into Raspberry Pi and boot it.
 
 SSH access on "Raspberry Pi OS": User/pass: pi/raspberry<br />
 SSH access on "DietPi OS": User/pass: root/dietpi<br />
 
-After SSH-ing to the SBC, on the "Raspberry Pi OS", change to root ("sudo -i") and run script with:
+After SSH-ing to the SBC, on the "Raspberry Pi OS", change to root (```sudo -i```) and run script with:
 
 ```bash <(wget -qO- https://raw.githubusercontent.com/odinb/bash-plexamp-installer/main/install_Plexamp_pi.sh)```
 
