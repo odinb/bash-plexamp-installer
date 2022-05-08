@@ -19,7 +19,14 @@ On MacOS, after re-mount of micro-SD-card, run: ```touch /Volumes/boot/ssh```.
 
 Then unmount and insert card into Raspberry Pi and boot it.
 
-SSH access on "Raspberry Pi OS": (2022-04-04) Default "pi" user has been removed; the first-boot wizard enforces the creation of a new user account, or if headless, use the rPi imager!<br />
+SSH access on "Raspberry Pi OS": (2022-04-04) To set up a user on first boot on headless, create a file called userconf or userconf.txt in the boot partition of the SD card.
+This file should contain a single line of text, consisting of username:encrypted-password – so your desired username, followed immediately by a colon, followed immediately by an encrypted representation of the password you want to use.
+
+To generate the encrypted password, the easiest way is to use OpenSSL on a Raspberry Pi that is already running – open a terminal window and enter:
+```echo ‘mypassword’ | openssl passwd -6 -stdin```
+
+This will produce what looks like a string of random characters, which is actually an encrypted version of the supplied password.”<br />
+
 SSH access on "DietPi OS": User/pass: root/dietpi<br />
 
 After SSH-ing to the SBC, on the "Raspberry Pi OS", change to root (```sudo -i```) and run script with:
