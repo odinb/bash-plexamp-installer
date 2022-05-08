@@ -11,7 +11,7 @@ https://www.raspberrypi.com/software/operating-systems/#raspberry-pi-os-64-bit
 
 ### Enable SSH.
 How to enable SSH:<br />
-For security reasons, as of the November 2016 release, Raspbian has the SSH server disabled by default. You will have to enable it manually.
+For security reasons, as of the November 2016 release, Raspbian OS has the SSH server disabled by default. You will have to enable it manually.
 1. Mount your SD card on your computer.
 2. Create or copy a file called ssh in /boot. 
 On most Linux-distros, after re-mount of micro-SD-card, run: "touch /media/$user/boot/ssh".
