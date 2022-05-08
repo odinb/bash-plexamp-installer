@@ -228,7 +228,7 @@ echo    "   ██╔═══╝ ██║     ██╔══╝   ██╔�
 echo    "   ██║     ███████╗███████╗██╔╝ ██╗██║  ██║██║ ╚═╝ ██║██║"
 echo    "   ╚═╝     ╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝"
 echo    ""
-echo    "   Plexamp-Linux-arm64-v4.2.2-beta.1c"
+echo    "   Plexamp-Linux-arm64-v4.2.2-beta.3"
 echo " "
 EOF
 chmod +x /etc/update-motd.d/20-logo
@@ -246,7 +246,7 @@ rfkill list all
 echo " "
 fi
 echo --== Fix HiFiBerry setup ==--
-echo -e "$INFO Configuring overlay for HifiBerry HATs:"
+echo -e "$INFO Configuring overlay for HifiBerry HATs (or clones):"
 echo    "      If you own other audio HATs, or want to keep defaults - skip this step"
 echo    "      you will have to manually configure your HAT later."
 echo    "      If you want to change audio-output from Headphones to HDMI as default output,"
@@ -255,7 +255,7 @@ echo " "
 echo    "      Information about the HifiBerry cards can be found at https://www.hifiberry.com"
 echo    "      Configuration for the HifiBerry cards can be found at https://www.hifiberry.com/docs/software/configuring-linux-3-18-x/"
 echo
-echo -n "Do you want to configure your HifiBerry HAT [y/N]: "
+echo -n "Do you want to configure your HifiBerry HAT (or clone) [y/N]: "
 read answer
 answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
@@ -307,7 +307,7 @@ if [ "$answer" = "y" ]; then
 sed -i '/#hdmi_drive=2/s/^# *//' /boot/config.txt
 fi
 echo " "
-echo -n "Do you want to install and configure Node.v12 and Plexamp-Linux-arm64-v4.2.2-beta.1c [y/N]: "
+echo -n "Do you want to install and configure Node.v12 and Plexamp-Linux-arm64-v4.2.2-beta.3 [y/N]: "
 read answer
 answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
@@ -329,11 +329,11 @@ echo --== Verify node.v12 "&" npm versions, should be "v12.22.*" and "6.14.16"  
 node -v ; npm -v
 echo " "
 if [ ! -f /home/"$USER"/plexamp/plexamp.service ]; then
-echo --== Fetch, unpack and install "Plexamp-Linux-arm64-v4.2.2-beta.1c" ==--
+echo --== Fetch, unpack and install "Plexamp-Linux-arm64-v4.2.2-beta.3" ==--
 cd /home/"$USER"
-wget https://plexamp.plex.tv/headless/Plexamp-Linux-arm64-v4.2.2-beta.1c.tar.bz2
-chown -R "$USER":"$USER" /home/"$USER"/Plexamp-Linux-arm64-v4.2.2-beta.1c.tar.bz2
-tar -xf Plexamp-Linux-arm64-v4.2.2-beta.1c.tar.bz2
+wget https://plexamp.plex.tv/headless/Plexamp-Linux-arm64-v4.2.2-beta.3.tar.bz2
+chown -R "$USER":"$USER" /home/"$USER"/Plexamp-Linux-arm64-v4.2.2-beta.3.tar.bz2
+tar -xf Plexamp-Linux-arm64-v4.2.2-beta.3.tar.bz2
 chown -R "$USER":"$USER" /home/"$USER"/plexamp/
 fi
 echo --== Fix plexamp.service ==--
