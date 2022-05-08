@@ -1,6 +1,8 @@
 #!/bin/bash
 # Script: PlexAmp-install for Pi
 # Purpose: Install PlexAmp on a Raspberry Pi.
+# Make sure you have a 64-bit capable Raspberry Pi and Pi OS is 64-bit.
+# Make sure you have node 12 installed.
 # Needs to be run as the root user.
 #
 # How to enable SSH on Raspberry Pi OS:
@@ -20,7 +22,11 @@
 #
 # Revision update: 2020-12-06 ODIN
 # Revision update: 2020-12-16 ODIN - Added MacOS information for Plexamp V1.x.x and workarounds for DietPi
+# Revision update: 2022-05-04 ODIN - Changed to new version of Pi OS (64-bit), Plexamp V4.2.2. Not tested on DietPi.
 # 
+#
+# Log for debugging is located in: ~/.cache/Plexamp/log/Plexamp.log,
+#
 
 #####
 # Variable(s), updated if needed before execution of script.
@@ -34,28 +40,25 @@ fi
 TIMEZONE="America/Chicago"  # Default Timezone
 PASSWORD="MySecretPass123"  # Default password
 CNFFILE="/boot/config.txt"  # Default config file
-HOST="plexamp"				      # Default hostname
-playername="PlexAmp"				              			# Dummy placeholders for server.json-file
-playerid="abcdefgh-ijkl-mnop-qrst-uvwxyzabcdef"	# Dummy placeholders for server.json-file
-userid="1000000"								                # Dummy placeholders for server.json-file
-usertoken="zyxwvutsrqponmlkjihg"				        # Dummy placeholders for server.json-file
+HOST="plexamp"              # Default hostname
 
 #####
 # prompt for updates to variables/values
 #####
 echo " "
 echo --== For your information ==--
-echo -e "$INFO This script is verifed on the following images:"
-echo    "      2020-08-20-raspios-buster-armhf-lite"
-echo    "      2020-12-02-raspios-buster-armhf-lite"
+echo -e "$INFO This script is verifed on the following image(s):"
+echo    "      2022-04-07-raspios-bullseye-arm64-lite"
 echo " "
-echo    "      It should also work on the "DietPi_RPi-ARMv6-Buster" image, but cannot be guaranteed."
+echo    "      NOTE!!!! Raspberry Pi OS 64-bit version is assumed."
+echo " "
 echo    "      It cannot be guaranteed to run on other version of the image without fixes."
-echo    "      Installation assumes armv7l HW, and was testen on a Raspberry Pi 4 Model B."
+echo    "      Installation assumes ARMv7 or ARMv8 HW, and was testen on a Raspberry Pi 4 Model B."
 echo    "      Installation also assumes a HiFiBerry HAT or one of its clones installed."
 echo    "      If you do not have one, you can also dedicate audio to the HDMI port."
-echo
 echo " "
+echo " "
+echo --== Starting Installation ==--
 echo -n "Do you want to change hostname [y/N]: "
 read answer
 answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
@@ -71,7 +74,6 @@ sed -i "s/AUTO_SETUP_NET_HOSTNAME=.*/AUTO_SETUP_NET_HOSTNAME=$HOST/g" /boot/diet
 fi
 echo " "
 fi
-echo " "
 echo -e "By default, installation will progress as user $USER, unless you choose to create a diferent user."
 echo " "
 echo -n "Do you want to create a new user to use for the install [y/N]: "
@@ -84,7 +86,6 @@ echo " "
 read -e -p "Password for user to create and install PlexAmp under (default is $PASSWORD): " -i "$PASSWORD" PASSWORD
 PASSWORDCRYPTED=$(echo "$PASSWORD" | openssl passwd -6 -stdin)
 fi
-echo " "
 if [ ! -f /boot/dietpi.txt ]; then
 echo Now it is time to choose Timezone, pick the number for the Timezone you want, exit with 5.
 echo If your Timezone is not covered, additional timezones can be found here: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
@@ -100,7 +101,7 @@ select opt in "${options[@]}" "Quit"; do
     2 ) echo "You picked $opt, continue with 5 or choose again!"; TIMEZONE="America/Chicago";;
     3 ) echo "You picked $opt, continue with 5 or choose again!"; TIMEZONE="America/Denver";;
     4 ) echo "You picked $opt, continue with 5 or choose again!"; TIMEZONE="America/Los_Angeles";;
-    $(( ${#options[@]}+1 )) ) echo "Goodbye!"; break;;
+    $(( ${#options[@]}+1 )) ) echo "Continuing!"; break;;
     *) echo "Invalid option. Try another one."; continue;;
     esac
 done
@@ -114,16 +115,16 @@ fi
 echo " "
 if [ ! -f /boot/dietpi.txt ]; then
 echo --== Setting timezone ==--
-timedatectl set-timezone $TIMEZONE
-echo " "
+timedatectl set-timezone "$TIMEZONE"
 fi
+echo " "
 echo --== Date of execution ==--
 date
 echo " "
 echo --== Check OS version ==--
 cat /etc/os-release
-echo " "
 if [ ! -f /boot/dietpi.txt ]; then
+echo " "
 echo --== Verify Hostname and OS ==--
 hostnamectl
 else
@@ -179,8 +180,8 @@ echo " "
 echo --== Install vim and change to default editor ==--
 apt-get install -y vim > /dev/null 2>&1
 update-alternatives --set editor /usr/bin/vim.basic
-echo " "
 fi
+echo " "
 if [ ! -f /boot/dietpi.txt ]; then
 echo -n "Do you want to disable IPv6 [y/N]: "
 read answer
@@ -195,12 +196,12 @@ EOF
 fi
 fi
 fi
-if [ ! -d /home/$USER ]; then
+if [ ! -d /home/"$USER" ]; then
 echo " "
 echo --== Add user and enable sudo ==--
-useradd -m -p $PASSWORDCRYPTED $USER
-usermod --shell /bin/bash $USER > /dev/null 2>&1
-usermod -aG adm,dialout,cdrom,sudo,audio,video,plugdev,games,users,input,netdev,spi,i2c,gpio $USER
+useradd -m -p "$PASSWORDCRYPTED" "$USER"
+usermod --shell /bin/bash "$USER" > /dev/null 2>&1
+usermod -aG adm,dialout,cdrom,sudo,audio,video,plugdev,games,users,input,render,netdev,lpadmin,spi,i2c,gpio "$USER"
 if [ -d /home/pi ]; then
 echo " "
 echo --== Disable default user "pi" from logging in ==--
@@ -210,7 +211,7 @@ fi
 fi
 echo " "
 echo --== Set user-groups and enable sudo ==--
-usermod -aG adm,dialout,cdrom,sudo,audio,video,plugdev,games,users,input,netdev,spi,i2c,gpio $USER
+usermod -aG adm,dialout,cdrom,sudo,audio,video,plugdev,games,users,input,render,netdev,lpadmin,spi,i2c,gpio "$USER"
 echo " "
 echo --== Update motd ==--
 if [ ! -f /etc/update-motd.d/20-logo ]; then
@@ -226,7 +227,7 @@ echo    "   ██╔═══╝ ██║     ██╔══╝   ██╔�
 echo    "   ██║     ███████╗███████╗██╔╝ ██╗██║  ██║██║ ╚═╝ ██║██║"
 echo    "   ╚═╝     ╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝"
 echo    ""
-echo    "   Plexamp-v2.0.0-rPi-beta.2"
+echo    "   Plexamp-Linux-arm64-v4.2.2-beta.1c"
 echo " "
 EOF
 chmod +x /etc/update-motd.d/20-logo
@@ -234,6 +235,7 @@ fi
 echo " "
 if [ ! -f /boot/dietpi.txt ]; then
 echo --== Check WiFi-status and enable WiFi ==--
+echo " "
 echo --== Before ==--
 rfkill list all
 rfkill unblock 0
@@ -278,7 +280,6 @@ select opt in "${options[@]}" "Quit"; do
     *) echo "Invalid option. Try another one."; continue;;
     esac
 done
-echo " "
 echo "$(cat $CNFFILE)$HIFIBERRY" > $CNFFILE
 if [ ! -f /boot/dietpi.txt ]; then
 sed -i '/#dtparam=audio=on/!s/dtparam=audio=on/#&/' /boot/config.txt # Add hashtag, disable internal audio/headphones.
@@ -305,102 +306,47 @@ if [ "$answer" = "y" ]; then
 sed -i '/#hdmi_drive=2/s/^# *//' /boot/config.txt
 fi
 echo " "
-echo -n "Do you want to install and configure NodeJS9 and PlexAmp v2.0.0-rPi-beta.2 [y/N]: "
+echo -n "Do you want to install and configure Node.v12 and Plexamp-Linux-arm64-v4.2.2-beta.1c [y/N]: "
 read answer
 answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
 echo " "
 if [ ! -f /etc/apt/sources.list.d/nodesource.list ]; then
-echo --== Install nodejs 9 ==--
+echo --== Install node.v12 ==--
 apt-mark unhold nodejs > /dev/null 2>&1
 apt-get purge -y nodejs > /dev/null 2>&1
-curl -sL https://deb.nodesource.com/setup_9.x | sudo -E bash -
-apt-get install -y nodejs=9.11.2-1nodesource1
+curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+apt-get install -y nodejs=12.22.*-1nodesource1
 apt-mark hold nodejs
 fi
+fi
 echo " "
-echo --== Verify that nodejs 9 is set to hold ==--
+echo --== Verify that node.v12 is set to hold ==--
 apt-mark showhold
 echo " "
-echo --== Verify nodejs 9 "&" npm versions, should be "v9.11.2" and "5.6.0"  ==--
+echo --== Verify node.v12 "&" npm versions, should be "v12.22.*" and "6.14.16"  ==--
 node -v ; npm -v
 echo " "
-if [ ! -f  /home/$USER/Plexamp-v2.0.0-rPi-beta.2.tar.bz2 ]; then
-echo --== Fetch, unpack and install "Plexamp-v2.0.0-rPi-beta.2" ==--
-cd /home/$USER
-wget https://files.plexapp.com/elan/Plexamp-v2.0.0-rPi-beta.2.tar.bz2
-tar -xf Plexamp-v2.0.0-rPi-beta.2.tar.bz2
-echo " "
+if [ ! -f /home/"$USER"/plexamp/plexamp.service ]; then
+echo --== Fetch, unpack and install "Plexamp-Linux-arm64-v4.2.2-beta.1c" ==--
+cd /home/"$USER"
+wget https://plexamp.plex.tv/headless/Plexamp-Linux-arm64-v4.2.2-beta.1c.tar.bz2
+chown -R "$USER":"$USER" /home/"$USER"/Plexamp-Linux-arm64-v4.2.2-beta.1c.tar.bz2
+tar -xf Plexamp-Linux-arm64-v4.2.2-beta.1c.tar.bz2
+chown -R "$USER":"$USER" /home/"$USER"/plexamp/
 fi
 echo --== Fix plexamp.service ==--
-cp /home/$USER/plexamp/plexamp.service /lib/systemd/system/plexamp.service
-sed -i "s/pi/$USER/g" /lib/systemd/system/plexamp.service
-systemctl daemon-reload
-systemctl enable plexamp
-echo " "
-echo --== Fix path for server.json and create skeleton ==--
-if [ ! -f /home/$USER/.config/Plexamp/server.json ]; then
-mkdir -p /home/$USER/.config/Plexamp
-cat >> /home/$USER/.config/Plexamp/server.json << EOF
-{
-  "player": {
-    "name": "playername",
-    "identifier": "playerid"
-  },
-  "user": {
-    "id": userid,
-    "token": "usertoken"
-  },
- "logging": {
-    "level": "warn"
-  }
-}
-EOF
+if [ ! -f /home/"$USER"/.config/systemd/user/plexamp.service ]; then
+mkdir -p /home/"$USER"/.config/systemd/user/
+cp /home/"$USER"/plexamp/plexamp.service /home/"$USER"/.config/systemd/user/
+sed -i 's#multi-user#basic#g' /home/"$USER"/.config/systemd/user/plexamp.service
+sed -i '/User=pi/d' /home/"$USER"/.config/systemd/user/plexamp.service
+sed -i "s#/home/pi/plexamp/js/index.js#/home/"$USER"/plexamp/js/index.js#g" /home/"$USER"/.config/systemd/user/plexamp.service
+chown -R "$USER":"$USER" /home/"$USER"/.config/
+su "$USER" -c 'systemctl --user daemon-reload' > /dev/null 2>&1
 fi
 echo " "
-echo --== Manually fix PlexAmp server.json setup ==--
-echo -e "$INFO Configuring server.json for PlexAmp:"
-echo    "      If you do not want to configure the token maually - skip this step."
-echo    "      You will need to copy the token to /home/$USER/.config/Plexamp/server.json"
-echo    "      On MacOS, the token is located under: /System/Volumes/Data/Users/MyUser/Library/Application Support/Plexamp after logging in."
-echo    "      On Windows, the token is located under: c:\Users\MyUser\AppData\Local\Plexamp\server.json after logging in."
-echo    "      Please remember to substitute MyUser for your actual username!"
-echo    " "
-echo    "      You can only extract this file from a running installation of an older version of PlexAmp v1.x.x."
-echo    "      The installer-files can still be found for MacOs at: https://plexamp.plex.tv/plexamp.plex.tv/Plexamp-1.1.0.dmg"
-echo    "      For Windows at: https://plexamp.plex.tv/plexamp.plex.tv/Plexamp%20Setup%201.1.0.exe"
-echo    " "
-echo    "      The below placeholders will not work (except for Player Name as long as it is unique), you need your own numbers from a working player!"
-echo
-echo -n "Do you want to configure server.json with your information [y/N]: "
-read answer
-answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
-if [ "$answer" = "y" ]; then
-read -e -p "Player name: (default placeholder is $playername): " -i "$playername" playername
-read -e -p "Player identifier: (default placeholder is $playerid): " -i "$playerid" playerid
-read -e -p "User id: (default placeholder is $userid): " -i "$userid" userid
-read -e -p "User token: (default placeholder is $usertoken): " -i "$usertoken" usertoken
-echo " "
-if [ "$playername" -a "$playerid" -a "$userid" -a "$usertoken" ]; then
-  echo -e "$INFO Configuring Plexamp"
-  systemctl stop plexamp
-  sed -i "s/playername/$playername/" /home/$USER/.config/Plexamp/server.json
-  sed -i "s/playerid/$playerid/" /home/$USER/.config/Plexamp/server.json
-  sed -i "s/userid/$userid/" /home/$USER/.config/Plexamp/server.json
-  sed -i "s/usertoken/$usertoken/" /home/$USER/.config/Plexamp/server.json
-  sleep 5
-  echo " "
-  echo -e "$INFO Starting Plexamp"
-  systemctl start plexamp.service
-else
-  echo -e "$ERROR At least one of the parameters were empty - Please try again"
-  echo "       Call: `pwd`/`basename $0`"
-fi
-fi
-chown -R $USER:$USER /home/$USER
-chmod 600 /home/$USER/.config/Plexamp/server.json
-fi
-echo " "
+echo --== OS-update ==--
 echo -n "Do you want to run full OS-update? This is recommended [y/N]: "
 read answer
 answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
@@ -413,40 +359,26 @@ apt-get -y install deborphan > /dev/null 2>&1
 apt-get clean ; apt-get autoclean ; apt-get autoremove ; deborphan | xargs apt-get -y remove --purge
 fi
 echo " "
-echo --== Fix PlexAmp server.json setup ==--
-echo -e "$INFO Please note!!! If you did not run the server.json setup:"
-echo    "      To get working server:"
-echo    "      You will need to copy the token to /home/$USER/.config/Plexamp/server.json"
-echo    " "
-echo    "      On MacOS, the token is located under: /System/Volumes/Data/Users/MyUser/Library/Application Support/Plexamp after logging in."
-echo    "      On Windows, the token is located under: c:\Users\MyUser\AppData\Local\Plexamp\server.json after logging in."
-echo    "      Optionally you can edit it with your custom values."
-echo    "      Please remember to substitute MyUser for your actual username!"
-echo    " "
-echo    "      You can only extract this file from a running installation of an older version of PlexAmp v1.x.x."
-echo    "      The installer-files can still be found for MacOs at: https://plexamp.plex.tv/plexamp.plex.tv/Plexamp-1.1.0.dmg"
-echo    "      For Windows at: https://plexamp.plex.tv/plexamp.plex.tv/Plexamp%20Setup%201.1.0.exe"
-echo    " "
-echo    "      WARNING!!!			WARNING!!!			WARNING!!!"
-echo    " "
-echo    "      Please remember, you need to remove/delete the Plexamp folder from your MacOS/Windows installation,"
-echo    "      or you will get weird behaviour, and end up with a non-functioning PlexAmp due to 2 or more clients using the same ID/tokens!"
-echo    " "
-echo    "      If the service (systemctl status plexamp) is not starting with error: code=exited, status=1/FAILURE,"
-echo    "      it is most likely due to invalid configuration in /home/$USER/.config/Plexamp/server.json"
-echo    "      Fix the server.json file, and restart the service (systemctl restart plexamp)."
-echo
-echo " "
 echo --== For Linux 5.4 and higher ==--
 echo -e "$INFO This not needed for the "PiFi HIFI DiGi+ Digital Sound Card" found at:"
 echo    "      https://www.fasttech.com/p/5137000"
 echo " "
 echo    "      If correct overlay is configured, but the system still doesn’t load the driver,"
-echo    "      disable the onboard EEPROM by adding: "force_eeprom_read=0" to "/boot/config.txt""
-echo
+echo    "      disable the onboard EEPROM by adding: 'force_eeprom_read=0' to '/boot/config.txt'"
 echo " "
-echo --==          End of Post-PlexAmp-script          ==--
+echo --== End of Post-PlexAmp-script, please reboot for all changes to take effect ==--
 echo " "
-echo --== Please reboot for all changes to take effect ==--
+echo -e "$INFO Configuration post-reboot:"
+echo    "      After reboot, as your regular user please run the command: node /home/"$USER"/plexamp/js/index.js"
+echo    "      At this point, go to the URL provided in response, and enter he claim token at prompt."
+echo    " "
+echo    "      Once entered, the web-GUI should be available on the ip-of-plexamp-pi:32500 from a browser."
+echo    "      On that GUI you will be asked to login to your Plex-acoount for security-reasons,"
+echo    "      and then choose a librabry where to fetch/stream music from."
+echo    "      Now play some music! Or control it from any other instance of Plexamp."
+echo " "
+echo    "      Start and enable the Plexamp service if you feel like having it start on boot!"
+echo    "      Hit ctrl+c to stop process, then enter:"
+echo    "      systemctl --user enable plexamp.service && systemctl --user start plexamp.service"
 echo " "
 # end
