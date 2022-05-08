@@ -27,7 +27,7 @@ After SSH-ing to the SBC, on the "Raspberry Pi OS", change to root ("sudo -i") a
 ```bash <(wget -qO- https://raw.githubusercontent.com/odinb/bash-plexamp-installer/main/install_Plexamp_pi.sh)```
 
 ### Post-install and post-reboot tasks
-After reboot, as your regular user please run the command: node /home/USER/plexamp/js/index.js,
+After reboot, as your regular user please run the command: ```node /home/USER/plexamp/js/index.js```,
 where USER is your user, normally pi.
 At this point, go to the URL provided in response, and enter he claim token at prompt.
 
@@ -39,7 +39,7 @@ Now play some music! Or control it from any other instance of Plexamp.
 
 Start and enable the Plexamp service if you feel like having it start on boot!
 Hit ctrl+c to stop process, then enter:
-systemctl --user enable plexamp.service && systemctl --user start plexamp.service
+```systemctl --user enable plexamp.service && systemctl --user start plexamp.service```
 
 ### Re-running the script
 
