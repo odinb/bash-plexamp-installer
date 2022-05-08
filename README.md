@@ -5,9 +5,9 @@ For more information and hardware used, see here:<br /> https://github.com/odinb
 ## Burning the image.
 Burn the OS-image to the Micro-SD card using etcher (or app of your choice).
 
-This will currently NOT work on Bullseye or newer due to requirement on Node.js 9.
-Images for Buster can be found here:
-https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2021-05-28/
+This will currently only work with 64-bit capable Raspberry Pi and Pi OS that is 64-bit.
+Images for Bullseye can be found here:
+https://www.raspberrypi.com/software/operating-systems/#raspberry-pi-os-64-bit
 
 ### Enable SSH.
 How to enable SSH:<br />
