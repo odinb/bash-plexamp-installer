@@ -370,7 +370,7 @@ echo --== End of Post-PlexAmp-script, please reboot for all changes to take effe
 echo " "
 echo -e "$INFO Configuration post-reboot:"
 echo    "      After reboot, as your regular user please run the command: node /home/"$USER"/plexamp/js/index.js"
-echo    "      At this point, go to the URL provided in response, and enter he claim token at prompt."
+echo    "      At this point, go to the URL provided in response, and enter the claim token at prompt."
 echo    " "
 echo    "      Once entered, the web-GUI should be available on the ip-of-plexamp-pi:32500 from a browser."
 echo    "      On that GUI you will be asked to login to your Plex-acoount for security-reasons,"
