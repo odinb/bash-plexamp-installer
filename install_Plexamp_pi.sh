@@ -29,7 +29,7 @@
 #
 
 #####
-# Variable(s), updated if needed before execution of script.
+# Variable(s), update if needed before execution of script.
 #####
 
 if [ -d /home/dietpi ]; then # Name of user to create and run PlexAmp as.
