@@ -307,7 +307,7 @@ if [ "$answer" = "y" ]; then
 sed -i '/#hdmi_drive=2/s/^# *//' /boot/config.txt
 fi
 echo " "
-echo -n "Do you want to install and configure Node.v12 and Plexamp-Linux-arm64-v4.2.2-beta.3 [y/N]: "
+echo -n "Do you want to install and configure Node.v12 and Plexamp-Linux-arm64-v4.2.2 [y/N]: "
 read answer
 answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
