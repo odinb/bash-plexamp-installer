@@ -19,7 +19,7 @@ On MacOS, after re-mount of micro-SD-card, run: ```touch /Volumes/boot/ssh```.
 
 Then unmount and insert card into Raspberry Pi and boot it.
 
-SSH access on "Raspberry Pi OS": Default "pi" user has been removed; the first-boot wizard enforces the creation of a new user account<br />
+SSH access on "Raspberry Pi OS": (2022-04-04) Default "pi" user has been removed; the first-boot wizard enforces the creation of a new user account<br />
 SSH access on "DietPi OS": User/pass: root/dietpi<br />
 
 After SSH-ing to the SBC, on the "Raspberry Pi OS", change to root (```sudo -i```) and run script with:
