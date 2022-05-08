@@ -2,7 +2,7 @@
 # Script: PlexAmp-install for Pi
 # Purpose: Install PlexAmp on a Raspberry Pi.
 # Make sure you have a 64-bit capable Raspberry Pi and Pi OS is 64-bit.
-# Make sure you have node 12 installed.
+# Script will install node.v12 and set it on hold.
 # Needs to be run as the root user.
 #
 # How to enable SSH on Raspberry Pi OS:
