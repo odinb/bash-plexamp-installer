@@ -343,6 +343,7 @@ sed -i 's#multi-user#basic#g' /home/"$USER"/.config/systemd/user/plexamp.service
 sed -i '/User=pi/d' /home/"$USER"/.config/systemd/user/plexamp.service
 sed -i "s#/home/pi/plexamp/js/index.js#/home/"$USER"/plexamp/js/index.js#g" /home/"$USER"/.config/systemd/user/plexamp.service
 chown -R "$USER":"$USER" /home/"$USER"/.config/
+loginctl enable-linger "$USER"
 su "$USER" -c 'systemctl --user daemon-reload' > /dev/null 2>&1
 fi
 echo " "
