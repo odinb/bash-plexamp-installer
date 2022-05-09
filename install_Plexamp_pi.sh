@@ -25,6 +25,7 @@
 # Revision update: 2022-05-04 ODIN - Changed to new version of Pi OS (64-bit), Plexamp V4.2.2. Not tested on DietPi.
 # Revision update: 2022-05-07 ODIN - Fixed systemd user instance terminating at logout of user.
 # Revision update: 2022-05-08 ODIN - Updated to using "Plexamp-Linux-arm64-v4.2.2-beta.3" and corrected service-file.
+# Revision update: 2022-05-09 ODIN - Updated to using "Plexamp-Linux-arm64-v4.2.2-beta.5" and added update-function. Version still hardcoded.
 # 
 #
 # Log for debugging is located in: ~/.cache/Plexamp/log/Plexamp.log,
@@ -39,10 +40,13 @@ USER="dietpi"
 else
 USER="pi"
 fi
-TIMEZONE="America/Chicago"  # Default Timezone
-PASSWORD="MySecretPass123"  # Default password
-CNFFILE="/boot/config.txt"  # Default config file
-HOST="plexamp"              # Default hostname
+TIMEZONE="America/Chicago"                      # Default Timezone
+PASSWORD="MySecretPass123"                      # Default password
+CNFFILE="/boot/config.txt"                      # Default config file
+HOST="plexamp"                                  # Default hostname
+PLEXAMPV="Plexamp-Linux-arm64-v4.2.2-beta.5"    # Default Plexamp-version
+SPACES="   "                                    # Default spaces
+
 
 #####
 # prompt for updates to variables/values
@@ -74,18 +78,18 @@ sed -i "s/$HOSTNAME/$HOST/g" /etc/hosts
 if [ -f /boot/dietpi.txt ]; then
 sed -i "s/AUTO_SETUP_NET_HOSTNAME=.*/AUTO_SETUP_NET_HOSTNAME=$HOST/g" /boot/dietpi.txt
 fi
-echo " "
 fi
-echo -e "By default, installation will progress as user $USER, unless you choose to create a diferent user."
 echo " "
-echo -n "Do you want to create a new user to use for the install [y/N]: "
+echo -e "By default, installation will progress as user $USER, unless you choose to create/change to a diferent user."
+echo " "
+echo -n "Do you want to create or change to a new or different user for the install (currently "$USER") [y/N]: "
 read answer
 answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
 echo " "
-read -e -p "User to create and install PlexAmp under (default is $USER): " -i "$USER" USER
+read -e -p "User to create/use and install PlexAmp under (default is $USER): " -i "$USER" USER
 echo " "
-read -e -p "Password for user to create and install PlexAmp under (default is $PASSWORD): " -i "$PASSWORD" PASSWORD
+read -e -p "Password for user to create and install PlexAmp under (will not change if user already exist): " -i "$PASSWORD" PASSWORD
 PASSWORDCRYPTED=$(echo "$PASSWORD" | openssl passwd -6 -stdin)
 fi
 if [ ! -f /boot/dietpi.txt ]; then
@@ -229,11 +233,12 @@ echo    "   ██╔═══╝ ██║     ██╔══╝   ██╔�
 echo    "   ██║     ███████╗███████╗██╔╝ ██╗██║  ██║██║ ╚═╝ ██║██║"
 echo    "   ╚═╝     ╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝"
 echo    ""
-echo    "   Plexamp-Linux-arm64-v4.2.2-beta.3"
+echo    "   Plexamp-Linux-arm64-v4.2.2-beta.5"
 echo " "
 EOF
 chmod +x /etc/update-motd.d/20-logo
 fi
+sed -i "s#Plexamp-Linux-.*#"$PLEXAMPV"#g" /etc/update-motd.d/20-logo
 echo " "
 if [ ! -f /boot/dietpi.txt ]; then
 echo --== Check WiFi-status and enable WiFi ==--
@@ -308,7 +313,19 @@ if [ "$answer" = "y" ]; then
 sed -i '/#hdmi_drive=2/s/^# *//' /boot/config.txt
 fi
 echo " "
-echo -n "Do you want to install and configure Node.v12 and Plexamp-Linux-arm64-v4.2.2 [y/N]: "
+echo --== Cleanup for upgrade ==--
+echo -n "Do you want to prep for upgrade to new version "$PLEXAMPV", only run if you are upgrading [y/N]: "
+read answer
+answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
+if [ "$answer" = "y" ]; then
+ps ax |grep index.js |grep -v grep |awk '{print $1}' |xargs kill
+rm -rf /home/"$USER"/plexamp/
+rm -rf /home/"$USER"/Plexamp-Linux-arm64*
+rm -rf /home/"$USER"/.config/systemd/user/plexamp.service
+fi
+echo " "
+echo --== Install or upgrade ==--
+echo -n "Do you want to install and configure Node.v12 and "$PLEXAMPV" [y/N]: "
 read answer
 answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
@@ -330,11 +347,11 @@ echo --== Verify node.v12 "&" npm versions, should be "v12.22.*" and "6.14.16"  
 node -v ; npm -v
 echo " "
 if [ ! -f /home/"$USER"/plexamp/plexamp.service ]; then
-echo --== Fetch, unpack and install "Plexamp-Linux-arm64-v4.2.2-beta.3" ==--
+echo --== Fetch, unpack and install "$PLEXAMPV" ==--
 cd /home/"$USER"
-wget https://plexamp.plex.tv/headless/Plexamp-Linux-arm64-v4.2.2-beta.3.tar.bz2
-chown -R "$USER":"$USER" /home/"$USER"/Plexamp-Linux-arm64-v4.2.2-beta.3.tar.bz2
-tar -xf Plexamp-Linux-arm64-v4.2.2-beta.3.tar.bz2
+wget https://plexamp.plex.tv/headless/"$PLEXAMPV".tar.bz2
+chown -R "$USER":"$USER" /home/"$USER"/"$PLEXAMPV".tar.bz2
+tar -xf "$PLEXAMPV".tar.bz2
 chown -R "$USER":"$USER" /home/"$USER"/plexamp/
 fi
 echo --== Fix plexamp.service ==--
@@ -384,5 +401,9 @@ echo " "
 echo    "      Start and enable the Plexamp service if you feel like having it start on boot!"
 echo    "      Hit ctrl+c to stop process, then enter:"
 echo    "      systemctl --user enable plexamp.service && systemctl --user start plexamp.service"
+echo " "
+echo    "      NOTE!! If you upgraded, only reboot is needed, tokens are preserved."
+echo    "      One can verify service after reboot with: systemctl --user status plexamp.service"
+echo    "      All should work at this point."
 echo " "
 # end
