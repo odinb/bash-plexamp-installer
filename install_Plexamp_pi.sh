@@ -238,7 +238,6 @@ echo " "
 EOF
 chmod +x /etc/update-motd.d/20-logo
 fi
-sed -i "s#Plexamp-Linux-.*#"$PLEXAMPV"#g" /etc/update-motd.d/20-logo
 echo " "
 if [ ! -f /boot/dietpi.txt ]; then
 echo --== Check WiFi-status and enable WiFi ==--
@@ -353,6 +352,7 @@ wget https://plexamp.plex.tv/headless/"$PLEXAMPV".tar.bz2
 chown -R "$USER":"$USER" /home/"$USER"/"$PLEXAMPV".tar.bz2
 tar -xf "$PLEXAMPV".tar.bz2
 chown -R "$USER":"$USER" /home/"$USER"/plexamp/
+sed -i "s#Plexamp-Linux-.*#"$PLEXAMPV"#g" /etc/update-motd.d/20-logo
 fi
 echo --== Fix plexamp.service ==--
 if [ ! -f /home/"$USER"/.config/systemd/user/plexamp.service ]; then
