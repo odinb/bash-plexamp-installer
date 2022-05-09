@@ -55,4 +55,6 @@ Hit ctrl+c to stop process, then enter:
 
 The script can be re-run to fix configuration/setup errors, just say no/bypass the sections you do not want to re-run!
 
+If there is a new version, and script has been updated, you can upgrade by re-running the script also.
+
 For hostname-change, please make sure to reboot in-between, or you might face issues.
