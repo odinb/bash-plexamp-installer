@@ -22,7 +22,7 @@ Then unmount and insert card into Raspberry Pi and boot it.
 SSH access on "Raspberry Pi OS": (2022-04-04) To set up a user on first boot on headless, create a file called userconf or userconf.txt in the boot partition of the SD card.
 This file should contain a single line of text, consisting of username:encrypted-password – so your desired username, followed immediately by a colon, followed immediately by an encrypted representation of the password you want to use.
 
-To generate the encrypted password, the easiest way is to use OpenSSL on a Raspberry Pi that is already running – open a terminal window and enter:
+To generate the encrypted password, the easiest way is to use OpenSSL on a Raspberry Pi that is already running (or most any linux you have running) – open a terminal window and enter:
 ```echo ‘mypassword’ | openssl passwd -6 -stdin```
 
 This will produce what looks like a string of random characters, which is actually an encrypted version of the supplied password.<br />
