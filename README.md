@@ -42,7 +42,7 @@ At this point, go to the URL provided in response, and enter the claim token at 
 
 Once entered, the web-GUI should be available on the ip-of-plexamp-pi:32500 from a browser.
 On that GUI you will be asked to login to your Plex-acoount for security-reasons,
-and then choose a librabry where to fetch/stream music from.
+and then choose a library where to fetch/stream music from.
 
 Now play some music! Or control it from any other instance of Plexamp.
 
