@@ -26,6 +26,7 @@
 # Revision update: 2022-05-07 ODIN - Fixed systemd user instance terminating at logout of user.
 # Revision update: 2022-05-08 ODIN - Updated to using "Plexamp-Linux-arm64-v4.2.2-beta.3" and corrected service-file.
 # Revision update: 2022-05-09 ODIN - Updated to using "Plexamp-Linux-arm64-v4.2.2-beta.5" and added update-function. Version still hardcoded.
+# Revision update: 2022-05-09 ODIN - Updated to using "Plexamp-Linux-arm64-v4.2.2-beta.7" and added update-function. Version still hardcoded.
 # 
 #
 # Log for debugging is located in: ~/.cache/Plexamp/log/Plexamp.log,
@@ -44,7 +45,7 @@ TIMEZONE="America/Chicago"                      # Default Timezone
 PASSWORD="MySecretPass123"                      # Default password
 CNFFILE="/boot/config.txt"                      # Default config file
 HOST="plexamp"                                  # Default hostname
-PLEXAMPV="Plexamp-Linux-arm64-v4.2.2-beta.5"    # Default Plexamp-version
+PLEXAMPV="Plexamp-Linux-arm64-v4.2.2-beta.7"    # Default Plexamp-version
 SPACES="   "                                    # Default spaces
 
 
@@ -223,7 +224,6 @@ echo --== Update motd ==--
 if [ ! -f /etc/update-motd.d/20-logo ]; then
 cat >> /etc/update-motd.d/20-logo << 'EOF'
 #!/bin/sh
-
 echo    ""
 echo    ""
 echo    "   ██████╗ ██╗     ███████╗██╗  ██╗ █████╗ ███╗   ███╗██████╗"
@@ -233,7 +233,7 @@ echo    "   ██╔═══╝ ██║     ██╔══╝   ██╔�
 echo    "   ██║     ███████╗███████╗██╔╝ ██╗██║  ██║██║ ╚═╝ ██║██║"
 echo    "   ╚═╝     ╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝"
 echo    ""
-echo    "   Plexamp-Linux-arm64-v4.2.2-beta.5"
+echo    "   Plexamp-Linux-arm64-v4.2.2-beta.7"
 echo " "
 EOF
 chmod +x /etc/update-motd.d/20-logo
@@ -390,6 +390,7 @@ echo " "
 echo --== End of Post-PlexAmp-script, please reboot for all changes to take effect ==--
 echo " "
 echo -e "$INFO Configuration post-reboot:"
+echo    "      Note !! Only needed if fresh install, not if upgrading."
 echo    "      After reboot, as your regular user please run the command: node /home/"$USER"/plexamp/js/index.js"
 echo    "      At this point, go to the URL provided in response, and enter the claim token at prompt."
 echo    " "
