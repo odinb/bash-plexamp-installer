@@ -9,11 +9,11 @@
 # For security reasons, as of the November 2016 release, Raspbian has the SSH server disabled by default.
 # After burning the image to your Micro-SD-card (with etcher), you need to enable.
 #
-# To enable: 
+# To enable:
 # 1. Mount your SD card on your computer.
 # 2. Create or copy an empty file called ssh in /boot.
 # on MacOS you can do: touch /Volumes/boot/ssh
-# 
+#
 # Then SSH to raspbian with user/pass: pi/raspberry
 #
 # Now change to root user with command "sudo -i".
@@ -28,7 +28,7 @@
 # Revision update: 2022-05-09 ODIN - Updated to using "Plexamp-Linux-arm64-v4.2.2-beta.5" and added update-function. Version still hardcoded.
 # Revision update: 2022-05-09 ODIN - Updated to using "Plexamp-Linux-arm64-v4.2.2-beta.7". Version still hardcoded.
 # Revision update: 2022-06-03 ODIN - Updated to using "Plexamp-Linux-arm64-v4.2.2". No more beta. Version still hardcoded.
-# 
+#
 #
 # Log for debugging is located in: ~/.cache/Plexamp/log/Plexamp.log,
 #
@@ -54,7 +54,7 @@ SPACES="   "                                    # Default spaces
 # prompt for updates to variables/values
 #####
 echo " "
-echo --== For your information ==--
+echo "--== For your information ==--"
 echo -e "$INFO This script is verifed on the following image(s):"
 echo    "      2022-04-07-raspios-bullseye-arm64-lite"
 echo " "
@@ -66,7 +66,7 @@ echo    "      Installation also assumes a HiFiBerry HAT or one of its clones in
 echo    "      If you do not have one, you can also dedicate audio to the HDMI port."
 echo " "
 echo " "
-echo --== Starting Installation ==--
+echo "--== Starting Installation ==--"
 echo -n "Do you want to change hostname [y/N]: "
 read answer
 answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
@@ -95,8 +95,8 @@ read -e -p "Password for user to create and install PlexAmp under (will not chan
 PASSWORDCRYPTED=$(echo "$PASSWORD" | openssl passwd -6 -stdin)
 fi
 if [ ! -f /boot/dietpi.txt ]; then
-echo Now it is time to choose Timezone, pick the number for the Timezone you want, exit with 5.
-echo If your Timezone is not covered, additional timezones can be found here: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+echo "Now it is time to choose Timezone, pick the number for the Timezone you want, exit with 5."
+echo "If your Timezone is not covered, additional timezones can be found here: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones"
 echo " "
 title="Select your Timezone:"
 prompt="Pick your option:"
@@ -122,62 +122,62 @@ fi
 #####
 echo " "
 if [ ! -f /boot/dietpi.txt ]; then
-echo --== Setting timezone ==--
+echo "--== Setting timezone ==--"
 timedatectl set-timezone "$TIMEZONE"
 fi
 echo " "
-echo --== Date of execution ==--
+echo "--== Date of execution ==--"
 date
 echo " "
-echo --== Check OS version ==--
+echo "--== Check OS version ==--"
 cat /etc/os-release
 if [ ! -f /boot/dietpi.txt ]; then
 echo " "
-echo --== Verify Hostname and OS ==--
+echo "--== Verify Hostname and OS ==--"
 hostnamectl
 else
-echo --== Verify Hostname ==--
+echo "--== Verify Hostname ==--"
 cat /etc/hostname
 fi
 echo " "
-echo --== Verify Partitioning ==--
+echo "--== Verify Partitioning ==--"
 lsblk
 echo " "
-echo --== Verify RAM ==--
+echo "--== Verify RAM ==--"
 free -m
 echo " "
-echo --== Verify CPUs ==--
+echo "--== Verify CPUs ==--"
 lscpu
 echo " "
 if [ -f /boot/dietpi.txt ]; then
-echo --== Verify alsa-utils installed ==--
+echo "--== Verify alsa-utils installed ==--"
 apt-get -y install alsa-utils > /dev/null 2>&1
 echo " "
 fi
-echo --== Verify Audio HW, list all soundcards and digital audio devices ==--
+echo "--== Verify Audio HW, list all soundcards and digital audio devices ==--"
 aplay -l
 echo " "
-echo --== Verify Audio HW, list all PCMs defined ==--
+echo "--== Verify Audio HW, list all PCMs defined ==--"
 aplay -L
 echo " "
 if [ ! -f /boot/dietpi.txt ]; then
-echo --== Setting NTP-servers ==--
+echo "--== Setting NTP-servers ==--"
 sed -ri 's/^#NTP=*/NTP=0.pool.ntp.org 1.pool.ntp.org 2.pool.ntp.org 3.pool.ntp.org/' /etc/systemd/timesyncd.conf
 echo " "
-echo --== Verify timezone-setup and NTP-sync ==--
+echo "--== Verify timezone-setup and NTP-sync ==--"
 timedatectl
 echo " "
 fi
-echo --== Install rpi-eeprom service ==--
+echo "--== Install rpi-eeprom service ==--"
 apt-get install -y rpi-eeprom
 echo " "
-echo --== Run the rpi-eeprom-update to check if update is required ==--
+echo "--== Run the rpi-eeprom-update to check if update is required ==--"
 rpi-eeprom-update
 echo " "
-echo --== Reading EEPROM version ==--
+echo "--== Reading EEPROM version ==--"
 vcgencmd bootloader_version
 echo " "
-echo --== Checking the rpi-eeprom service ==--
+echo "--== Checking the rpi-eeprom service ==--"
 systemctl status rpi-eeprom-update.service
 echo " "
 echo -n "Do you want to install and set vim as your default editor [y/N]: "
@@ -185,7 +185,7 @@ read answer
 answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
 echo " "
-echo --== Install vim and change to default editor ==--
+echo "--== Install vim and change to default editor ==--"
 apt-get install -y vim > /dev/null 2>&1
 update-alternatives --set editor /usr/bin/vim.basic
 fi
@@ -196,7 +196,7 @@ read answer
 answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
 echo " "
-echo --== Disable IPv6 ==--
+echo "--== Disable IPv6 ==--"
 if [ ! -f /etc/sysctl.d/disable-ipv6.conf ]; then
 cat >> /etc/sysctl.d/disable-ipv6.conf << EOF
 net.ipv6.conf.all.disable_ipv6 = 1
@@ -206,22 +206,22 @@ fi
 fi
 if [ ! -d /home/"$USER" ]; then
 echo " "
-echo --== Add user and enable sudo ==--
+echo "--== Add user and enable sudo ==--"
 useradd -m -p "$PASSWORDCRYPTED" "$USER"
 usermod --shell /bin/bash "$USER" > /dev/null 2>&1
 usermod -aG adm,dialout,cdrom,sudo,audio,video,plugdev,games,users,input,render,netdev,lpadmin,spi,i2c,gpio "$USER"
 if [ -d /home/pi ]; then
 echo " "
-echo --== Disable default user "pi" from logging in ==--
+echo "--== Disable default user "pi" from logging in ==--"
 usermod -s /sbin/nologin pi
 passwd -d pi
 fi
 fi
 echo " "
-echo --== Set user-groups and enable sudo ==--
+echo "--== Set user-groups and enable sudo ==--"
 usermod -aG adm,dialout,cdrom,sudo,audio,video,plugdev,games,users,input,render,netdev,lpadmin,spi,i2c,gpio "$USER"
 echo " "
-echo --== Update motd ==--
+echo "--== Update motd ==--"
 if [ ! -f /etc/update-motd.d/20-logo ]; then
 cat >> /etc/update-motd.d/20-logo << 'EOF'
 #!/bin/sh
@@ -241,17 +241,17 @@ chmod +x /etc/update-motd.d/20-logo
 fi
 echo " "
 if [ ! -f /boot/dietpi.txt ]; then
-echo --== Check WiFi-status and enable WiFi ==--
+echo "--== Check WiFi-status and enable WiFi ==--"
 echo " "
-echo --== Before ==--
+echo "--== Before ==--"
 rfkill list all
 rfkill unblock 0
 echo " "
-echo --== After ==--
+echo "--== After ==--"
 rfkill list all
 echo " "
 fi
-echo --== Fix HiFiBerry setup ==--
+echo "--== Fix HiFiBerry setup ==--"
 echo -e "$INFO Configuring overlay for HifiBerry HATs (or clones):"
 echo    "      If you own other audio HATs, or want to keep defaults - skip this step"
 echo    "      you will have to manually configure your HAT later."
@@ -266,7 +266,7 @@ read answer
 answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
 echo " "
-echo Now you need to choose your HiFiBerry card, pick the number for the card you have, exit with 5.
+echo "Now you need to choose your HiFiBerry card, pick the number for the card you have, exit with 5."
 sed -i /hifiberry-/d /boot/config.txt # Remove existing hiFiBerry config.
 echo " " >> /boot/config.txt
 grep -qxF '# --== Configuration for HiFi-Berry ==--' /boot/config.txt || echo '# --== Configuration for HiFi-Berry ==--' >> /boot/config.txt
@@ -297,7 +297,7 @@ sed -i '/Berry/{N;s/\n$//}' /boot/config.txt # Remove blank line after match.
 sed -i '${/^$/d}' /boot/config.txt # Remove last blank line in file.
 fi
 echo " "
-echo --== Fix HDMI-audio setup ==--
+echo "--== Fix HDMI-audio setup ==--"
 echo -e "$INFO Configuring HDMI for Audio:"
 echo    "      If you do not have an audio-HAT, you might want to set HDMI as default for audio."
 echo    " "
@@ -313,7 +313,7 @@ if [ "$answer" = "y" ]; then
 sed -i '/#hdmi_drive=2/s/^# *//' /boot/config.txt
 fi
 echo " "
-echo --== Cleanup for upgrade ==--
+echo "--== Cleanup for upgrade ==--"
 echo -n "Do you want to prep for upgrade to new version "$PLEXAMPV", only run if you are upgrading [y/N]: "
 read answer
 answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
@@ -324,14 +324,14 @@ rm -rf /home/"$USER"/Plexamp-Linux-arm64*
 rm -rf /home/"$USER"/.config/systemd/user/plexamp.service
 fi
 echo " "
-echo --== Install or upgrade ==--
+echo "--== Install or upgrade ==--"
 echo -n "Do you want to install and configure Node.v12 and "$PLEXAMPV" [y/N]: "
 read answer
 answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
 echo " "
 if [ ! -f /etc/apt/sources.list.d/nodesource.list ]; then
-echo --== Install node.v12 ==--
+echo "--== Install node.v12 ==--"
 apt-mark unhold nodejs > /dev/null 2>&1
 apt-get purge -y nodejs > /dev/null 2>&1
 curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
@@ -340,14 +340,14 @@ apt-mark hold nodejs
 fi
 fi
 echo " "
-echo --== Verify that node.v12 is set to hold ==--
+echo "--== Verify that node.v12 is set to hold ==--"
 apt-mark showhold
 echo " "
-echo --== Verify node.v12 "&" npm versions, should be "v12.22.*" and "6.14.16"  ==--
+echo "--== Verify node.v12 and npm versions, should be "v12.22.*" and "6.14.16"  ==--"
 node -v ; npm -v
 echo " "
 if [ ! -f /home/"$USER"/plexamp/plexamp.service ]; then
-echo --== Fetch, unpack and install "$PLEXAMPV" ==--
+echo "--== Fetch, unpack and install "$PLEXAMPV" ==--"
 cd /home/"$USER"
 wget https://plexamp.plex.tv/headless/"$PLEXAMPV".tar.bz2
 chown -R "$USER":"$USER" /home/"$USER"/"$PLEXAMPV".tar.bz2
@@ -357,7 +357,7 @@ chown -R "$USER":"$USER" /home/"$USER"/plexamp/
 chown -R "$USER":"$USER" /home/"$USER"/.local/share/Plexamp/
 sed -i "s#Plexamp-Linux-.*#"$PLEXAMPV\""#g" /etc/update-motd.d/20-logo
 fi
-echo --== Fix plexamp.service ==--
+echo "--== Fix plexamp.service ==--"
 if [ ! -f /home/"$USER"/.config/systemd/user/plexamp.service ]; then
 mkdir -p /home/"$USER"/.config/systemd/user/
 cp /home/"$USER"/plexamp/plexamp.service /home/"$USER"/.config/systemd/user/
@@ -370,27 +370,27 @@ loginctl enable-linger "$USER"
 su "$USER" -c 'systemctl --user daemon-reload' > /dev/null 2>&1
 fi
 echo " "
-echo --== OS-update ==--
+echo "--== OS-update ==--"
 echo -n "Do you want to run full OS-update? This is recommended [y/N]: "
 read answer
 answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
 echo " "
-echo --== Perform OS-update ==--
+echo "--== Perform OS-update ==--"
 apt update --allow-releaseinfo-change
 apt-get -y update ; apt-get -y upgrade ; apt-get -y dist-upgrade
 apt-get -y install deborphan > /dev/null 2>&1
 apt-get clean ; apt-get autoclean ; apt-get autoremove ; deborphan | xargs apt-get -y remove --purge
 fi
 echo " "
-echo --== For Linux 5.4 and higher ==--
+echo "--== For Linux 5.4 and higher ==--"
 echo -e "$INFO This not needed for the "PiFi HIFI DiGi+ Digital Sound Card" found at:"
 echo    "      https://www.fasttech.com/p/5137000"
 echo " "
 echo    "      If correct overlay is configured, but the system still doesn’t load the driver,"
 echo    "      disable the onboard EEPROM by adding: 'force_eeprom_read=0' to '/boot/config.txt'"
 echo " "
-echo --== End of Post-PlexAmp-script, please reboot for all changes to take effect ==--
+echo "--== End of Post-PlexAmp-script, please reboot for all changes to take effect ==--"
 echo " "
 echo -e "$INFO Configuration post-reboot:"
 echo    "      Note !! Only needed if fresh install, not if upgrading. Tokens are preserved during upgrade."
