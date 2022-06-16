@@ -60,3 +60,9 @@ The script can be re-run to fix configuration/setup errors, just say no/bypass t
 If there is a new version, and script has been updated, you can upgrade by re-running the script, and reboot.
 
 For hostname-change, please make sure to reboot in-between, or you might face issues.
+
+### Q & A
+
+Q: The rPi will show up in my cast list. However the moment I select a song to play, it either keeps loading forever (black screen with loading circle) or it flips back to the album overview without starting the selected song. This is the case for all file types I’ve tried.
+
+A: Go into the plexamp settings (via the web UI) and select the right audio output device. Rebooting the rPI a second time sometimes also helps, of course only if correct audio device is chosen.
