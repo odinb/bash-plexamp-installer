@@ -28,7 +28,7 @@
 # Revision update: 2022-05-09 ODIN - Updated to using "Plexamp-Linux-arm64-v4.2.2-beta.5" and added update-function. Version still hardcoded.
 # Revision update: 2022-05-09 ODIN - Updated to using "Plexamp-Linux-arm64-v4.2.2-beta.7". Version still hardcoded.
 # Revision update: 2022-06-03 ODIN - Updated to using "Plexamp-Linux-arm64-v4.2.2". No more beta. Version still hardcoded.
-# Revision update: 2022-08-01 ODIN - Added option for HifiBerry Digi2 Pro. Submitted by Dieler.
+# Revision update: 2022-08-01 ODIN - Added option for HifiBerry Digi2 Pro. Submitted by Andreas Diel (https://github.com/Dieler).
 #
 #
 # Log for debugging is located in: ~/.cache/Plexamp/log/Plexamp.log,
