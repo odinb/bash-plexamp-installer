@@ -46,6 +46,12 @@ Once entered, the web-GUI should be available on the ip-of-plexamp-pi:32500 from
 On that GUI you will be asked to login to your Plex-acoount for security-reasons,
 and then choose a library where to fetch/stream music from.
 
+Wherever possible, you should choose output device via the script (gets set in "/boot/config.txt") when installing, to make it default system-wide.
+If you have audio-problems, or want to choose output after install, go to the web-GUI.
+Here the menu is found via: Settings (cogwheel lower right corner) >> Playback >> Audio output >> Audio Device.
+As an example, if you have chosen the “ Digi/Digi+“ option during install in the script, pick “Default” if the card is not showing, then reboot the pi. Now the card will show up in the list, and you can choose it!
+
+
 Now play some music! Or control it from any other instance of Plexamp.
 
 Start and enable the Plexamp service if you feel like having it start on boot!
