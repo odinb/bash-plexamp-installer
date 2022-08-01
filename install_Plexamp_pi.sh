@@ -28,6 +28,7 @@
 # Revision update: 2022-05-09 ODIN - Updated to using "Plexamp-Linux-arm64-v4.2.2-beta.5" and added update-function. Version still hardcoded.
 # Revision update: 2022-05-09 ODIN - Updated to using "Plexamp-Linux-arm64-v4.2.2-beta.7". Version still hardcoded.
 # Revision update: 2022-06-03 ODIN - Updated to using "Plexamp-Linux-arm64-v4.2.2". No more beta. Version still hardcoded.
+# Revision update: 2022-08-01 ODIN - Added option for HifiBerry Digi2 Pro. Submitted by Dieler.
 #
 #
 # Log for debugging is located in: ~/.cache/Plexamp/log/Plexamp.log,
@@ -266,23 +267,24 @@ read answer
 answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
 echo " "
-echo "Now you need to choose your HiFiBerry card, pick the number for the card you have, exit with 5."
+echo "Now you need to choose your HiFiBerry card, pick the number for the card you have, exit with 6."
 sed -i /hifiberry-/d /boot/config.txt # Remove existing hiFiBerry config.
 echo " " >> /boot/config.txt
 grep -qxF '# --== Configuration for HiFi-Berry ==--' /boot/config.txt || echo '# --== Configuration for HiFi-Berry ==--' >> /boot/config.txt
 echo " " >> /boot/config.txt
 echo " "
-title="Select your HiFiBerry card, exit with 5:"
+title="Select your HiFiBerry card, exit with 6:"
 prompt="Pick your option:"
-options=("setup for DAC+ standard/pro" "setup for DAC/DAC+ Light" "setup for Digi/Digi+" "setup for Amp/Amp+")
+options=("setup for DAC+ standard/pro" "setup for DAC/DAC+ Light" "setup for Digi/Digi+" "setup for Digi2 Pro" "setup for Amp/Amp+")
 echo "$title"
 PS3="$prompt "
 select opt in "${options[@]}" "Quit"; do
     case "$REPLY" in
-    1 ) echo "You picked $opt, continue with 5 or choose again!"; HIFIBERRY="dtoverlay=hifiberry-dacplus";;
-    2 ) echo "You picked $opt, continue with 5 or choose again!"; HIFIBERRY="dtoverlay=hifiberry-dac";;
-    3 ) echo "You picked $opt, continue with 5 or choose again!"; HIFIBERRY="dtoverlay=hifiberry-digi";;
-    4 ) echo "You picked $opt, continue with 5 or choose again!"; HIFIBERRY="dtoverlay=hifiberry-amp";;
+    1 ) echo "You picked $opt, continue with 6 or choose again!"; HIFIBERRY="dtoverlay=hifiberry-dacplus";;
+    2 ) echo "You picked $opt, continue with 6 or choose again!"; HIFIBERRY="dtoverlay=hifiberry-dac";;
+    3 ) echo "You picked $opt, continue with 6 or choose again!"; HIFIBERRY="dtoverlay=hifiberry-digi";;
+    4 ) echo "You picked $opt, continue with 6 or choose again!"; HIFIBERRY="dtoverlay=hifiberry-digi-pro";;
+    5 ) echo "You picked $opt, continue with 6 or choose again!"; HIFIBERRY="dtoverlay=hifiberry-amp";;
     $(( ${#options[@]}+1 )) ) echo "Continuing!"; break;;
     *) echo "Invalid option. Try another one."; continue;;
     esac
