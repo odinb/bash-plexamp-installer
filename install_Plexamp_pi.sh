@@ -29,6 +29,8 @@
 # Revision update: 2022-05-09 ODIN - Updated to using "Plexamp-Linux-arm64-v4.2.2-beta.7". Version still hardcoded.
 # Revision update: 2022-06-03 ODIN - Updated to using "Plexamp-Linux-arm64-v4.2.2". No more beta. Version still hardcoded.
 # Revision update: 2022-08-01 ODIN - Added option for HifiBerry Digi2 Pro. Submitted by Andreas Diel (https://github.com/Dieler).
+# Revision update: 2022-08-02 ODIN - Updated to using "Plexamp-Linux-headless-v4.3.0". No more beta. Version still hardcoded.
+#
 #
 #
 # Log for debugging is located in: ~/.cache/Plexamp/log/Plexamp.log,
@@ -47,7 +49,7 @@ TIMEZONE="America/Chicago"                      # Default Timezone
 PASSWORD="MySecretPass123"                      # Default password
 CNFFILE="/boot/config.txt"                      # Default config file
 HOST="plexamp"                                  # Default hostname
-PLEXAMPV="Plexamp-Linux-arm64-v4.2.2"    # Default Plexamp-version
+PLEXAMPV="Plexamp-Linux-headless-v4.3.0"    # Default Plexamp-version
 SPACES="   "                                    # Default spaces
 
 
@@ -235,7 +237,7 @@ echo    "   ██╔═══╝ ██║     ██╔══╝   ██╔�
 echo    "   ██║     ███████╗███████╗██╔╝ ██╗██║  ██║██║ ╚═╝ ██║██║"
 echo    "   ╚═╝     ╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝"
 echo    ""
-echo    "   Plexamp-Linux-arm64-v4.2.2"
+echo    "   Plexamp-Linux-headless-v4.3.0"
 echo " "
 EOF
 chmod +x /etc/update-motd.d/20-logo
@@ -322,7 +324,7 @@ answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
 ps ax |grep index.js |grep -v grep |awk '{print $1}' |xargs kill
 rm -rf /home/"$USER"/plexamp/
-rm -rf /home/"$USER"/Plexamp-Linux-arm64*
+rm -rf /home/"$USER"/Plexamp-Linux-*
 rm -rf /home/"$USER"/.config/systemd/user/plexamp.service
 fi
 echo " "
