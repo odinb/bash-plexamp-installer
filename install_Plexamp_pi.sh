@@ -181,7 +181,7 @@ echo "--== Reading EEPROM version ==--"
 vcgencmd bootloader_version
 echo " "
 echo "--== Checking the rpi-eeprom service ==--"
-systemctl status rpi-eeprom-update.service
+systemctl status rpi-eeprom-update.service --no-pager -l
 echo " "
 echo -n "Do you want to install and set vim as your default editor [y/N]: "
 read answer
