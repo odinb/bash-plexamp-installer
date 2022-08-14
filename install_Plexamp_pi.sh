@@ -20,8 +20,8 @@
 # Copy over this script to the root folder and make executable, i.e. chmod +x setup-pi_Plexamp.sh
 # Run with ./install_configure_Plexamp_pi.sh
 #
-# Revision update: 2020-12-06 ODIN
-# Revision update: 2020-12-16 ODIN - Added MacOS information for Plexamp V1.x.x and workarounds for DietPi
+# Revision update: 2020-12-06 ODIN - Initial version.
+# Revision update: 2020-12-16 ODIN - Added MacOS information for Plexamp V1.x.x and workarounds for DietPi.
 # Revision update: 2022-05-04 ODIN - Changed to new version of Pi OS (64-bit), Plexamp V4.2.2. Not tested on DietPi.
 # Revision update: 2022-05-07 ODIN - Fixed systemd user instance terminating at logout of user.
 # Revision update: 2022-05-08 ODIN - Updated to using "Plexamp-Linux-arm64-v4.2.2-beta.3" and corrected service-file.
@@ -30,6 +30,7 @@
 # Revision update: 2022-06-03 ODIN - Updated to using "Plexamp-Linux-arm64-v4.2.2". No more beta. Version still hardcoded.
 # Revision update: 2022-08-01 ODIN - Added option for HifiBerry Digi2 Pro. Submitted by Andreas Diel (https://github.com/Dieler).
 # Revision update: 2022-08-02 ODIN - Updated to using "Plexamp-Linux-headless-v4.3.0". No more beta. Version still hardcoded.
+# Revision update: 2022-08-14 ODIN - Added workarounds for DietPi.
 #
 #
 #
@@ -64,9 +65,10 @@ echo " "
 echo    "      NOTE!!!! Raspberry Pi OS 64-bit version is assumed."
 echo " "
 echo    "      It cannot be guaranteed to run on other version of the image without fixes."
-echo    "      Installation assumes ARMv8 64-bit HW, and was testen on a Raspberry Pi 4 Model B."
+echo    "      Installation assumes ARMv8, 64-bit HW, and was testen on a Raspberry Pi 4 Model B."
 echo    "      Installation also assumes a HiFiBerry HAT or one of its clones installed."
 echo    "      If you do not have one, you can also dedicate audio to the HDMI port."
+echo    "      DietPi is best effort, and was last tested on 20220814."
 echo " "
 echo " "
 echo "--== Starting Installation ==--"
@@ -142,6 +144,11 @@ else
 echo "--== Verify Hostname ==--"
 cat /etc/hostname
 fi
+if [ -f /boot/dietpi.txt ]; then
+echo " "
+echo "--== Check DietPi version ==--"
+cat /boot/dietpi/.version
+fi
 echo " "
 echo "--== Verify Partitioning ==--"
 lsblk
@@ -172,7 +179,7 @@ timedatectl
 echo " "
 fi
 echo "--== Install rpi-eeprom service ==--"
-apt-get install -y rpi-eeprom
+apt-get install -y rpi-eeprom > /dev/null 2>&1
 echo " "
 echo "--== Run the rpi-eeprom-update to check if update is required ==--"
 rpi-eeprom-update
@@ -222,7 +229,12 @@ fi
 fi
 echo " "
 echo "--== Set user-groups and enable sudo ==--"
+if [ ! -f /boot/dietpi.txt ]; then
 usermod -aG adm,dialout,cdrom,sudo,audio,video,plugdev,games,users,input,render,netdev,lpadmin,spi,i2c,gpio "$USER"
+fi
+if [ -f /boot/dietpi.txt ]; then
+usermod -aG adm,dialout,cdrom,sudo,audio,video,plugdev,games,users,input,render,netdev,spi,i2c,gpio "$USER"
+fi
 echo " "
 echo "--== Update motd ==--"
 if [ ! -f /etc/update-motd.d/20-logo ]; then
@@ -361,6 +373,9 @@ chown -R "$USER":"$USER" /home/"$USER"/plexamp/
 chown -R "$USER":"$USER" /home/"$USER"/.local/share/Plexamp/
 sed -i "s#Plexamp-Linux-.*#"$PLEXAMPV\""#g" /etc/update-motd.d/20-logo
 fi
+
+
+
 echo "--== Fix plexamp.service ==--"
 if [ ! -f /home/"$USER"/.config/systemd/user/plexamp.service ]; then
 mkdir -p /home/"$USER"/.config/systemd/user/
@@ -370,8 +385,19 @@ sed -i '/User=pi/d' /home/"$USER"/.config/systemd/user/plexamp.service
 sed -i "s#/home/pi/plexamp/js/index.js#/home/"$USER"/plexamp/js/index.js#g" /home/"$USER"/.config/systemd/user/plexamp.service
 sed -i "s#WorkingDirectory=/home/pi/plexamp#WorkingDirectory=/home/"$USER"/plexamp#g" /home/"$USER"/.config/systemd/user/plexamp.service
 chown -R "$USER":"$USER" /home/"$USER"/.config/
+if [ ! -f /boot/dietpi.txt ]; then
 loginctl enable-linger "$USER"
 su "$USER" -c 'systemctl --user daemon-reload' > /dev/null 2>&1
+fi
+if [ -f /boot/dietpi.txt ]; then
+sed -i '/^Restart*/a Group=dietpi' /home/"$USER"/.config/systemd/user/plexamp.service
+sed -i '/^Restart*/a User=dietpi' /home/"$USER"/.config/systemd/user/plexamp.service
+systemctl daemon-reload
+if [ ! -f /etc/systemd/system/plexamp.service ]; then
+ln -s /home/dietpi/.config/systemd/user/plexamp.service /etc/systemd/system/plexamp.service
+systemctl daemon-reload
+fi
+fi
 fi
 echo " "
 echo "--== OS-update ==--"
@@ -399,19 +425,24 @@ echo " "
 echo -e "$INFO Configuration post-reboot:"
 echo    "      Note !! Only needed if fresh install, not if upgrading. Tokens are preserved during upgrade."
 echo    "      After reboot, as your regular user please run the command: node /home/"$USER"/plexamp/js/index.js"
-echo    "      At this point, go to the URL provided in response, and enter the claim token at prompt."
+echo    "      now, go to the URL provided in response, and enter the claim token at prompt."
+echo    "      Please give the player a name at prompt (can be changed via Web-GUI later)."
+echo    "      At this point, Plexamp is now signed in and ready, but not running!"
 echo    " "
-echo    "      Once entered, the web-GUI should be available on the ip-of-plexamp-pi:32500 from a browser."
+echo    "      Now ether start Plexamp manually using: node /home/"$USER"/plexamp/js/index.js"
+echo    "      or enable the service and then start the Plexamp service."
+echo    "      If process is running, hit ctrl+c to stop process, then enter:"
+echo    "      systemctl --user enable plexamp.service && systemctl --user start plexamp.service"
+echo    "      On DietPi: sudo systemctl enable plexamp.service && sudo systemctl start plexamp.service"
+echo    " "
+echo    "      Once done, the web-GUI should be available on the ip-of-plexamp-pi:32500 from a browser."
 echo    "      On that GUI you will be asked to login to your Plex-acoount for security-reasons,"
 echo    "      and then choose a librabry where to fetch/stream music from."
 echo    "      Now play some music! Or control it from any other instance of Plexamp."
 echo " "
-echo    "      Start and enable the Plexamp service if you feel like having it start on boot!"
-echo    "      Hit ctrl+c to stop process, then enter:"
-echo    "      systemctl --user enable plexamp.service && systemctl --user start plexamp.service"
-echo " "
 echo    "      NOTE!! If you upgraded, only reboot is needed, tokens are preserved."
-echo    "      One can verify service after reboot with: systemctl --user status plexamp.service"
+echo    "      One can verify the service with: systemctl --user status plexamp.service"
+echo    "      On DietPi: sudo systemctl status plexamp.service"
 echo    "      All should work at this point."
 echo " "
 echo    "      Logs are located at: ~/.cache/Plexamp/log/Plexamp.log"
