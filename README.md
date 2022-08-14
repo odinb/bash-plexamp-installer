@@ -29,7 +29,7 @@ To generate the encrypted password, the easiest way is to use OpenSSL on a Raspb
 
 This will produce what looks like a string of random characters, which is actually an encrypted version of the supplied password.<br />
 
-SSH access on "DietPi OS": User/pass: root/dietpi<br />
+SSH access on "DietPi OS" as user: dietpi/dietpi and as root: root/dietpi<br />
 NOTE!!! DietPi is best-effort, and might not work.
 
 After SSH-ing to the SBC, on the "Raspberry Pi OS", change to root (```sudo -i```) and run script with:
