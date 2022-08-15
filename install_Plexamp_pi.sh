@@ -429,7 +429,7 @@ echo    "      now, go to the URL provided in response, and enter the claim toke
 echo    "      Please give the player a name at prompt (can be changed via Web-GUI later)."
 echo    "      At this point, Plexamp is now signed in and ready, but not running!"
 echo    " "
-echo    "      Now ether start Plexamp manually using: node /home/"$USER"/plexamp/js/index.js"
+echo    "      Now either start Plexamp manually using: node /home/"$USER"/plexamp/js/index.js"
 echo    "      or enable the service and then start the Plexamp service."
 echo    "      If process is running, hit ctrl+c to stop process, then enter:"
 echo    "      systemctl --user enable plexamp.service && systemctl --user start plexamp.service"
