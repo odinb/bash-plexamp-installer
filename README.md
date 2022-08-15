@@ -39,28 +39,31 @@ After SSH-ing to the SBC, on the "Raspberry Pi OS", change to root (```sudo -i``
 ```bash <(wget -qO- https://raw.githubusercontent.com/odinb/bash-plexamp-installer/main/install_Plexamp_pi.sh)```
 
 ### Post-install and post-reboot tasks
+Note !! Only needed if fresh install, not if upgrading. Tokens are preserved during upgrade.
 After reboot, as your regular user please run the command:
 
 ```node /home/USER/plexamp/js/index.js```
 where USER is your user, normally pi.
-At this point, go to the URL provided in response, and enter the claim token at prompt.
+Now, go to the URL provided in response, and enter the claim token at prompt.
+Please give the player a name at prompt (can be changed via Web-GUI later).
+At this point, Plexamp is now signed in and ready, but not running!
 
-Once entered, the web-GUI should be available on the ip-of-plexamp-pi:32500 from a browser.
-On that GUI you will be asked to login to your Plex-acoount for security-reasons,
-and then choose a library where to fetch/stream music from.
+Now either start Plexamp manually using: ```node /home/"$USER"/plexamp/js/index.js```
+or enable the service and then start the Plexamp service.
+If process is running, hit ctrl+c to stop process, then enter:
+```systemctl --user enable plexamp.service && systemctl --user start plexamp.service```
+On DietPi: ```sudo systemctl enable plexamp.service && sudo systemctl start plexamp.service```
+
+Once done, the web-GUI should be available on the ip-of-plexamp-pi:32500 from a browser.
+On that GUI you will be asked to login to your Plex-acoount for security-reasons, and then choose a librabry where to fetch/stream music from.
 
 Wherever possible, you should choose output device via the script (gets set in "/boot/config.txt") when installing, to make it default system-wide.
 If you have audio-problems, or want to choose output after install, go to the web-GUI.
 Here the menu is found via: Settings (cogwheel lower right corner) >> Playback >> Audio output >> Audio Device.
 As an example, if you have chosen the “ Digi/Digi+“ option during install in the script, pick “Default” if the card is not showing, then reboot the pi. Now the card will show up in the list, and you can choose it!
 
-
 Now play some music! Or control it from any other instance of Plexamp.
 
-Start and enable the Plexamp service if you feel like having it start on boot!
-Hit ctrl+c to stop process, then enter:
-
-```systemctl --user enable plexamp.service && systemctl --user start plexamp.service```
 
 ### Re-running the script
 
