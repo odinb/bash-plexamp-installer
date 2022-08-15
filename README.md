@@ -2,6 +2,8 @@
 
 For more information and hardware used, see here:<br /> https://github.com/odinb/bash-plexamp-installer/wiki
 
+Assumes 64-bit capable Raspberry Pi HW and Pi OS that is 64-bit.
+
 Currently installs/upgrades to: Plexamp-Linux-headless-v4.3.0
 
 ## Burning the image.
