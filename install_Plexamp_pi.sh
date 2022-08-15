@@ -34,8 +34,6 @@
 #
 #
 #
-# Log for debugging is located in: ~/.cache/Plexamp/log/Plexamp.log,
-#
 
 #####
 # Variable(s), update if needed before execution of script.
