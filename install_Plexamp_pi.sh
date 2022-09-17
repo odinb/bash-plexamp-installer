@@ -41,6 +41,7 @@
 # Revision update: 2022-08-01 ODIN - Added option for HifiBerry Digi2 Pro. Submitted by Andreas Diel (https://github.com/Dieler).
 # Revision update: 2022-08-02 ODIN - Updated to using "Plexamp-Linux-headless-v4.3.0". No more beta. Version still hardcoded.
 # Revision update: 2022-08-14 ODIN - Added workarounds for DietPi.
+# Revision update: 2022-09-17 ODIN - Updated to using "Plexamp-Linux-headless-v4.4.0".
 #
 #
 #
@@ -58,7 +59,7 @@ TIMEZONE="America/Chicago"                      # Default Timezone
 PASSWORD="MySecretPass123"                      # Default password
 CNFFILE="/boot/config.txt"                      # Default config file
 HOST="plexamp"                                  # Default hostname
-PLEXAMPV="Plexamp-Linux-headless-v4.3.0"    # Default Plexamp-version
+PLEXAMPV="Plexamp-Linux-headless-v4.4.0"        # Default Plexamp-version
 SPACES="   "                                    # Default spaces
 
 
@@ -353,7 +354,6 @@ echo -n "Do you want to install and configure Node.v12 and "$PLEXAMPV" [y/N]: "
 read answer
 answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
-echo " "
 if [ ! -f /etc/apt/sources.list.d/nodesource.list ]; then
 echo "--== Install node.v12 ==--"
 apt-mark unhold nodejs > /dev/null 2>&1
@@ -381,8 +381,6 @@ chown -R "$USER":"$USER" /home/"$USER"/plexamp/
 chown -R "$USER":"$USER" /home/"$USER"/.local/share/Plexamp/
 sed -i "s#Plexamp-Linux-.*#"$PLEXAMPV\""#g" /etc/update-motd.d/20-logo
 fi
-
-
 
 echo "--== Fix plexamp.service ==--"
 if [ ! -f /home/"$USER"/.config/systemd/user/plexamp.service ]; then
