@@ -79,3 +79,41 @@ Q: The rPi will show up in my cast list. However the moment I select a song to p
 
 A: Go into the plexamp settings (via the web UI) and select the right audio output device. Rebooting the rPI a second time sometimes also helps (or restarting/veirfying the PlexAmp service), this of course will only help if correct audio device is already chosen.
 (```systemctl --user restart plexamp.service && systemctl --user status plexamp.service```)
+
+Q:
+When starting Plexamp (4.3.0), I get this:
+Starting Plexamp 4.3.0 DEVICE: No provider for source 80df67e4336a1a1c9911d2b4b6b4133c9f7d4cab
+Any idea what this is about?
+
+A:
+You need to choose your source, i.e. Plex server or TIDAL other. This can be done from the GUI.
+
+Q:
+I got an error during the first Plexamp install and start up:
+
+xxx@PlexampPi:~ $ node /home/xxx/plexamp/js/index.js
+Starting Plexamp 4.3.0
+Please visit https://plex.tv/claim and enter the claim token: claim-xxxxxxxxxxxxxxxxxxxx
+Please give the player a name (e.g. Bedroom, Kitchen): Marantz
+DEVICE: Error loading cloud players from plex.tv HTTP status 403
+
+A:
+That is not a bad thing per se, it just means you didn’t link any “cloud players”.
+See also:
+https://forums.plex.tv/t/plexamp-headless-not-playing-music/809078/21?u=odinb1
+
+Q:
+When I execute the following commands I get:
+
+xxx@PlexampPi:~ $ systemctl --user enable plexamp.service && systemctl --user start plexamp.service
+Created symlink /home/xxx/.config/systemd/user/basic.target.wants/plexamp.service → /home/xxx/.config/systemd/user/plexamp.service.
+Failed to start plexamp.service: Unit network-online.target not found.
+
+Same for:
+
+xxx@PlexampPi:~ $ systemctl --user restart plexamp.service
+Failed to restart plexamp.service: Unit network-online.target not found.
+
+A:
+Sounds like you did not reboot the RPi! Try rebooting and try again!
+The service-file is from Pleaxmp, the script just modifies it for the user. No modifications to the "[Unit]" part.
