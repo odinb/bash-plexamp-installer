@@ -117,3 +117,7 @@ Failed to restart plexamp.service: Unit network-online.target not found.
 A:
 Sounds like you did not reboot the RPi! Try rebooting and try again!
 The service-file is from Pleaxmp, the script just modifies it for the user. No modifications to the "[Unit]" part.
+
+Q: After upgrading to 4.4.0, I am getting "ALSA lib pcm_dmix.c:1075:(snd_pcm_dmix_open) unable to open slave".
+
+A: Go to the GUI and re-select your Audio device under Settings >> Playback >> Audio Output. Reboot if it does not fix it, and verify setting is still there.
