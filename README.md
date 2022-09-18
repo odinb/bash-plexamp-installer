@@ -75,9 +75,9 @@ For hostname-change, please make sure to reboot in-between, or you might face is
 
 ### Q & A
 
-Q: The rPi will show up in my cast list. However the moment I select a song to play, it either keeps loading forever (black screen with loading circle) or it flips back to the album overview without starting the selected song. This is the case for all file types tried.
+Q: The RPi will show up in my cast list. However the moment I select a song to play, it either keeps loading forever (black screen with loading circle) or it flips back to the album overview without starting the selected song. This is the case for all file types tried.
 
-A: Go into the plexamp settings (via the web UI) and select the right audio output device. Rebooting the rPI a second time sometimes also helps (or restarting/veirfying the PlexAmp service), this of course will only help if correct audio device is already chosen.
+A: Go into the plexamp settings (via the web UI) and select the right audio output device. Rebooting the RPi a second time sometimes also helps (or restarting/veirfying the PlexAmp service), this of course will only help if correct audio device is already chosen.
 (```systemctl --user restart plexamp.service && systemctl --user status plexamp.service```)
 
 ======
