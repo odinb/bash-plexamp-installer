@@ -42,6 +42,7 @@
 # Revision update: 2022-08-02 ODIN - Updated to using "Plexamp-Linux-headless-v4.3.0". No more beta. Version still hardcoded.
 # Revision update: 2022-08-14 ODIN - Added workarounds for DietPi.
 # Revision update: 2022-09-17 ODIN - Updated to using "Plexamp-Linux-headless-v4.4.0".
+# Revision update: 2022-09-18 ODIN - Made Node.v12 optional to please non-Debian/RPI-users.
 #
 #
 #
@@ -350,7 +351,7 @@ rm -rf /home/"$USER"/.config/systemd/user/plexamp.service
 fi
 echo " "
 echo "--== Install or upgrade ==--"
-echo -n "Do you want to install and configure Node.v12 and "$PLEXAMPV" [y/N]: "
+echo -n "Do you want to install and configure Node.v12? Recommended/needed on RPi! [y/N]: "
 read answer
 answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
@@ -362,7 +363,6 @@ curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
 apt-get install -y nodejs=12.22.*-1nodesource1
 apt-mark hold nodejs
 fi
-fi
 echo " "
 echo "--== Verify that node.v12 is set to hold ==--"
 apt-mark showhold
@@ -370,6 +370,12 @@ echo " "
 echo "--== Verify node.v12 and npm versions, should be "v12.22.*" and "6.14.16"  ==--"
 node -v ; npm -v
 echo " "
+fi
+echo " "
+echo -n "Do you want to install and configure "$PLEXAMPV" [y/N]: "
+read answer
+answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
+if [ "$answer" = "y" ]; then
 if [ ! -f /home/"$USER"/plexamp/plexamp.service ]; then
 echo "--== Fetch, unpack and install "$PLEXAMPV" ==--"
 cd /home/"$USER"
@@ -381,7 +387,6 @@ chown -R "$USER":"$USER" /home/"$USER"/plexamp/
 chown -R "$USER":"$USER" /home/"$USER"/.local/share/Plexamp/
 sed -i "s#Plexamp-Linux-.*#"$PLEXAMPV\""#g" /etc/update-motd.d/20-logo
 fi
-
 echo "--== Fix plexamp.service ==--"
 if [ ! -f /home/"$USER"/.config/systemd/user/plexamp.service ]; then
 mkdir -p /home/"$USER"/.config/systemd/user/
@@ -402,6 +407,7 @@ systemctl daemon-reload
 if [ ! -f /etc/systemd/system/plexamp.service ]; then
 ln -s /home/dietpi/.config/systemd/user/plexamp.service /etc/systemd/system/plexamp.service
 systemctl daemon-reload
+fi
 fi
 fi
 fi
@@ -438,7 +444,7 @@ echo    " "
 echo    "      Now either start Plexamp manually using: node /home/"$USER"/plexamp/js/index.js"
 echo    "      or enable the service and then start the Plexamp service."
 echo    "      If process is running, hit ctrl+c to stop process, then enter:"
-echo    "      systemctl --user enable plexamp.service && systemctl --user start plexamp.service"
+echo    "      systemctl --user enable plexamp.service && node /home/"$USER"/plexamp/js/index.js &"
 echo    "      On DietPi: sudo systemctl enable plexamp.service && sudo systemctl start plexamp.service"
 echo    " "
 echo    "      Once done, the web-GUI should be available on the ip-of-plexamp-pi:32500 from a browser."
