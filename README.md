@@ -51,7 +51,7 @@ At this point, Plexamp is now signed in and ready, but not running!
 Now either start Plexamp manually using: ```node /home/"$USER"/plexamp/js/index.js```
 or enable the service and then start the Plexamp service.
 If process is running, hit ctrl+c to stop process, then enter:
-```systemctl --user enable plexamp.service && systemctl --user start plexamp.service```
+```systemctl --user enable plexamp.service && node /home/"$USER"/plexamp/js/index.js &```
 On DietPi: ```sudo systemctl enable plexamp.service && sudo systemctl start plexamp.service```
 
 Once done, the web-GUI should be available on the ip-of-plexamp-pi:32500 from a browser.
