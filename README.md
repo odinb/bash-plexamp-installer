@@ -90,6 +90,8 @@ Any idea what this is about?
 A:
 You need to choose your source, i.e. Plex server or TIDAL other. This can be done from the GUI.
 
+======
+
 Q:
 I got an error during the first Plexamp install and start up:
 
@@ -103,6 +105,8 @@ A:
 That is not a bad thing per se, it just means you didn’t link any “cloud players”.
 See also:
 https://forums.plex.tv/t/plexamp-headless-not-playing-music/809078/21?u=odinb1
+
+======
 
 Q:
 When I execute the following commands I get:
@@ -119,6 +123,8 @@ Failed to restart plexamp.service: Unit network-online.target not found.
 A:
 Sounds like you did not reboot the RPi! Try rebooting and try again!
 The service-file is from Pleaxmp, the script just modifies it for the user. No modifications to the "[Unit]" part.
+
+======
 
 Q: After upgrading to 4.4.0, I am getting "ALSA lib pcm_dmix.c:1075:(snd_pcm_dmix_open) unable to open slave".
 
