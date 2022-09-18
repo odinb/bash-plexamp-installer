@@ -104,7 +104,7 @@ DEVICE: Error loading cloud players from plex.tv HTTP status 403
 A:
 That is not a bad thing per se, it just means you didn’t link any “cloud players”.
 See also:
-https://forums.plex.tv/t/plexamp-headless-not-playing-music/809078/21?u=odinb1
+https://forums.plex.tv/t/plexamp-headless-not-playing-music/809078/21
 
 ======
 
