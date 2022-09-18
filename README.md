@@ -17,10 +17,10 @@ For the below 2 tasks (user/password and SSH-access) the Raspberry Pi imager can
 https://www.raspberrypi.com/software/
 
 [The main screen of Pi-imager:](https://www.raspberrypi.com/software/)
-<br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/Pi-imager_Main.png" width="300">
+<br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/Pi-imager_Main.png" width="400">
 
 [The advanced screen of Pi-imager:](https://www.raspberrypi.com/software/)
-<br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/Pi-imager_Advanced.png" width="300">
+<br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/Pi-imager_Advanced.png" width="400">
 
 ### Create initial user
 For security reasons, as of the spring 2022 release, Raspbian OS no longer has a default pi user wit assigned password.
