@@ -80,6 +80,7 @@ Q: The rPi will show up in my cast list. However the moment I select a song to p
 A: Go into the plexamp settings (via the web UI) and select the right audio output device. Rebooting the rPI a second time sometimes also helps (or restarting/veirfying the PlexAmp service), this of course will only help if correct audio device is already chosen.
 (```systemctl --user restart plexamp.service && systemctl --user status plexamp.service```)
 
+======
 Q:
 When starting Plexamp (4.3.0), I get this:
 Starting Plexamp 4.3.0 DEVICE: No provider for source 80df67e4336a1a1c9911d2b4b6b4133c9f7d4cab
