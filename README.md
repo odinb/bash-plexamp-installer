@@ -122,7 +122,7 @@ Failed to restart plexamp.service: Unit network-online.target not found.
 
 A:
 Sounds like you did not reboot the RPi! Try rebooting and try again!
-The service-file is from Pleaxmp, the script just modifies it for the user. No modifications to the "[Unit]" part.
+The service-file is from Plexamp, the script just modifies it for the user. No modifications to the "[Unit]" part.
 
 ======
 
