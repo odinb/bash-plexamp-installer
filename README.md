@@ -128,6 +128,6 @@ The service-file is from Plexamp, the script just modifies it for the user. No m
 
 Q: After upgrading to 4.4.0, I am getting "ALSA lib pcm_dmix.c:1075:(snd_pcm_dmix_open) unable to open slave".
 
-A: Go to the GUI and re-select your Audio device under Settings >> Playback >> Audio Output. Reboot if it does not fix it, and verify setting is still there. If your device is missing, and reboot does not fix it, powercycle the RPi and try again.
+A: Go to the GUI and re-select your Audio device under Settings (cogwheel lower right corner) >> Playback >> Audio output >> Audio Device. Reboot if it does not fix it, and verify setting is still there. If your device is missing, and reboot does not fix it, powercycle the RPi and try again.
 
 ======
