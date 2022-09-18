@@ -13,7 +13,7 @@ This will currently only work with 64-bit capable Raspberry Pi and Pi OS that is
 Images for Bullseye can be found here:
 https://www.raspberrypi.com/software/operating-systems/#raspberry-pi-os-64-bit
 
-For the below 2 tasks (user/passord and SSH-access) the Raspberry Pi imager can be used as an alternative. The advanced option (cogwheel) will allow you to add both options before writing to SD-card.
+For the below 2 tasks (user/password and SSH-access) the Raspberry Pi imager can be used as an alternative. The advanced option (cogwheel) will allow you to add both options before writing to SD-card.
 https://www.raspberrypi.com/software/
 
 [The main screen of Pi-imager:](https://www.raspberrypi.com/software/)
