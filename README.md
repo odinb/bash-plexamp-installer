@@ -17,7 +17,7 @@ For the below 2 tasks (user/password and SSH-access) the Raspberry Pi imager can
 https://www.raspberrypi.com/software/
 
 [The main screen of Pi-imager:](https://www.raspberrypi.com/software/)
-<br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/Pi-imager_Main.png" width="400">
+<br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/Pi-imager_Main.png" width="450">
 
 [The advanced screen of Pi-imager:](https://www.raspberrypi.com/software/)
 <br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/Pi-imager_Advanced.png" width="400">
