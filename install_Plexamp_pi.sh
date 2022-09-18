@@ -174,7 +174,7 @@ apt-get -y install alsa-utils > /dev/null 2>&1
 echo " "
 fi
 echo "--== Verify Audio HW, list all soundcards and digital audio devices ==--"
-aplay -l
+cat /proc/asound/cards
 echo " "
 echo "--== Verify Audio HW, list all PCMs defined ==--"
 aplay -L
