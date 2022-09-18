@@ -4,7 +4,7 @@ For more information and hardware used, see here:<br /> https://github.com/odinb
 
 Assumes 64-bit capable Raspberry Pi HW and Pi OS that is 64-bit.
 
-Currently installs/upgrades to: Plexamp-Linux-headless-v4.3.0
+Currently installs/upgrades to: Plexamp-Linux-headless-v4.4.0
 
 ## Burning the image.
 Burn the OS-image to the Micro-SD card using Raspberry pi imager, etcher (or app of your choice).
