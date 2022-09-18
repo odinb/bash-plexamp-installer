@@ -45,7 +45,6 @@
 # Revision update: 2022-09-18 ODIN - Made Node.v12 optional to please non-Debian/RPI-users.
 #
 #
-#
 
 #####
 # Variable(s), update if needed before execution of script.
