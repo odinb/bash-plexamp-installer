@@ -368,13 +368,13 @@ apt-mark showhold
 echo " "
 echo "--== Verify node.v12 and npm versions, should be "v12.22.*" and "6.14.16"  ==--"
 node -v ; npm -v
-echo " "
 fi
 echo " "
 echo -n "Do you want to install and configure "$PLEXAMPV" [y/N]: "
 read answer
 answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
+
 if [ ! -f /home/"$USER"/plexamp/plexamp.service ]; then
 echo "--== Fetch, unpack and install "$PLEXAMPV" ==--"
 cd /home/"$USER"
@@ -387,26 +387,25 @@ chown -R "$USER":"$USER" /home/"$USER"/.local/share/Plexamp/
 sed -i "s#Plexamp-Linux-.*#"$PLEXAMPV\""#g" /etc/update-motd.d/20-logo
 fi
 echo "--== Fix plexamp.service ==--"
-if [ ! -f /home/"$USER"/.config/systemd/user/plexamp.service ]; then
-mkdir -p /home/"$USER"/.config/systemd/user/
-cp /home/"$USER"/plexamp/plexamp.service /home/"$USER"/.config/systemd/user/
-sed -i 's#multi-user#basic#g' /home/"$USER"/.config/systemd/user/plexamp.service
-sed -i '/User=pi/d' /home/"$USER"/.config/systemd/user/plexamp.service
-sed -i "s#/home/pi/plexamp/js/index.js#/home/"$USER"/plexamp/js/index.js#g" /home/"$USER"/.config/systemd/user/plexamp.service
-sed -i "s#WorkingDirectory=/home/pi/plexamp#WorkingDirectory=/home/"$USER"/plexamp#g" /home/"$USER"/.config/systemd/user/plexamp.service
-chown -R "$USER":"$USER" /home/"$USER"/.config/
 if [ ! -f /boot/dietpi.txt ]; then
-loginctl enable-linger "$USER"
-su "$USER" -c 'systemctl --user daemon-reload' > /dev/null 2>&1
+sed -i "s/User=pi/User="$USER"/g" /home/"$USER"/plexamp/plexamp.service
+sed -i "s#WorkingDirectory=/home/pi/plexamp#WorkingDirectory=/home/"$USER"/plexamp#g" /home/"$USER"/plexamp/plexamp.service
+sed -i "s#/home/pi/plexamp/js/index.js#/home/"$USER"/plexamp/js/index.js#g" /home/"$USER"/plexamp/plexamp.service
+chown -R "$USER":"$USER" /home/"$USER"/.config/
+systemctl daemon-reload
+if [ ! -f /etc/systemd/system/plexamp.service ]; then
+ln -s /home/"$USER"/plexamp/plexamp.service /etc/systemd/system/plexamp.service
+fi
 fi
 if [ -f /boot/dietpi.txt ]; then
-sed -i '/^Restart*/a Group=dietpi' /home/"$USER"/.config/systemd/user/plexamp.service
-sed -i '/^Restart*/a User=dietpi' /home/"$USER"/.config/systemd/user/plexamp.service
+sed -i "s/User=pi/User=dietpi/g" /home/dietpi/plexamp/plexamp.service
+sed -i "s#WorkingDirectory=/home/pi/plexamp#WorkingDirectory=/home/dietpi/plexamp#g" /home/dietpi/plexamp/plexamp.service
+sed -i "s#/home/pi/plexamp/js/index.js#/home/dietpi/plexamp/js/index.js#g" /home/dietpi/plexamp/plexamp.service
+sed -i '/^Restart*/a Group=dietpi' /home/dietpi/plexamp/plexamp.service
 systemctl daemon-reload
 if [ ! -f /etc/systemd/system/plexamp.service ]; then
 ln -s /home/dietpi/.config/systemd/user/plexamp.service /etc/systemd/system/plexamp.service
 systemctl daemon-reload
-fi
 fi
 fi
 fi
@@ -443,17 +442,15 @@ echo    " "
 echo    "      Now either start Plexamp manually using: node /home/"$USER"/plexamp/js/index.js"
 echo    "      or enable the service and then start the Plexamp service."
 echo    "      If process is running, hit ctrl+c to stop process, then enter:"
-echo    "      systemctl --user enable plexamp.service && node /home/"$USER"/plexamp/js/index.js &"
-echo    "      On DietPi: sudo systemctl enable plexamp.service && sudo systemctl start plexamp.service"
+echo    "      sudo systemctl enable plexamp.service && sudo systemctl start plexamp.service"
 echo    " "
 echo    "      Once done, the web-GUI should be available on the ip-of-plexamp-pi:32500 from a browser."
-echo    "      On that GUI you will be asked to login to your Plex-acoount for security-reasons,"
+echo    "      On that GUI you will be asked to login to your Plex-account for security-reasons,"
 echo    "      and then choose a librabry where to fetch/stream music from."
 echo    "      Now play some music! Or control it from any other instance of Plexamp."
 echo " "
 echo    "      NOTE!! If you upgraded, only reboot is needed, tokens are preserved."
-echo    "      One can verify the service with: systemctl --user status plexamp.service"
-echo    "      On DietPi: sudo systemctl status plexamp.service"
+echo    "      One can verify the service with: sudo systemctl status plexamp.service"
 echo    "      All should work at this point."
 echo " "
 echo    "      Logs are located at: ~/.cache/Plexamp/log/Plexamp.log"
