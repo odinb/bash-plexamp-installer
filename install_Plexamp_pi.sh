@@ -44,7 +44,7 @@
 # Revision update: 2022-09-17 ODIN - Updated to using "Plexamp-Linux-headless-v4.4.0".
 # Revision update: 2022-09-18 ODIN - Made Node.v12 optional to please non-Debian/RPI-users.
 # Revision update: 2022-09-18 ODIN - changed user service to system service, and run process as limited user.
-# Revision update: 2022-09-26 ODIN - Added option for allo Boss HIFI DAC and more. Requested for by hvddrift (https://github.com/hvddrift).
+# Revision update: 2022-09-26 ODIN - Added option for allo Boss HIFI DAC and variants. Requested for by hvddrift (https://github.com/hvddrift).
 #
 #
 
