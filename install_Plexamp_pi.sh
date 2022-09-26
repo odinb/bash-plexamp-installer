@@ -44,6 +44,7 @@
 # Revision update: 2022-09-17 ODIN - Updated to using "Plexamp-Linux-headless-v4.4.0".
 # Revision update: 2022-09-18 ODIN - Made Node.v12 optional to please non-Debian/RPI-users.
 # Revision update: 2022-09-18 ODIN - changed user service to system service, and run process as limited user.
+# Revision update: 2022-09-26 ODIN - Added option for allo Boss HIFI DAC and more. Requested for by hvddrift (https://github.com/hvddrift).
 #
 #
 
@@ -294,7 +295,7 @@ echo " "
 echo "Now you need to choose your HiFiBerry card, pick the number for the card you have, exit with 6."
 sed -i /hifiberry-/d /boot/config.txt # Remove existing hiFiBerry config.
 echo " " >> /boot/config.txt
-grep -qxF '# --== Configuration for HiFi-Berry ==--' /boot/config.txt || echo '# --== Configuration for HiFi-Berry ==--' >> /boot/config.txt
+grep -qxF '# --== Configuration for DIGI-DAC ==--' /boot/config.txt || echo '# --== Configuration for DIGI-DAC ==--' >> /boot/config.txt
 echo " " >> /boot/config.txt
 echo " "
 title="Select your HiFiBerry card, exit with 6:"
@@ -313,13 +314,62 @@ select opt in "${options[@]}" "Quit"; do
     *) echo "Invalid option. Try another one."; continue;;
     esac
 done
+sed -i '/dtoverlay=hifiberry/d' /boot/config.txt # Remove old configuration.
+sed -i '/dtoverlay=allo/d' /boot/config.txt # Remove old configuration.
 echo "$(cat $CNFFILE)$HIFIBERRY" > $CNFFILE
 if [ ! -f /boot/dietpi.txt ]; then
 sed -i '/#dtparam=audio=on/!s/dtparam=audio=on/#&/' /boot/config.txt # Add hashtag, disable internal audio/headphones.
 fi
 sed -i 's/^[ \t]*//' /boot/config.txt # Remove empty spaces infront of line.
 sed -i ':a; /^\n*$/{ s/\n//; N;  ba};' /boot/config.txt # Remove if two consecutive blank lines and replace with one in a file.
-sed -i '/Berry/{N;s/\n$//}' /boot/config.txt # Remove blank line after match.
+sed -i '/DIGI/{N;s/\n$//}' /boot/config.txt # Remove blank line after match.
+sed -i '${/^$/d}' /boot/config.txt # Remove last blank line in file.
+fi
+echo "--== Fix allo setup ==--"
+echo -e "$INFO Configuring overlay for allo HATs (or clones):"
+echo    "      If you own other audio HATs, or want to keep defaults - skip this step"
+echo    "      you will have to manually configure your HAT later."
+echo    "      If you want to change audio-output from Headphones to HDMI as default output,"
+echo    "      skip this step, you get the option to configure that later."
+echo " "
+echo    "      Information about the allo cards can be found at https://allo.com/sparky-dac.html"
+echo    "      Configuration for the allo cards can be found at https://www.amazon.com/clouddrive/share/vLk3XO9HOt3sStRUBpf4jwaX7k6J0Im91vo4z2FWVPV"
+echo " "
+echo -n "Do you want to configure your allo HAT (or clone) [y/N]: "
+read answer
+answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
+if [ "$answer" = "y" ]; then
+echo " "
+echo "Now you need to choose your allo card, pick the number for the card you have, exit with 5."
+sed -i /allo-/d /boot/config.txt # Remove existing allo config.
+echo " " >> /boot/config.txt
+grep -qxF '# --== Configuration for DIGI-DAC ==--' /boot/config.txt || echo '# --== Configuration for DIGI-DAC ==--' >> /boot/config.txt
+echo " " >> /boot/config.txt
+echo " "
+title="Select your allo card, exit with 5:"
+prompt="Pick your option:"
+options=("setup for ALLO Piano HIFI DAC" "setup for ALLO Piano 2.1 HIFI DAC" "setup for ALLO Boss HIFI DAC / Mini Boss HIFI DAC" "setup for ALLO DIGIOne")
+echo "$title"
+PS3="$prompt "
+select opt in "${options[@]}" "Quit"; do
+    case "$REPLY" in
+    1 ) echo "You picked $opt, continue with 5 or choose again!"; DIGICARD="dtoverlay=allo-piano-dac-pcm512x-audio";;
+    2 ) echo "You picked $opt, continue with 5 or choose again!"; DIGICARD="dtoverlay=allo-piano-dac-plus-pcm512x-audio";;
+    3 ) echo "You picked $opt, continue with 5 or choose again!"; DIGICARD="dtoverlay=allo-boss-dac-pcm512x-audio";;
+    4 ) echo "You picked $opt, continue with 5 or choose again!"; DIGICARD="dtoverlay=allo-digione";;
+    $(( ${#options[@]}+1 )) ) echo "Continuing!"; break;;
+    *) echo "Invalid option. Try another one."; continue;;
+    esac
+done
+sed -i '/dtoverlay=hifiberry/d' /boot/config.txt # Remove old configuration.
+sed -i '/dtoverlay=allo/d' /boot/config.txt # Remove old configuration.
+echo "$(cat $CNFFILE)$DIGICARD" > $CNFFILE
+if [ ! -f /boot/dietpi.txt ]; then
+sed -i '/#dtparam=audio=on/!s/dtparam=audio=on/#&/' /boot/config.txt # Add hashtag, disable internal audio/headphones.
+fi
+sed -i 's/^[ \t]*//' /boot/config.txt # Remove empty spaces infront of line.
+sed -i ':a; /^\n*$/{ s/\n//; N;  ba};' /boot/config.txt # Remove if two consecutive blank lines and replace with one in a file.
+sed -i '/DIGI/{N;s/\n$//}' /boot/config.txt # Remove blank line after match.
 sed -i '${/^$/d}' /boot/config.txt # Remove last blank line in file.
 fi
 echo " "
