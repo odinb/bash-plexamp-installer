@@ -85,9 +85,11 @@ For hostname-change, please make sure to reboot in-between, or you might face is
 
 ### Q & A
 
-Q: The RPi will show up in my cast list. However the moment I select a song to play, it either keeps loading forever (black screen with loading circle) or it flips back to the album overview without starting the selected song. This is the case for all file types tried.
+Q:
+The RPi will show up in my cast list. However the moment I select a song to play, it either keeps loading forever (black screen with loading circle) or it flips back to the album overview without starting the selected song. This is the case for all file types tried.
 
-A: Go into the plexamp settings (via the web UI) and select the right audio output device. Rebooting the RPi a second time sometimes also helps (or restarting/veirfying the PlexAmp service), this of course will only help if correct audio device is already chosen.
+A:
+Go into the plexamp settings (via the web UI) and select the right audio output device. Rebooting the RPi a second time sometimes also helps (or restarting/veirfying the PlexAmp service), this of course will only help if correct audio device is already chosen.
 (```systemctl --user restart plexamp.service && systemctl --user status plexamp.service```)
 
 ======
@@ -136,8 +138,27 @@ The service-file is from Plexamp, the script just modifies it for the user. No m
 
 ======
 
-Q: After upgrading to 4.4.0, I am getting "ALSA lib pcm_dmix.c:1075:(snd_pcm_dmix_open) unable to open slave".
+Q:
+After upgrading to 4.4.0, I am getting "ALSA lib pcm_dmix.c:1075:(snd_pcm_dmix_open) unable to open slave".
 
-A: Go to the GUI and re-select your Audio device under Settings (cogwheel lower right corner) >> Playback >> Audio output >> Audio Device. Reboot if it does not fix it, and verify setting is still there. If your device is missing, and reboot does not fix it, powercycle the RPi and try again.
+A:
+Go to the GUI and re-select your Audio device under Settings (cogwheel lower right corner) >> Playback >> Audio output >> Audio Device. Reboot if it does not fix it, and verify setting is still there. If your device is missing, and reboot does not fix it, powercycle the RPi and try again.
+
+======
+
+Q:
+My HifiBerry card (or clone) is not detected after installation and reboot with ``` aplay -l ``` command, what could be wrong?
+
+A:
+On your Raspberry Pi, run the following command: ``` cat /proc/device-tree/model ```. If it says “Raspberry Pi 4 Model B Rev 1.5”, the HifiBerry card might not work as expected.
+The new Pi release uses a new power management circuit that doesn’t ramp up the voltages as clean as all previous versions did. This results in an inconsistent state of the circuit and the HifiBerry card isn’t detected by the Pi anymore.
+
+Note that this affects only the Digi+ Pro and Digi2 Pro (and some clones of these cards).
+
+For more information:
+https://www.hifiberry.com/blog/digi2-pro-raspberry-pi-4-1-5-incompatibilities/
+https://www.hifiberry.com/blog/compatibility-issues-of-the-digi2-pro-and-raspberry-pi-4-rev-1-5/
+https://forums.raspberrypi.com/viewtopic.php?t=329299
+
 
 ======
