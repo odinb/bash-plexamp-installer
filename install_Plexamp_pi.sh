@@ -45,6 +45,7 @@
 # Revision update: 2022-09-18 ODIN - Made Node.v12 optional to please non-Debian/RPI-users.
 # Revision update: 2022-09-18 ODIN - changed user service to system service, and run process as limited user.
 # Revision update: 2022-09-26 ODIN - Added option for allo Boss HIFI DAC and variants. Requested for by hvddrift (https://github.com/hvddrift).
+# Revision update: 2022-10-20 ODIN - Updated to using "Plexamp-Linux-headless-v4.5.0".
 #
 #
 
@@ -61,7 +62,7 @@ TIMEZONE="America/Chicago"                      # Default Timezone
 PASSWORD="MySecretPass123"                      # Default password
 CNFFILE="/boot/config.txt"                      # Default config file
 HOST="plexamp"                                  # Default hostname
-PLEXAMPV="Plexamp-Linux-headless-v4.4.0"        # Default Plexamp-version
+PLEXAMPV="Plexamp-Linux-headless-v4.5.0"        # Default Plexamp-version
 SPACES="   "                                    # Default spaces
 
 
@@ -260,7 +261,7 @@ echo    "   ██╔═══╝ ██║     ██╔══╝   ██╔�
 echo    "   ██║     ███████╗███████╗██╔╝ ██╗██║  ██║██║ ╚═╝ ██║██║"
 echo    "   ╚═╝     ╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝"
 echo    ""
-echo    "   Plexamp-Linux-headless-v4.4.0"
+echo    "   Plexamp-Linux-headless-v4.5.0"
 echo " "
 EOF
 chmod +x /etc/update-motd.d/20-logo

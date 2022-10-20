@@ -4,7 +4,7 @@ For more information and hardware used, see here:<br /> https://github.com/odinb
 
 Assumes 64-bit capable Raspberry Pi HW and Pi OS that is 64-bit.
 
-Currently installs/upgrades to: Plexamp-Linux-headless-v4.4.0
+Currently installs/upgrades to: Plexamp-Linux-headless-v4.5.0
 
 ## Burning the image.
 Burn the OS-image to the Micro-SD card using Raspberry pi imager, etcher (or app of your choice).
@@ -139,7 +139,7 @@ The service-file is from Plexamp, the script just modifies it for the user. No m
 ======
 
 Q:
-After upgrading to 4.4.0, I am getting "ALSA lib pcm_dmix.c:1075:(snd_pcm_dmix_open) unable to open slave".
+After upgrading to 4.4.0 (or later), I am getting "ALSA lib pcm_dmix.c:1075:(snd_pcm_dmix_open) unable to open slave".
 
 A:
 Go to the GUI and re-select your Audio device under Settings (cogwheel lower right corner) >> Playback >> Audio output >> Audio Device. Reboot if it does not fix it, and verify setting is still there. If your device is missing, and reboot does not fix it, powercycle the RPi and try again.
