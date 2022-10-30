@@ -121,24 +121,6 @@ https://forums.plex.tv/t/plexamp-headless-not-playing-music/809078/21
 ======
 
 Q:
-When I execute the following commands I get:
-
-xxx@PlexampPi:~ $ systemctl --user enable plexamp.service && systemctl --user start plexamp.service
-Created symlink /home/xxx/.config/systemd/user/basic.target.wants/plexamp.service → /home/xxx/.config/systemd/user/plexamp.service.
-Failed to start plexamp.service: Unit network-online.target not found.
-
-Same for:
-
-xxx@PlexampPi:~ $ systemctl --user restart plexamp.service
-Failed to restart plexamp.service: Unit network-online.target not found.
-
-A:
-Sounds like you did not reboot the RPi! Try rebooting and try again!
-The service-file is from Plexamp, the script just modifies it for the user. No modifications to the "[Unit]" part.
-
-======
-
-Q:
 After upgrading to 4.4.0 (or later), I am getting "ALSA lib pcm_dmix.c:1075:(snd_pcm_dmix_open) unable to open slave".
 
 A:
@@ -149,7 +131,9 @@ Go to the GUI and re-select your Audio device under Settings (cogwheel lower rig
 Q:
 My HifiBerry card (or clone) is not detected after installation and reboot with ``` aplay -l ``` command, what could be wrong?
 
-A:
+A1: Sometimes the card is not detected after upgrade, try doing a hard reboot, i.e. pull the power-cable for 10 seconds and then re-insert power to boot. Card should now be detected. If needed, go to: Settings (cogwheel lower right corner) >> Playback >> Audio output >> Audio Device and re-select your audio-card.
+
+A2:
 On your Raspberry Pi, run the following command: ``` cat /proc/device-tree/model ```. If it says “Raspberry Pi 4 Model B Rev 1.5”, the HifiBerry card might not work as expected.
 The new Pi release uses a new power management circuit that doesn’t ramp up the voltages as clean as all previous versions did. This results in an inconsistent state of the circuit and the HifiBerry card isn’t detected by the Pi anymore.
 
