@@ -47,6 +47,7 @@
 # Revision update: 2022-09-26 ODIN - Added option for allo Boss HIFI DAC and variants. Requested for by hvddrift (https://github.com/hvddrift).
 # Revision update: 2022-10-20 ODIN - Updated to using "Plexamp-Linux-headless-v4.5.0".
 # Revision update: 2022-10-30 ODIN - Updated to using "Plexamp-Linux-headless-v4.5.1".
+# Revision update: 2022-10-30 ODIN - Updated to using "Plexamp-Linux-headless-v4.5.2".
 #
 #
 
@@ -63,7 +64,7 @@ TIMEZONE="America/Chicago"                      # Default Timezone
 PASSWORD="MySecretPass123"                      # Default password
 CNFFILE="/boot/config.txt"                      # Default config file
 HOST="plexamp"                                  # Default hostname
-PLEXAMPV="Plexamp-Linux-headless-v4.5.1"        # Default Plexamp-version
+PLEXAMPV="Plexamp-Linux-headless-v4.5.2"        # Default Plexamp-version
 SPACES="   "                                    # Default spaces
 
 
@@ -262,7 +263,7 @@ echo    "   ██╔═══╝ ██║     ██╔══╝   ██╔�
 echo    "   ██║     ███████╗███████╗██╔╝ ██╗██║  ██║██║ ╚═╝ ██║██║"
 echo    "   ╚═╝     ╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝"
 echo    ""
-echo    "   Plexamp-Linux-headless-v4.5.1"
+echo    "   Plexamp-Linux-headless-v4.5.2"
 echo " "
 EOF
 chmod +x /etc/update-motd.d/20-logo
