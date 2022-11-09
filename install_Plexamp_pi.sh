@@ -48,6 +48,7 @@
 # Revision update: 2022-10-20 ODIN - Updated to using "Plexamp-Linux-headless-v4.5.0".
 # Revision update: 2022-10-30 ODIN - Updated to using "Plexamp-Linux-headless-v4.5.1".
 # Revision update: 2022-10-30 ODIN - Updated to using "Plexamp-Linux-headless-v4.5.2".
+# Revision update: 2022-11-08 ODIN - Fixed /etc/sudoers.d/010_pi-nopasswd for non-pi user.
 #
 #
 
@@ -74,7 +75,7 @@ SPACES="   "                                    # Default spaces
 echo " "
 echo "--== For your information ==--"
 echo -e "$INFO This script is verifed on the following image(s):"
-echo    "      2022-04-07-raspios-bullseye-arm64-lite"
+echo    "      2022-09-22-raspios-bullseye-arm64-lite"
 echo " "
 echo    "      NOTE!!!! Raspberry Pi OS 64-bit version is assumed."
 echo " "
@@ -246,6 +247,9 @@ echo "--== Set user-groups and enable sudo ==--"
 if [ ! -f /boot/dietpi.txt ]; then
 usermod -aG adm,dialout,cdrom,sudo,audio,video,plugdev,games,users,input,render,netdev,lpadmin,spi,i2c,gpio "$USER"
 fi
+if [ ! -f /boot/dietpi.txt ]; then
+grep -qxF $USER' ALL=(ALL) NOPASSWD: ALL' /etc/sudoers.d/010_pi-nopasswd || echo $USER' ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers.d/010_pi-nopasswd
+fi
 if [ -f /boot/dietpi.txt ]; then
 usermod -aG adm,dialout,cdrom,sudo,audio,video,plugdev,games,users,input,render,netdev,spi,i2c,gpio "$USER"
 fi
@@ -327,6 +331,7 @@ sed -i 's/^[ \t]*//' /boot/config.txt # Remove empty spaces infront of line.
 sed -i ':a; /^\n*$/{ s/\n//; N;  ba};' /boot/config.txt # Remove if two consecutive blank lines and replace with one in a file.
 sed -i '/DIGI/{N;s/\n$//}' /boot/config.txt # Remove blank line after match.
 sed -i '${/^$/d}' /boot/config.txt # Remove last blank line in file.
+echo " "
 fi
 echo "--== Fix allo setup ==--"
 echo -e "$INFO Configuring overlay for allo HATs (or clones):"
@@ -374,6 +379,7 @@ sed -i 's/^[ \t]*//' /boot/config.txt # Remove empty spaces infront of line.
 sed -i ':a; /^\n*$/{ s/\n//; N;  ba};' /boot/config.txt # Remove if two consecutive blank lines and replace with one in a file.
 sed -i '/DIGI/{N;s/\n$//}' /boot/config.txt # Remove blank line after match.
 sed -i '${/^$/d}' /boot/config.txt # Remove last blank line in file.
+echo " "
 fi
 echo " "
 echo "--== Fix HDMI-audio setup ==--"
@@ -409,6 +415,7 @@ read answer
 answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
 if [ ! -f /etc/apt/sources.list.d/nodesource.list ]; then
+echo " "
 echo "--== Install node.v12 ==--"
 apt-mark unhold nodejs > /dev/null 2>&1
 apt-get purge -y nodejs > /dev/null 2>&1
@@ -430,6 +437,7 @@ answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
 
 if [ ! -f /home/"$USER"/plexamp/plexamp.service ]; then
+echo " "
 echo "--== Fetch, unpack and install "$PLEXAMPV" ==--"
 cd /home/"$USER"
 wget https://plexamp.plex.tv/headless/"$PLEXAMPV".tar.bz2
@@ -474,7 +482,7 @@ echo "--== Perform OS-update ==--"
 apt update --allow-releaseinfo-change
 apt-get -y update ; apt-get -y upgrade ; apt-get -y dist-upgrade
 apt-get -y install deborphan > /dev/null 2>&1
-apt-get clean ; apt-get autoclean ; apt-get autoremove ; deborphan | xargs apt-get -y remove --purge
+apt-get clean ; apt-get autoclean ; apt-get autoremove -y ; deborphan | xargs apt-get -y remove --purge
 fi
 echo " "
 echo "--== For Linux 5.4 and higher ==--"
