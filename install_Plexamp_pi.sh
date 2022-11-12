@@ -418,7 +418,6 @@ echo -n "Do you want to install/upgrade and configure Node.v16? Needed on Plexam
 read answer
 answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
-#if [ ! -f /etc/apt/sources.list.d/nodesource.list ]; then
 echo " "
 echo "--== Install node.v16 ==--"
 apt-mark unhold nodejs > /dev/null 2>&1
@@ -426,7 +425,6 @@ apt-get purge -y nodejs > /dev/null 2>&1
 curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
 apt-get install -y nodejs=16.*-1nodesource1
 apt-mark hold nodejs
-#fi
 echo " "
 echo "--== Verify that node.v16 is set to hold ==--"
 apt-mark showhold
