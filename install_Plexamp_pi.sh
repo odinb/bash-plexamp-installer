@@ -49,6 +49,7 @@
 # Revision update: 2022-10-30 ODIN - Updated to using "Plexamp-Linux-headless-v4.5.1".
 # Revision update: 2022-10-30 ODIN - Updated to using "Plexamp-Linux-headless-v4.5.2".
 # Revision update: 2022-11-08 ODIN - Fixed /etc/sudoers.d/010_pi-nopasswd for non-pi user.
+# Revision update: 2022-11-12 ODIN - Updated to using "Plexamp-Linux-headless-v4.5.3 and upgrding to NodeJS v16".
 #
 #
 
@@ -65,7 +66,7 @@ TIMEZONE="America/Chicago"                      # Default Timezone
 PASSWORD="MySecretPass123"                      # Default password
 CNFFILE="/boot/config.txt"                      # Default config file
 HOST="plexamp"                                  # Default hostname
-PLEXAMPV="Plexamp-Linux-headless-v4.5.2"        # Default Plexamp-version
+PLEXAMPV="Plexamp-Linux-headless-v4.5.3"        # Default Plexamp-version
 SPACES="   "                                    # Default spaces
 
 
@@ -267,7 +268,7 @@ echo    "   ██╔═══╝ ██║     ██╔══╝   ██╔�
 echo    "   ██║     ███████╗███████╗██╔╝ ██╗██║  ██║██║ ╚═╝ ██║██║"
 echo    "   ╚═╝     ╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝"
 echo    ""
-echo    "   Plexamp-Linux-headless-v4.5.2"
+echo    "   Plexamp-Linux-headless-v4.5.3"
 echo " "
 EOF
 chmod +x /etc/update-motd.d/20-logo
@@ -410,24 +411,27 @@ rm -rf /home/"$USER"/.config/systemd/user/plexamp.service
 fi
 echo " "
 echo "--== Install or upgrade ==--"
-echo -n "Do you want to install and configure Node.v12? Recommended/needed on RPi! [y/N]: "
+echo " "
+echo "--== If upgrading to Plexamp 4.5.3, you have to re-run the NodeJS install to upgrade to Node.v16 at least once! ==--"
+echo " "
+echo -n "Do you want to install/upgrade and configure Node.v16? Needed on Plexamp 4.5.3 install/upgrade or newer! [y/N]: "
 read answer
 answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
 if [ ! -f /etc/apt/sources.list.d/nodesource.list ]; then
 echo " "
-echo "--== Install node.v12 ==--"
+echo "--== Install node.v16 ==--"
 apt-mark unhold nodejs > /dev/null 2>&1
 apt-get purge -y nodejs > /dev/null 2>&1
-curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
-apt-get install -y nodejs=12.22.*-1nodesource1
+curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+apt-get install -y nodejs=16.*-1nodesource1
 apt-mark hold nodejs
 fi
 echo " "
-echo "--== Verify that node.v12 is set to hold ==--"
+echo "--== Verify that node.v16 is set to hold ==--"
 apt-mark showhold
 echo " "
-echo "--== Verify node.v12 and npm versions, should be "v12.22.*" and "6.14.16"  ==--"
+echo "--== Verify node.v16 and npm versions, should be "v16.18.*" and "8.19.2"  ==--"
 node -v ; npm -v
 fi
 echo " "
