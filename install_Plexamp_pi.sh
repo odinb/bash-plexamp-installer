@@ -412,9 +412,9 @@ fi
 echo " "
 echo "--== Install or upgrade ==--"
 echo " "
-echo "--== If upgrading to Plexamp 4.5.3, you have to re-run the NodeJS install to upgrade to Node.v16 at least once! ==--"
+echo "--== If upgrading to Plexamp 4.5.3 or later, you have to re-run the NodeJS install to upgrade to Node.v16 at least once! ==--"
 echo " "
-echo -n "Do you want to install/upgrade and configure Node.v16? Needed on Plexamp 4.5.3 install/upgrade or newer! [y/N]: "
+echo -n "Do you want to install/upgrade and configure Node.v16? Needed on Plexamp 4.5.3 install/upgrade or later! [y/N]: "
 read answer
 answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
