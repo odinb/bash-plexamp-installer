@@ -49,9 +49,12 @@
 # Revision update: 2022-10-30 ODIN - Updated to using "Plexamp-Linux-headless-v4.5.1".
 # Revision update: 2022-10-30 ODIN - Updated to using "Plexamp-Linux-headless-v4.5.2".
 # Revision update: 2022-11-08 ODIN - Fixed /etc/sudoers.d/010_pi-nopasswd for non-pi user.
-# Revision update: 2022-11-12 ODIN - Updated to using "Plexamp-Linux-headless-v4.5.3 and upgrding to NodeJS v16".
+# Revision update: 2022-11-12 ODIN - Updated to using "Plexamp-Linux-headless-v4.5.3 and upgrading to NodeJS v16".
+# Revision update: 2022-11-13 ODIN - Improved logic for installing NodeJS v16 to only if needed.
 #
 #
+#
+
 
 #####
 # Variable(s), update if needed before execution of script.
@@ -418,6 +421,7 @@ echo -n "Do you want to install/upgrade and configure Node.v16? Needed on Plexam
 read answer
 answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
+if ! grep -q node_16.x "/etc/apt/sources.list.d/nodesource.list"; then
 echo " "
 echo "--== Install node.v16 ==--"
 apt-mark unhold nodejs > /dev/null 2>&1
@@ -425,6 +429,7 @@ apt-get purge -y nodejs > /dev/null 2>&1
 curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
 apt-get install -y nodejs=16.*-1nodesource1
 apt-mark hold nodejs
+fi
 echo " "
 echo "--== Verify that node.v16 is set to hold ==--"
 apt-mark showhold
