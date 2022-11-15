@@ -2,45 +2,28 @@
 
 For more information and hardware used, see here:<br /> https://github.com/odinb/bash-plexamp-installer/wiki
 
-Assumes 64-bit capable Raspberry Pi HW and Pi OS that is 64-bit.
+Assumes 64-bit capable Raspberry Pi HW and Raspberry Pi OS that is 64-bit.
 
 Currently installs/upgrades to: Plexamp-Linux-headless-v4.5.3 and NodeJS v16.
 
-## Burning the image.
-Burn the OS-image to the Micro-SD card using Raspberry pi imager, etcher (or app of your choice).
+## Install Raspberry Pi OS using Raspberry Pi Imager.
+Raspberry Pi Imager is the quick and easy way to install Raspberry Pi OS and other operating systems to a microSD card, ready to use with your Raspberry Pi.
 
-This will currently only work with 64-bit capable Raspberry Pi and Pi OS that is 64-bit.
-Images for Bullseye can be found here:
-https://www.raspberrypi.com/software/operating-systems/#raspberry-pi-os-64-bit
-
-For the below 2 tasks (user/password and SSH-access) the Raspberry Pi imager can be used as an alternative. The advanced option (cogwheel) will allow you to add both options before writing to SD-card.
-https://www.raspberrypi.com/software/
+[Download and install Raspberry Pi Imager](https://www.raspberrypi.com/software/) to a computer with an SD card reader. Put the SD card you'll use with your Raspberry Pi into the reader and run Raspberry Pi Imager.
 
 [The main screen of Pi-imager:](https://www.raspberrypi.com/software/)
 <br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/Pi-imager_Main.png" width="450">
 
+[Choose the Raspberry Pi OS (other):](https://www.raspberrypi.com/software/)
+<br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/Pi-imager_OS.png" width="450">
+
+[Then Raspberry Pi OS (64-bit):](https://www.raspberrypi.com/software/)
+<br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/Pi-imager_OS_64.png" width="450">
+
 [The advanced screen of Pi-imager:](https://www.raspberrypi.com/software/)
 <br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/Pi-imager_Advanced.png" width="400">
 
-### Create initial user
-For security reasons, as of the spring 2022 release, Raspbian OS no longer has a default pi user wit assigned password.
-To set up a user on first boot on headless, create a file called userconf or userconf.txt in the boot partition of the SD card.
-This file should contain a single line of text, consisting of username:encrypted-password – so your desired username, followed immediately by a colon, followed immediately by an encrypted representation of the password you want to use.
-
-To generate the encrypted password, the easiest way is to use OpenSSL on a Raspberry Pi that is already running (or most any linux you have running) – open a terminal window and enter:
-```echo ‘mypassword’ | openssl passwd -6 -stdin```
-
-This will produce what looks like a string of random characters, which is actually an encrypted version of the supplied password.<br />
-
-### Enable SSH.
-How to enable SSH:<br />
-For security reasons, as of the November 2016 release, Raspbian OS has the SSH server disabled by default. You will have to enable it manually.
-1. Mount your SD card on your computer.
-2. Create or copy a file called ssh in /boot. 
-On most Linux-distros, after re-mount of micro-SD-card, run: ```touch /media/$user/boot/ssh```.
-On MacOS, after re-mount of micro-SD-card, run: ```touch /Volumes/boot/ssh```.
-
-Then unmount and insert card into Raspberry Pi and boot it.
+Once done, unmount and insert card into Raspberry Pi and boot it.
 
 SSH access on "DietPi OS" as user: dietpi/dietpi and as root: root/dietpi<br />
 NOTE!!! DietPi is best-effort, and might not work.
