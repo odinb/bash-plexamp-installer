@@ -42,12 +42,9 @@ Now, go to the URL provided in response, and enter the claim token at prompt.
 Please give the player a name at prompt (can be changed via Web-GUI later).
 At this point, Plexamp is now signed in and ready, but not running!
 
-Now either start Plexamp manually using: ```node /home/"$USER"/plexamp/js/index.js```
-or enable the service and then start the Plexamp service.
-If process is running, hit ctrl+c to stop process, then enter:
-```sudo systemctl enable plexamp.service && sudo systemctl restart plexamp.service```
+Now, again as your user, run ```sudo systemctl enable plexamp.service && sudo systemctl restart plexamp.service``` to set plexamp to start on reboot, and to run it immediately.
 
-Once done, the web-GUI should be available on the ip-of-plexamp-pi:32500 from a browser.
+Once done, the web-GUI should be available on "ip-of-plexamp-pi:32500" from a browser.
 On that GUI you will be asked to login to your Plex-account for security-reasons, and then choose a librabry where to fetch/stream music from.
 
 Wherever possible, you should choose output device via the script (gets set in "/boot/config.txt") when installing, to make it default system-wide.
