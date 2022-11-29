@@ -51,6 +51,7 @@
 # Revision update: 2022-11-08 ODIN - Fixed /etc/sudoers.d/010_pi-nopasswd for non-pi user.
 # Revision update: 2022-11-12 ODIN - Updated to using "Plexamp-Linux-headless-v4.5.3 and upgrading to NodeJS v16".
 # Revision update: 2022-11-13 ODIN - Improved logic for installing NodeJS v16 to only if needed.
+# Revision update: 2022-11-12 ODIN - Updated to using "Plexamp-Linux-headless-v4.6.0.
 #
 #
 #
@@ -69,7 +70,7 @@ TIMEZONE="America/Chicago"                      # Default Timezone
 PASSWORD="MySecretPass123"                      # Default password
 CNFFILE="/boot/config.txt"                      # Default config file
 HOST="plexamp"                                  # Default hostname
-PLEXAMPV="Plexamp-Linux-headless-v4.5.3"        # Default Plexamp-version
+PLEXAMPV="Plexamp-Linux-headless-v4.6.0"        # Default Plexamp-version
 SPACES="   "                                    # Default spaces
 
 
@@ -197,7 +198,7 @@ echo "--== Verify timezone-setup and NTP-sync ==--"
 timedatectl
 echo " "
 fi
-echo "--== Install rpi-eeprom service ==--"
+echo "--== Install/upgrade rpi-eeprom service ==--"
 apt-get install -y rpi-eeprom > /dev/null 2>&1
 echo " "
 echo "--== Run the rpi-eeprom-update to check if update is required ==--"
@@ -271,7 +272,7 @@ echo    "   ██╔═══╝ ██║     ██╔══╝   ██╔�
 echo    "   ██║     ███████╗███████╗██╔╝ ██╗██║  ██║██║ ╚═╝ ██║██║"
 echo    "   ╚═╝     ╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝"
 echo    ""
-echo    "   Plexamp-Linux-headless-v4.5.3"
+echo    "   Plexamp-Linux-headless-v4.6.0"
 echo " "
 EOF
 chmod +x /etc/update-motd.d/20-logo
