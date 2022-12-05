@@ -52,6 +52,7 @@
 # Revision update: 2022-11-12 ODIN - Updated to using "Plexamp-Linux-headless-v4.5.3 and upgrading to NodeJS v16".
 # Revision update: 2022-11-13 ODIN - Improved logic for installing NodeJS v16 to only if needed.
 # Revision update: 2022-11-12 ODIN - Updated to using "Plexamp-Linux-headless-v4.6.0.
+# Revision update: 2022-12-05 ODIN - Updated to using "Plexamp-Linux-headless-v4.6.1.
 #
 #
 #
@@ -70,7 +71,7 @@ TIMEZONE="America/Chicago"                      # Default Timezone
 PASSWORD="MySecretPass123"                      # Default password
 CNFFILE="/boot/config.txt"                      # Default config file
 HOST="plexamp"                                  # Default hostname
-PLEXAMPV="Plexamp-Linux-headless-v4.6.0"        # Default Plexamp-version
+PLEXAMPV="Plexamp-Linux-headless-v4.6.1"        # Default Plexamp-version
 SPACES="   "                                    # Default spaces
 
 
@@ -272,7 +273,7 @@ echo    "   ██╔═══╝ ██║     ██╔══╝   ██╔�
 echo    "   ██║     ███████╗███████╗██╔╝ ██╗██║  ██║██║ ╚═╝ ██║██║"
 echo    "   ╚═╝     ╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝"
 echo    ""
-echo    "   Plexamp-Linux-headless-v4.6.0"
+echo    "   Plexamp-Linux-headless-v4.6.1"
 echo " "
 EOF
 chmod +x /etc/update-motd.d/20-logo
