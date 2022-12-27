@@ -483,17 +483,17 @@ fi
 fi
 fi
 echo " "
-echo "--== OS-update ==--"
+echo "--== OS-update including Node.v16 ==--"
 echo -n "Do you want to run full OS-update? This is recommended [y/N]: "
 read answer
 answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
 echo " "
-echo "--== Perform OS-update ==--"
+echo "--== Perform OS-update including Node.v16 ==--"
 apt update --allow-releaseinfo-change
 apt-mark unhold nodejs > /dev/null 2>&1
 apt-get -y upgrade nodejs > /dev/null 2>&1
-apt-mark hold nodejs
+apt-mark hold nodejs > /dev/null 2>&1
 apt-get -y update ; apt-get -y upgrade ; apt-get -y dist-upgrade
 apt-get -y install deborphan > /dev/null 2>&1
 apt-get clean ; apt-get autoclean ; apt-get autoremove -y ; deborphan | xargs apt-get -y remove --purge
