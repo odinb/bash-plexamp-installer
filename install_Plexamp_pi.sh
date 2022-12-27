@@ -53,6 +53,7 @@
 # Revision update: 2022-11-13 ODIN - Improved logic for installing NodeJS v16 to only if needed.
 # Revision update: 2022-11-12 ODIN - Updated to using "Plexamp-Linux-headless-v4.6.0.
 # Revision update: 2022-12-05 ODIN - Updated to using "Plexamp-Linux-headless-v4.6.1.
+# Revision update: 2022-12-27 ODIN - Updated to remove hardcoded version, should now install latest.
 #
 #
 #
@@ -71,8 +72,8 @@ TIMEZONE="America/Chicago"                      # Default Timezone
 PASSWORD="MySecretPass123"                      # Default password
 CNFFILE="/boot/config.txt"                      # Default config file
 HOST="plexamp"                                  # Default hostname
-PLEXAMPV="Plexamp-Linux-headless-v4.6.1"        # Default Plexamp-version
 SPACES="   "                                    # Default spaces
+PLEXAMPV=$(curl -s "https://plexamp.plex.tv/headless/version$1.json" | sed "s|.*headless/||g" | awk -F'2' '{print $1}' | sed "s|.tar.bz||g")  # Default Plexamp-version
 
 
 #####
@@ -276,6 +277,7 @@ echo    ""
 echo    "   Plexamp-Linux-headless-v4.6.1"
 echo " "
 EOF
+sed -i "s#Plexamp-Linux-.*#"$PLEXAMPV\""#g" /etc/update-motd.d/20-logo
 chmod +x /etc/update-motd.d/20-logo
 fi
 echo " "
@@ -436,7 +438,7 @@ echo " "
 echo "--== Verify that node.v16 is set to hold ==--"
 apt-mark showhold
 echo " "
-echo "--== Verify node.v16 and npm versions, should be "v16.18.*" and "8.19.2"  ==--"
+echo "--== Verify node.v16 and npm versions, should be "v16.19.*" and "8.19.*"  ==--"
 node -v ; npm -v
 fi
 echo " "
@@ -489,6 +491,9 @@ if [ "$answer" = "y" ]; then
 echo " "
 echo "--== Perform OS-update ==--"
 apt update --allow-releaseinfo-change
+apt-mark unhold nodejs > /dev/null 2>&1
+apt-get -y upgrade nodejs > /dev/null 2>&1
+apt-mark hold nodejs
 apt-get -y update ; apt-get -y upgrade ; apt-get -y dist-upgrade
 apt-get -y install deborphan > /dev/null 2>&1
 apt-get clean ; apt-get autoclean ; apt-get autoremove -y ; deborphan | xargs apt-get -y remove --purge
