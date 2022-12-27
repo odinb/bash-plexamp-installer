@@ -54,7 +54,6 @@
 # Revision update: 2022-11-12 ODIN - Updated to using "Plexamp-Linux-headless-v4.6.0.
 # Revision update: 2022-12-05 ODIN - Updated to using "Plexamp-Linux-headless-v4.6.1.
 # Revision update: 2022-12-27 ODIN - Updated to remove hardcoded version, should now install latest.
-# Revision update: 2022-12-27 ODIN - Clarification on lagging NodeJS version.
 #
 #
 #
@@ -439,7 +438,7 @@ echo " "
 echo "--== Verify that node.v16 is set to hold ==--"
 apt-mark showhold
 echo " "
-echo "--== Verify node.v16 and npm versions, should be "v16.19.*" and "8.19.*". If you are behind, run full OS-update below"  ==--"
+echo "--== Verify node.v16 and npm versions, should be "v16.19.*" and "8.19.*"  ==--"
 node -v ; npm -v
 fi
 echo " "
