@@ -4,7 +4,7 @@ For more information and hardware used, see here:<br /> https://github.com/odinb
 
 Assumes 64-bit capable Raspberry Pi HW and Raspberry Pi OS that is 64-bit.
 
-Currently installs/upgrades to: Plexamp-Linux-headless-Latest and NodeJS v16.
+Currently installs/upgrades to: NodeJS v16 and Plexamp-Linux-headless-"see version in git comment".
 
 ## Install Raspberry Pi OS using Raspberry Pi Imager.
 Raspberry Pi Imager is the quick and easy way to install Raspberry Pi OS and other operating systems to a microSD card, ready to use with your Raspberry Pi.
