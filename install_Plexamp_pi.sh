@@ -54,6 +54,7 @@
 # Revision update: 2022-11-12 ODIN - Updated to using "Plexamp-Linux-headless-v4.6.0.
 # Revision update: 2022-12-05 ODIN - Updated to using "Plexamp-Linux-headless-v4.6.1.
 # Revision update: 2022-12-27 ODIN - Updated to remove hardcoded version, should now install latest.
+# Revision update: 2023-02-03 ODIN - Update to remove hardcoded version did not work, now using v4.6.2.
 #
 #
 #
@@ -73,7 +74,7 @@ PASSWORD="MySecretPass123"                      # Default password
 CNFFILE="/boot/config.txt"                      # Default config file
 HOST="plexamp"                                  # Default hostname
 SPACES="   "                                    # Default spaces
-PLEXAMPV=$(curl -s "https://plexamp.plex.tv/headless/version$1.json" | sed "s|.*headless/||g" | awk -F'2' '{print $1}' | sed "s|.tar.bz||g")  # Default Plexamp-version
+PLEXAMPV="Plexamp-Linux-headless-v4.6.2"        # Default Plexamp-version
 
 
 #####
@@ -274,7 +275,7 @@ echo    "   ██╔═══╝ ██║     ██╔══╝   ██╔�
 echo    "   ██║     ███████╗███████╗██╔╝ ██╗██║  ██║██║ ╚═╝ ██║██║"
 echo    "   ╚═╝     ╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝"
 echo    ""
-echo    "   Plexamp-Linux-headless-v4.6.1"
+echo    "   Plexamp-Linux-headless-v4.6.2"
 echo " "
 EOF
 sed -i "s#Plexamp-Linux-.*#"$PLEXAMPV\""#g" /etc/update-motd.d/20-logo
