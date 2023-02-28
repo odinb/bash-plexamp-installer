@@ -55,9 +55,12 @@
 # Revision update: 2022-12-05 ODIN - Updated to using "Plexamp-Linux-headless-v4.6.1.
 # Revision update: 2022-12-27 ODIN - Updated to remove hardcoded version, should now install latest.
 # Revision update: 2023-02-03 ODIN - Update to remove hardcoded version did not work, now using v4.6.2.
+# Revision update: 2023-02-28 ODIN - Fix HDMI-audio setup with change to "dtoverlay" to enable HDMI-alsa device.
 #
 #
 #
+#
+
 
 
 #####
@@ -404,7 +407,8 @@ echo -n "Do you want to configure HDMI as default audio-output [y/N]: "
 read answer
 answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
-sed -i '/#hdmi_drive=2/s/^# *//' /boot/config.txt
+sed -i '/#hdmi_drive=2/s/^# *//' /boot/config.txt # Remove hashtag.
+sed -i 's/vc4-kms-v3d/vc4-fkms-v3d/g' /boot/config.txt # Change dtoverlay to enable HDMI-alsa device.
 fi
 echo " "
 echo "--== Cleanup for upgrade ==--"
