@@ -56,6 +56,8 @@
 # Revision update: 2022-12-27 ODIN - Updated to remove hardcoded version, should now install latest.
 # Revision update: 2023-02-03 ODIN - Update to remove hardcoded version did not work, now using v4.6.2.
 # Revision update: 2023-02-28 ODIN - Fix HDMI-audio setup with change to "dtoverlay" to enable HDMI-alsa device.
+# Revision update: 2023-05-03 ODIN - Updated to using "Plexamp-Linux-headless-v4.7.0. If your card is not detected after boot (no audio) ("aplay -l" to check),
+# please do hard reboot, and re-select the card! Now there should be audio!
 #
 #
 #
@@ -278,7 +280,7 @@ echo    "   ██╔═══╝ ██║     ██╔══╝   ██╔�
 echo    "   ██║     ███████╗███████╗██╔╝ ██╗██║  ██║██║ ╚═╝ ██║██║"
 echo    "   ╚═╝     ╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝"
 echo    ""
-echo    "   Plexamp-Linux-headless-v4.6.2"
+echo    "   Plexamp-Linux-headless-v4.7.0"
 echo " "
 EOF
 sed -i "s#Plexamp-Linux-.*#"$PLEXAMPV\""#g" /etc/update-motd.d/20-logo
