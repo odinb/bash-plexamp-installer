@@ -79,7 +79,7 @@ PASSWORD="MySecretPass123"                      # Default password
 CNFFILE="/boot/config.txt"                      # Default config file
 HOST="plexamp"                                  # Default hostname
 SPACES="   "                                    # Default spaces
-PLEXAMPV="Plexamp-Linux-headless-v4.6.2"        # Default Plexamp-version
+PLEXAMPV="Plexamp-Linux-headless-v4.7.0"        # Default Plexamp-version
 
 
 #####
