@@ -6,7 +6,7 @@ Assumes 64-bit capable Raspberry Pi HW and Raspberry Pi OS that is 64-bit.
 
 Currently installs/upgrades to: NodeJS v16 and Plexamp-Linux-headless-"see version in git comment".
 
-If your card is not detected after upgrade & reboot (no audio) ("aplay -l" to check), please do hard reboot, and re-select the card! Now there should be audio!
+If your card is not detected after upgrade & reboot (no audio) ("aplay -l" to check), please do hard reboot, and re-select the card via web-GUI. Now there should be audio!
 
 ## Install Raspberry Pi OS using Raspberry Pi Imager.
 Raspberry Pi Imager is the quick and easy way to install Raspberry Pi OS and other operating systems to a microSD card, ready to use with your Raspberry Pi.
