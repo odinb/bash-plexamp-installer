@@ -59,6 +59,7 @@
 # Revision update: 2023-05-03 ODIN - Updated to using "Plexamp-Linux-headless-v4.7.0. If your card is not detected after boot (no audio) ("aplay -l" to check),
 # please do hard reboot, and re-select the card! Now there should be audio!
 # Revision update: 2023-05-05 ODIN - Updated to using "Plexamp-Linux-headless-v4.7.1.
+# Revision update: 2023-05-05 ODIN - Updated to using "Plexamp-Linux-headless-v4.7.2.
 #
 #
 #
@@ -80,7 +81,7 @@ PASSWORD="MySecretPass123"                      # Default password
 CNFFILE="/boot/config.txt"                      # Default config file
 HOST="plexamp"                                  # Default hostname
 SPACES="   "                                    # Default spaces
-PLEXAMPV="Plexamp-Linux-headless-v4.7.1"        # Default Plexamp-version
+PLEXAMPV="Plexamp-Linux-headless-v4.7.2"        # Default Plexamp-version
 
 
 #####
@@ -281,7 +282,7 @@ echo    "   ██╔═══╝ ██║     ██╔══╝   ██╔�
 echo    "   ██║     ███████╗███████╗██╔╝ ██╗██║  ██║██║ ╚═╝ ██║██║"
 echo    "   ╚═╝     ╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝"
 echo    ""
-echo    "   Plexamp-Linux-headless-v4.7.1"
+echo    "   Plexamp-Linux-headless-v4.7.2"
 echo " "
 EOF
 sed -i "s#Plexamp-Linux-.*#"$PLEXAMPV\""#g" /etc/update-motd.d/20-logo
