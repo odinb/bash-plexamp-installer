@@ -61,6 +61,7 @@
 # Revision update: 2023-05-05 ODIN - Updated to using "Plexamp-Linux-headless-v4.7.1.
 # Revision update: 2023-05-05 ODIN - Updated to using "Plexamp-Linux-headless-v4.7.2.
 # Revision update: 2023-05-10 ODIN - Updated to using "Plexamp-Linux-headless-v4.7.3.
+# Revision update: 2023-05-10 ODIN - Updated to using "Plexamp-Linux-headless-v4.7.4.
 #
 #
 #
@@ -82,7 +83,7 @@ PASSWORD="MySecretPass123"                      # Default password
 CNFFILE="/boot/config.txt"                      # Default config file
 HOST="plexamp"                                  # Default hostname
 SPACES="   "                                    # Default spaces
-PLEXAMPV="Plexamp-Linux-headless-v4.7.3"        # Default Plexamp-version
+PLEXAMPV="Plexamp-Linux-headless-v4.7.4"        # Default Plexamp-version
 
 
 #####
@@ -283,7 +284,7 @@ echo    "   ██╔═══╝ ██║     ██╔══╝   ██╔�
 echo    "   ██║     ███████╗███████╗██╔╝ ██╗██║  ██║██║ ╚═╝ ██║██║"
 echo    "   ╚═╝     ╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝"
 echo    ""
-echo    "   Plexamp-Linux-headless-v4.7.3"
+echo    "   Plexamp-Linux-headless-v4.7.4"
 echo " "
 EOF
 sed -i "s#Plexamp-Linux-.*#"$PLEXAMPV\""#g" /etc/update-motd.d/20-logo
@@ -448,7 +449,7 @@ echo " "
 echo "--== Verify that node.v16 is set to hold ==--"
 apt-mark showhold
 echo " "
-echo "--== Verify node.v16 and npm versions, should be "v16.19.*" and "8.19.*"  ==--"
+echo "--== Verify node.v16 and npm versions, should be "v16.20.*" and "8.19.*"  ==--"
 node -v ; npm -v
 fi
 echo " "
