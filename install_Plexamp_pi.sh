@@ -135,7 +135,7 @@ if [ ! -f /boot/dietpi.txt ]; then
 echo "Now it is time to choose Timezone, pick the number for the Timezone you want, exit with 5."
 echo "If your Timezone is not covered, additional timezones can be found here: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones"
 echo " "
-title="Select your Timezone:"
+title="Select your Timezone (just hit "5" if you want to continue without change):"
 prompt="Pick your option:"
 options=("Eastern time zone: America/New_York" "Central time zone: America/Chicago" "Mountain time zone: America/Denver" "Pacific time zone: America/Los_Angeles")
 echo "$title"
