@@ -64,7 +64,7 @@
 # Revision update: 2023-05-10 ODIN - Updated to using "Plexamp-Linux-headless-v4.7.4.
 # Revision update: 2023-07-18 ODIN - Updated to using "Plexamp-Linux-headless-v4.8.0.
 # Revision update: 2023-07-23 ODIN - Updated to using "Plexamp-Linux-headless-v4.8.1.
-# Revision update: 2023-08-04 ODIN - Updated to using "Plexamp-Linux-headless-v4.8.2.
+# Revision update: 2023-08-04 ODIN - Updated to using "Plexamp-Linux-headless-v4.8.2, and added Timezone setting as optional.
 #
 #
 
@@ -132,10 +132,15 @@ read -e -p "Password for user to create and install PlexAmp under (will not chan
 PASSWORDCRYPTED=$(echo "$PASSWORD" | openssl passwd -6 -stdin)
 fi
 if [ ! -f /boot/dietpi.txt ]; then
+echo " "
 echo "Now it is time to choose Timezone, pick the number for the Timezone you want, exit with 5."
 echo "If your Timezone is not covered, additional timezones can be found here: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones"
 echo " "
-title="Select your Timezone (just hit "5" if you want to continue without change):"
+echo -n "Do you want to change timezone [y/N]: "
+read answer
+answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
+if [ "$answer" = "y" ]; then
+title="Select your Timezone:"
 prompt="Pick your option:"
 options=("Eastern time zone: America/New_York" "Central time zone: America/Chicago" "Mountain time zone: America/Denver" "Pacific time zone: America/Los_Angeles")
 echo "$title"
@@ -152,16 +157,17 @@ select opt in "${options[@]}" "Quit"; do
 done
 echo " "
 read -e -p "Timezone to set on Pi (chosen Timezone is $TIMEZONE, change if needed): " -i "$TIMEZONE" TIMEZONE
-fi
-
-#####
-# start main script execution
-#####
 echo " "
 if [ ! -f /boot/dietpi.txt ]; then
 echo "--== Setting timezone ==--"
 timedatectl set-timezone "$TIMEZONE"
 fi
+fi
+fi
+
+#####
+# start main script execution
+#####
 echo " "
 echo "--== Date of execution ==--"
 date
