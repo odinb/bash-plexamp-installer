@@ -19,7 +19,7 @@ Raspberry Pi Imager is the quick and easy way to install Raspberry Pi OS and oth
 [Choose the Raspberry Pi OS (other):](https://www.raspberrypi.com/software/)
 <br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/Pi-imager_OS.png" width="450">
 
-[Then Raspberry Pi OS (64-bit):](https://www.raspberrypi.com/software/)
+[Then Raspberry Pi OS Lite (64-bit):](https://www.raspberrypi.com/software/)
 <br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/Pi-imager_OS_64.png" width="450">
 
 [The advanced screen of Pi-imager:](https://www.raspberrypi.com/software/)
