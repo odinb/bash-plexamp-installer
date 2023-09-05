@@ -65,6 +65,7 @@
 # Revision update: 2023-07-18 ODIN - Updated to using "Plexamp-Linux-headless-v4.8.0.
 # Revision update: 2023-07-23 ODIN - Updated to using "Plexamp-Linux-headless-v4.8.1.
 # Revision update: 2023-08-04 ODIN - Updated to using "Plexamp-Linux-headless-v4.8.2, and added Timezone setting as optional.
+# Revision update: 2023-09-05 ODIN - Updated prompts to correspond better with the HifiBerry Config page.
 #
 #
 
@@ -329,18 +330,21 @@ echo " " >> /boot/config.txt
 grep -qxF '# --== Configuration for DIGI-DAC ==--' /boot/config.txt || echo '# --== Configuration for DIGI-DAC ==--' >> /boot/config.txt
 echo " " >> /boot/config.txt
 echo " "
-title="Select your HiFiBerry card, exit with 6:"
+title="Select your HiFiBerry card, exit with 9:"
 prompt="Pick your option:"
-options=("setup for DAC+ standard/pro" "setup for DAC/DAC+ Light" "setup for Digi/Digi+" "setup for Digi2 Pro" "setup for Amp/Amp+")
+options=("Setup for DAC/DAC+ Light/zero/MiniAmp/BeoCreate/DSP/RTC" "Setup for DAC+ standard/pro/AMP2" "Setup for DAC2 HD" "Setup for DAC+ ADC PRO" "Setup for Digi/Digi+" "Setup for Digi+ Pro" "Setup for Amp/Amp+" "Setup for Amp3")
 echo "$title"
 PS3="$prompt "
 select opt in "${options[@]}" "Quit"; do
     case "$REPLY" in
-    1 ) echo "You picked $opt, continue with 6 or choose again!"; HIFIBERRY="dtoverlay=hifiberry-dacplus";;
-    2 ) echo "You picked $opt, continue with 6 or choose again!"; HIFIBERRY="dtoverlay=hifiberry-dac";;
-    3 ) echo "You picked $opt, continue with 6 or choose again!"; HIFIBERRY="dtoverlay=hifiberry-digi";;
-    4 ) echo "You picked $opt, continue with 6 or choose again!"; HIFIBERRY="dtoverlay=hifiberry-digi-pro";;
-    5 ) echo "You picked $opt, continue with 6 or choose again!"; HIFIBERRY="dtoverlay=hifiberry-amp";;
+    1 ) echo "You picked $opt, continue with 9 or choose again!"; HIFIBERRY="dtoverlay=hifiberry-dac";;
+    2 ) echo "You picked $opt, continue with 9 or choose again!"; HIFIBERRY="dtoverlay=hifiberry-dacplus";;
+    3 ) echo "You picked $opt, continue with 9 or choose again!"; HIFIBERRY="dtoverlay=hifiberry-dacplushd";;
+    4 ) echo "You picked $opt, continue with 9 or choose again!"; HIFIBERRY="dtoverlay=hifiberry-dacplusadcpro";;
+    5 ) echo "You picked $opt, continue with 9 or choose again!"; HIFIBERRY="dtoverlay=hifiberry-digi";;
+    6 ) echo "You picked $opt, continue with 9 or choose again!"; HIFIBERRY="dtoverlay=hifiberry-digi-pro";;
+    7 ) echo "You picked $opt, continue with 9 or choose again!"; HIFIBERRY="dtoverlay=hifiberry-amp";;
+    8 ) echo "You picked $opt, continue with 9 or choose again!"; HIFIBERRY="dtoverlay=hifiberry-amp3";;
     $(( ${#options[@]}+1 )) ) echo "Continuing!"; break;;
     *) echo "Invalid option. Try another one."; continue;;
     esac
@@ -380,7 +384,7 @@ echo " " >> /boot/config.txt
 echo " "
 title="Select your allo card, exit with 5:"
 prompt="Pick your option:"
-options=("setup for ALLO Piano HIFI DAC" "setup for ALLO Piano 2.1 HIFI DAC" "setup for ALLO Boss HIFI DAC / Mini Boss HIFI DAC" "setup for ALLO DIGIOne")
+options=("Setup for ALLO Piano HIFI DAC" "Setup for ALLO Piano 2.1 HIFI DAC" "Setup for ALLO Boss HIFI DAC / Mini Boss HIFI DAC" "Setup for ALLO DIGIOne")
 echo "$title"
 PS3="$prompt "
 select opt in "${options[@]}" "Quit"; do
