@@ -66,6 +66,8 @@
 # Revision update: 2023-07-23 ODIN - Updated to using "Plexamp-Linux-headless-v4.8.1.
 # Revision update: 2023-08-04 ODIN - Updated to using "Plexamp-Linux-headless-v4.8.2, and added Timezone setting as optional.
 # Revision update: 2023-09-05 ODIN - Updated prompts to correspond better with the HifiBerry Config page.
+# Revision update: 2023-09-07 ODIN - Updated to using "Plexamp-Linux-headless-v4.8.3.
+#
 #
 #
 
@@ -84,7 +86,7 @@ PASSWORD="MySecretPass123"                      # Default password
 CNFFILE="/boot/config.txt"                      # Default config file
 HOST="plexamp"                                  # Default hostname
 SPACES="   "                                    # Default spaces
-PLEXAMPV="Plexamp-Linux-headless-v4.8.2"        # Default Plexamp-version
+PLEXAMPV="Plexamp-Linux-headless-v4.8.3"        # Default Plexamp-version
 
 
 #####
@@ -291,7 +293,7 @@ echo    "   ██╔═══╝ ██║     ██╔══╝   ██╔�
 echo    "   ██║     ███████╗███████╗██╔╝ ██╗██║  ██║██║ ╚═╝ ██║██║"
 echo    "   ╚═╝     ╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝"
 echo    ""
-echo    "   Plexamp-Linux-headless-v4.8.2"
+echo    "   Plexamp-Linux-headless-v4.8.3"
 echo " "
 EOF
 sed -i "s#Plexamp-Linux-.*#"$PLEXAMPV\""#g" /etc/update-motd.d/20-logo
