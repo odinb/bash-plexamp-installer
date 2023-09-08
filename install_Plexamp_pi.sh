@@ -67,6 +67,7 @@
 # Revision update: 2023-08-04 ODIN - Updated to using "Plexamp-Linux-headless-v4.8.2, and added Timezone setting as optional.
 # Revision update: 2023-09-05 ODIN - Updated prompts to correspond better with the HifiBerry Config page.
 # Revision update: 2023-09-07 ODIN - Updated to using "Plexamp-Linux-headless-v4.8.3.
+# Revision update: 2023-09-08 ODIN - Added more TimeZones.
 #
 #
 #
@@ -145,15 +146,44 @@ answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
 title="Select your Timezone:"
 prompt="Pick your option:"
-options=("Eastern time zone: America/New_York" "Central time zone: America/Chicago" "Mountain time zone: America/Denver" "Pacific time zone: America/Los_Angeles")
+options=("Eastern time zone (EST/EDT): America/New_York" "Central time zone (CST/CDT): America/Chicago" "Mountain time zone (MST/MDT): America/Denver" "Pacific time zone (PST/PDT): America/Phoenix" "Pacific time zone (PST): America/Los_Angeles" "Arctic (AKST/AKDT): America/Anchorage" "Arctic (HST/HDT): America/Adak" "Pacific (HST): Pacific/Honolulu" "Pacific (SST): Pacific/Pago_Pago" "Europe: Europe/Istanbul" "Europe (EET/EEST): Europe/Kiev" "Europe (CET/CEST): Europe/Berlin" "Europe (UTC): UTC" "Europe (GMT/BST): Europe/London" "Atlantic: Atlantic/Azores" "America: America/Nuuk" "America: America/Sao_Paulo" "America (AST): America/Puerto_Rico" "Pacific: Pacific/Kiritimati" "Pacific: Pacific/Tongatapu" "New Zealand time (NZST/NZDT): Pacific/Auckland" "Pacific: Pacific/Guadalcanal" "Australian Eastern Time (AEST/AEDT): Australia/Sydney" "Australian Central Time (ACST/ACDT): Australia/Adelaide" "Asia (KST): Asia/Seoul" "Australian Western Time (AWST): Australia/Perth" "Asia: Asia/Bangkok" "Asia: Asia/Yangon" "Asia: Asia/Dhaka" "Asia: Asia/Kathmandu" "Asia (IST): Asia/Kolkata" "Asia: Indian/Maldives" "Asia: Asia/Dubai")
 echo "$title"
 PS3="$prompt "
 select opt in "${options[@]}" "Quit"; do
     case "$REPLY" in
-    1 ) echo "You picked $opt, continue with 5 or choose again!"; TIMEZONE="America/New_York";;
-    2 ) echo "You picked $opt, continue with 5 or choose again!"; TIMEZONE="America/Chicago";;
-    3 ) echo "You picked $opt, continue with 5 or choose again!"; TIMEZONE="America/Denver";;
-    4 ) echo "You picked $opt, continue with 5 or choose again!"; TIMEZONE="America/Los_Angeles";;
+    1 ) echo "You picked $opt, continue with 34 or choose again!"; TIMEZONE="America/New_York";;
+    2 ) echo "You picked $opt, continue with 34 or choose again!"; TIMEZONE="America/Chicago";;
+    3 ) echo "You picked $opt, continue with 34 or choose again!"; TIMEZONE="America/Denver";;
+    4 ) echo "You picked $opt, continue with 34 or choose again!"; TIMEZONE="America/Phoenix";;
+    5 ) echo "You picked $opt, continue with 34 or choose again!"; TIMEZONE="America/Los_Angeles";;
+    6 ) echo "You picked $opt, continue with 34 or choose again!"; TIMEZONE="America/Anchorage";;
+    7 ) echo "You picked $opt, continue with 34 or choose again!"; TIMEZONE="America/Adak";;
+    8 ) echo "You picked $opt, continue with 34 or choose again!"; TIMEZONE="Pacific/Honolulu";;
+    9 ) echo "You picked $opt, continue with 34 or choose again!"; TIMEZONE="Pacific/Pago_Pago";;
+   10 ) echo "You picked $opt, continue with 34 or choose again!"; TIMEZONE="Europe/Istanbul";;
+   11 ) echo "You picked $opt, continue with 34 or choose again!"; TIMEZONE="Europe/Kiev";;
+   12 ) echo "You picked $opt, continue with 34 or choose again!"; TIMEZONE="Europe/Berlin";;
+   13 ) echo "You picked $opt, continue with 34 or choose again!"; TIMEZONE="UTC";;
+   14 ) echo "You picked $opt, continue with 34 or choose again!"; TIMEZONE="Europe/London";;
+   15 ) echo "You picked $opt, continue with 34 or choose again!"; TIMEZONE="Atlantic/Azores";;
+   16 ) echo "You picked $opt, continue with 34 or choose again!"; TIMEZONE="America/Nuuk";;
+   17 ) echo "You picked $opt, continue with 34 or choose again!"; TIMEZONE="America/Sao_Paulo";;
+   18 ) echo "You picked $opt, continue with 34 or choose again!"; TIMEZONE="America/Puerto_Rico";;
+   19 ) echo "You picked $opt, continue with 34 or choose again!"; TIMEZONE="Pacific/Kiritimati";;
+   20 ) echo "You picked $opt, continue with 34 or choose again!"; TIMEZONE="Pacific/Tongatapu";;
+   21 ) echo "You picked $opt, continue with 34 or choose again!"; TIMEZONE="Pacific/Auckland";;
+   22 ) echo "You picked $opt, continue with 34 or choose again!"; TIMEZONE="Pacific/Guadalcanal";;
+   23 ) echo "You picked $opt, continue with 34 or choose again!"; TIMEZONE="Australia/Sydney";;
+   24 ) echo "You picked $opt, continue with 34 or choose again!"; TIMEZONE="Australia/Adelaide";;  
+   25 ) echo "You picked $opt, continue with 34 or choose again!"; TIMEZONE="Asia/Seoul";;
+   26 ) echo "You picked $opt, continue with 34 or choose again!"; TIMEZONE="Australia/Perth";;
+   27 ) echo "You picked $opt, continue with 34 or choose again!"; TIMEZONE="Asia/Bangkok";;
+   28 ) echo "You picked $opt, continue with 34 or choose again!"; TIMEZONE="Asia/Yangon";;
+   29 ) echo "You picked $opt, continue with 34 or choose again!"; TIMEZONE="Asia/Dhaka";;
+   30 ) echo "You picked $opt, continue with 34 or choose again!"; TIMEZONE="Asia/Kathmandu";;
+   31 ) echo "You picked $opt, continue with 34 or choose again!"; TIMEZONE="Asia/Kolkata";;
+   32 ) echo "You picked $opt, continue with 34 or choose again!"; TIMEZONE="Indian/Maldives";;
+   33 ) echo "You picked $opt, continue with 34 or choose again!"; TIMEZONE="Asia/Dubai";;
     $(( ${#options[@]}+1 )) ) echo "Continuing!"; break;;
     *) echo "Invalid option. Try another one."; continue;;
     esac
