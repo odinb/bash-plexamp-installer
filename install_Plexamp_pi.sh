@@ -5,30 +5,9 @@
 # Script will install node.v16 and set it on hold.
 # Needs to be run as the root user.
 #
-# How to enable SSH on Raspberry Pi OS:
-# For security reasons, as of the November 2016 release, Raspbian has the SSH server disabled by default.
-# After burning the image to your Micro-SD-card (with etcher), you need to enable.
+# For more info:
+# https://github.com/odinb/bash-plexamp-installer
 #
-# To enable:
-# 1. Mount your SD card on your computer.
-# 2. Create or copy an empty file called ssh in /boot.
-# on MacOS you can do: touch /Volumes/boot/ssh
-#
-#
-# SSH access on "Raspberry Pi OS": (2022-04-04) To set up a user on first boot on headless, create a file called userconf or userconf.txt in
-# the boot partition of the SD card. This file should contain a single line of text, consisting of username:encrypted-password –
-# so your desired username, followed immediately by a colon, followed immediately by an encrypted representation of the password you want to use.
-#
-# To generate the encrypted password, the easiest way is to use OpenSSL on a Raspberry Pi that is already running (or most any linux you have running)
-# – open a terminal window and enter: echo ‘mypassword’ | openssl passwd -6 -stdin
-#
-# This will produce what looks like a string of random characters, which is actually an encrypted version of the supplied password.
-#
-# Then SSH to raspbian with user/pass: pi/raspberry
-#
-# Now change to root user with command "sudo -i".
-# Copy over this script to the root folder and make executable, i.e. chmod +x setup-pi_Plexamp.sh
-# Run with ./install_configure_Plexamp_pi.sh
 #
 # Revision update: 2020-12-06 ODIN - Initial version.
 # Revision update: 2020-12-16 ODIN - Added MacOS information for Plexamp V1.x.x and workarounds for DietPi.
@@ -68,6 +47,7 @@
 # Revision update: 2023-09-05 ODIN - Updated prompts to correspond better with the HifiBerry Config page.
 # Revision update: 2023-09-07 ODIN - Updated to using "Plexamp-Linux-headless-v4.8.3.
 # Revision update: 2023-09-08 ODIN - Added more TimeZones.
+# Revision update: 2023-09-12 ODIN - Updated NodeJS-16 repo to use "https://github.com/nodesource". Removed legacy path ".config" on generic install, fixing dietpi.
 #
 #
 #
@@ -88,6 +68,7 @@ CNFFILE="/boot/config.txt"                      # Default config file
 HOST="plexamp"                                  # Default hostname
 SPACES="   "                                    # Default spaces
 PLEXAMPV="Plexamp-Linux-headless-v4.8.3"        # Default Plexamp-version
+NODE_MAJOR="16"                                 # Default NodeJS version
 
 
 #####
@@ -174,7 +155,7 @@ select opt in "${options[@]}" "Quit"; do
    21 ) echo "You picked $opt, continue with 34 or choose again!"; TIMEZONE="Pacific/Auckland";;
    22 ) echo "You picked $opt, continue with 34 or choose again!"; TIMEZONE="Pacific/Guadalcanal";;
    23 ) echo "You picked $opt, continue with 34 or choose again!"; TIMEZONE="Australia/Sydney";;
-   24 ) echo "You picked $opt, continue with 34 or choose again!"; TIMEZONE="Australia/Adelaide";;  
+   24 ) echo "You picked $opt, continue with 34 or choose again!"; TIMEZONE="Australia/Adelaide";;
    25 ) echo "You picked $opt, continue with 34 or choose again!"; TIMEZONE="Asia/Seoul";;
    26 ) echo "You picked $opt, continue with 34 or choose again!"; TIMEZONE="Australia/Perth";;
    27 ) echo "You picked $opt, continue with 34 or choose again!"; TIMEZONE="Asia/Bangkok";;
@@ -261,6 +242,12 @@ echo " "
 echo "--== Checking the rpi-eeprom service ==--"
 systemctl status rpi-eeprom-update.service --no-pager -l
 echo " "
+echo " "
+echo "--== If update is needed, you can update at the end by running: "rpi-eeprom-update -d -a" ==--"
+echo "--== Please perform full OS-update prior to executing this ==--"
+echo " "
+echo " "
+echo " "
 echo -n "Do you want to install and set vim as your default editor [y/N]: "
 read answer
 answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
@@ -290,7 +277,7 @@ echo " "
 echo "--== Add user and enable sudo ==--"
 useradd -m -p "$PASSWORDCRYPTED" "$USER"
 usermod --shell /bin/bash "$USER" > /dev/null 2>&1
-usermod -aG adm,dialout,cdrom,sudo,audio,video,plugdev,games,users,input,render,netdev,lpadmin,spi,i2c,gpio "$USER"
+usermod -aG adm,dialout,cdrom,sudo,audio,video,plugdev,games,users,input,render,netdev,spi,i2c,gpio "$USER"
 if [ -d /home/pi ]; then
 echo " "
 echo "--== Disable default user "pi" from logging in ==--"
@@ -301,7 +288,7 @@ fi
 echo " "
 echo "--== Set user-groups and enable sudo ==--"
 if [ ! -f /boot/dietpi.txt ]; then
-usermod -aG adm,dialout,cdrom,sudo,audio,video,plugdev,games,users,input,render,netdev,lpadmin,spi,i2c,gpio "$USER"
+usermod -aG adm,dialout,cdrom,sudo,audio,video,plugdev,games,users,input,render,netdev,spi,i2c,gpio "$USER"
 fi
 if [ ! -f /boot/dietpi.txt ]; then
 grep -qxF $USER' ALL=(ALL) NOPASSWD: ALL' /etc/sudoers.d/010_pi-nopasswd || echo $USER' ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers.d/010_pi-nopasswd
@@ -467,7 +454,6 @@ if [ "$answer" = "y" ]; then
 ps ax |grep index.js |grep -v grep |awk '{print $1}' |xargs kill
 rm -rf /home/"$USER"/plexamp/
 rm -rf /home/"$USER"/Plexamp-Linux-*
-rm -rf /home/"$USER"/.config/systemd/user/plexamp.service
 fi
 echo " "
 echo "--== Install or upgrade ==--"
@@ -478,20 +464,25 @@ echo -n "Do you want to install/upgrade and configure Node.v16? Needed on Plexam
 read answer
 answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
-if ! grep -q node_16.x "/etc/apt/sources.list.d/nodesource.list"; then
 echo " "
-echo "--== Install node.v16 ==--"
+echo "--== Install node.v16, please be patient ==--"
 apt-mark unhold nodejs > /dev/null 2>&1
-apt-get purge -y nodejs > /dev/null 2>&1
-curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
-apt-get install -y nodejs=16.*-1nodesource1
+apt-get purge -y nodejs npm > /dev/null 2>&1
+rm -rf /etc/apt/keyrings/nodesource.gpg
+rm -rf /etc/apt/sources.list.d/nodesource.list
+apt-get update
+apt-get install -y ca-certificates curl gnupg
+mkdir -p /etc/apt/keyrings
+curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
+echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list
+apt-get update
+apt-get install nodejs -y
 apt-mark hold nodejs
-fi
 echo " "
 echo "--== Verify that node.v16 is set to hold ==--"
 apt-mark showhold
 echo " "
-echo "--== Verify node.v16 and npm versions, should be "v16.20.*" and "8.19.*"  ==--"
+echo "--== Verify node.v16 and npm versions, should be "v16.20.*" and "8.19.*" ==--"
 node -v ; npm -v
 fi
 echo " "
@@ -509,7 +500,7 @@ chown -R "$USER":"$USER" /home/"$USER"/"$PLEXAMPV".tar.bz2
 tar -xf "$PLEXAMPV".tar.bz2
 mkdir -p /home/"$USER"/.local/share/Plexamp/Offline
 chown -R "$USER":"$USER" /home/"$USER"/plexamp/
-chown -R "$USER":"$USER" /home/"$USER"/.local/share/Plexamp/
+chown -R "$USER":"$USER" /home/"$USER"/.local/
 sed -i "s#Plexamp-Linux-.*#"$PLEXAMPV\""#g" /etc/update-motd.d/20-logo
 fi
 echo "--== Fix plexamp.service ==--"
@@ -517,7 +508,6 @@ if [ ! -f /boot/dietpi.txt ]; then
 sed -i "s/User=pi/User="$USER"/g" /home/"$USER"/plexamp/plexamp.service
 sed -i "s#WorkingDirectory=/home/pi/plexamp#WorkingDirectory=/home/"$USER"/plexamp#g" /home/"$USER"/plexamp/plexamp.service
 sed -i "s#/home/pi/plexamp/js/index.js#/home/"$USER"/plexamp/js/index.js#g" /home/"$USER"/plexamp/plexamp.service
-chown -R "$USER":"$USER" /home/"$USER"/.config/
 systemctl daemon-reload
 if [ ! -f /etc/systemd/system/plexamp.service ]; then
 ln -s /home/"$USER"/plexamp/plexamp.service /etc/systemd/system/plexamp.service
@@ -530,7 +520,7 @@ sed -i "s#/home/pi/plexamp/js/index.js#/home/dietpi/plexamp/js/index.js#g" /home
 sed -i '/^Restart*/a Group=dietpi' /home/dietpi/plexamp/plexamp.service
 systemctl daemon-reload
 if [ ! -f /etc/systemd/system/plexamp.service ]; then
-ln -s /home/dietpi/.config/systemd/user/plexamp.service /etc/systemd/system/plexamp.service
+ln -s /home/dietpi/plexamp/plexamp.service /etc/systemd/system/plexamp.service
 systemctl daemon-reload
 fi
 fi
@@ -542,15 +532,17 @@ read answer
 answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
 echo " "
-echo "--== Perform OS-update including Node.v16 ==--"
+echo "--== Perform OS-update including Node.v16, please be patient this usually takes a while ==--"
 apt update --allow-releaseinfo-change
 apt-mark unhold nodejs > /dev/null 2>&1
 apt-get -y upgrade nodejs > /dev/null 2>&1
 apt-mark hold nodejs > /dev/null 2>&1
 apt-get -y update ; apt-get -y upgrade ; apt-get -y dist-upgrade
+apt -y full-upgrade
 apt-get -y install deborphan > /dev/null 2>&1
 apt-get clean ; apt-get autoclean ; apt-get autoremove -y ; deborphan | xargs apt-get -y remove --purge
 fi
+echo " "
 echo " "
 echo "--== For Linux 5.4 and higher ==--"
 echo -e "$INFO This not needed for the "PiFi HIFI DiGi+ Digital Sound Card" found at:"
