@@ -36,7 +36,7 @@
 # Revision update: 2023-02-03 ODIN - Update to remove hardcoded version did not work, now using v4.6.2.
 # Revision update: 2023-02-28 ODIN - Fix HDMI-audio setup with change to "dtoverlay" to enable HDMI-alsa device.
 # Revision update: 2023-05-03 ODIN - Updated to using "Plexamp-Linux-headless-v4.7.0. If your card is not detected after boot (no audio) ("aplay -l" to check),
-# please do hard reboot, and re-select the card! Now there should be audio!
+#                                    please do hard reboot, and re-select the card! Now there should be audio!
 # Revision update: 2023-05-05 ODIN - Updated to using "Plexamp-Linux-headless-v4.7.1.
 # Revision update: 2023-05-05 ODIN - Updated to using "Plexamp-Linux-headless-v4.7.2.
 # Revision update: 2023-05-10 ODIN - Updated to using "Plexamp-Linux-headless-v4.7.3.
@@ -48,7 +48,7 @@
 # Revision update: 2023-09-07 ODIN - Updated to using "Plexamp-Linux-headless-v4.8.3.
 # Revision update: 2023-09-08 ODIN - Added more TimeZones.
 # Revision update: 2023-09-12 ODIN - Updated NodeJS-16 repo to use "https://github.com/nodesource". Removed legacy path ".config" on generic install, fixing dietpi.
-#
+# Revision update: 2023-10-08 ODIN - Improvements to installer and variable-handling. Various cosmetic fixes.
 #
 #
 
@@ -60,15 +60,15 @@
 if [ -d /home/dietpi ]; then # Name of user to create and run PlexAmp as.
 USER="dietpi"
 else
-USER="pi"
+USER=$(logname)
 fi
 TIMEZONE="America/Chicago"                      # Default Timezone
 PASSWORD="MySecretPass123"                      # Default password
 CNFFILE="/boot/config.txt"                      # Default config file
 HOST="plexamp"                                  # Default hostname
 SPACES="   "                                    # Default spaces
-PLEXAMPV="Plexamp-Linux-headless-v4.8.3"        # Default Plexamp-version
 NODE_MAJOR="16"                                 # Default NodeJS version
+PLEXAMPV=$(curl -s "https://plexamp.plex.tv/headless/version.json" | jq -r '.updateUrl' || (>&2 echo "Unable to extract download URL from version.txt for PlexAmp"; exit 1))        # Default Plexamp-version
 
 
 #####
@@ -77,7 +77,7 @@ NODE_MAJOR="16"                                 # Default NodeJS version
 echo " "
 echo "--== For your information ==--"
 echo -e "$INFO This script is verifed on the following image(s):"
-echo    "      2022-09-22-raspios-bullseye-arm64-lite"
+echo    "      2023-05-03-raspios-bullseye-arm64-lite"
 echo " "
 echo    "      NOTE!!!! Raspberry Pi OS 64-bit version is assumed."
 echo " "
@@ -85,7 +85,7 @@ echo    "      It cannot be guaranteed to run on other version of the image with
 echo    "      Installation assumes ARMv8, 64-bit HW, and was testen on a Raspberry Pi 4 Model B."
 echo    "      Installation also assumes a HiFiBerry HAT or one of its clones installed."
 echo    "      If you do not have one, you can also dedicate audio to the HDMI port."
-echo    "      DietPi is best effort, and was last tested on 20220814."
+echo    "      DietPi is best effort, and was last tested on 2023-09-12."
 echo " "
 echo " "
 echo "--== Starting Installation ==--"
@@ -104,7 +104,7 @@ sed -i "s/AUTO_SETUP_NET_HOSTNAME=.*/AUTO_SETUP_NET_HOSTNAME=$HOST/g" /boot/diet
 fi
 fi
 echo " "
-echo -e "By default, installation will progress as user $USER, unless you choose to create/change to a diferent user."
+echo -e "By default, installation will progress as user "$USER", unless you choose to create/change to a different user."
 echo " "
 echo -n "Do you want to create or change to a new or different user for the install (currently "$USER") [y/N]: "
 read answer
@@ -118,7 +118,7 @@ PASSWORDCRYPTED=$(echo "$PASSWORD" | openssl passwd -6 -stdin)
 fi
 if [ ! -f /boot/dietpi.txt ]; then
 echo " "
-echo "Now it is time to choose Timezone, pick the number for the Timezone you want, exit with 5."
+echo "Now it is time to choose Timezone, pick the number for the Timezone you want, exit with 34."
 echo "If your Timezone is not covered, additional timezones can be found here: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones"
 echo " "
 echo -n "Do you want to change timezone [y/N]: "
@@ -245,7 +245,6 @@ echo " "
 echo " "
 echo "--== If update is needed, you can update at the end by running: "rpi-eeprom-update -d -a" ==--"
 echo "--== Please perform full OS-update prior to executing this ==--"
-echo " "
 echo " "
 echo " "
 echo -n "Do you want to install and set vim as your default editor [y/N]: "
@@ -447,7 +446,7 @@ sed -i 's/vc4-kms-v3d/vc4-fkms-v3d/g' /boot/config.txt # Change dtoverlay to ena
 fi
 echo " "
 echo "--== Cleanup for upgrade ==--"
-echo -n "Do you want to prep for upgrade to new version "$PLEXAMPV", only run if you are upgrading [y/N]: "
+echo -n "Do you want to prep for upgrade to new version: "$PLEXAMPV", only run if you are upgrading [y/N]: "
 read answer
 answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
@@ -495,9 +494,9 @@ if [ ! -f /home/"$USER"/plexamp/plexamp.service ]; then
 echo " "
 echo "--== Fetch, unpack and install "$PLEXAMPV" ==--"
 cd /home/"$USER"
-wget https://plexamp.plex.tv/headless/"$PLEXAMPV".tar.bz2
-chown -R "$USER":"$USER" /home/"$USER"/"$PLEXAMPV".tar.bz2
-tar -xf "$PLEXAMPV".tar.bz2
+wget $PLEXAMPV
+chown -R "$USER":"$USER" /home/"$USER"/Plexamp-Linux-headless-*
+tar -xf Plexamp-Linux-headless-*
 mkdir -p /home/"$USER"/.local/share/Plexamp/Offline
 chown -R "$USER":"$USER" /home/"$USER"/plexamp/
 chown -R "$USER":"$USER" /home/"$USER"/.local/
@@ -543,7 +542,6 @@ apt-get -y install deborphan > /dev/null 2>&1
 apt-get clean ; apt-get autoclean ; apt-get autoremove -y ; deborphan | xargs apt-get -y remove --purge
 fi
 echo " "
-echo " "
 echo "--== For Linux 5.4 and higher ==--"
 echo -e "$INFO This not needed for the "PiFi HIFI DiGi+ Digital Sound Card" found at:"
 echo    "      https://www.fasttech.com/p/5137000"
@@ -577,3 +575,4 @@ echo " "
 echo    "      Logs are located at: ~/.cache/Plexamp/log/Plexamp.log"
 echo " "
 # end
+
