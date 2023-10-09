@@ -8,7 +8,6 @@
 # For more info:
 # https://github.com/odinb/bash-plexamp-installer
 #
-#
 # Revision update: 2020-12-06 ODIN - Initial version.
 # Revision update: 2020-12-16 ODIN - Added MacOS information for Plexamp V1.x.x and workarounds for DietPi.
 # Revision update: 2022-05-04 ODIN - Changed to new version of Pi OS (64-bit), Plexamp V4.2.2. Not tested on DietPi.
@@ -49,9 +48,9 @@
 # Revision update: 2023-09-08 ODIN - Added more TimeZones.
 # Revision update: 2023-09-12 ODIN - Updated NodeJS-16 repo to use "https://github.com/nodesource". Removed legacy path ".config" on generic install, fixing dietpi.
 # Revision update: 2023-10-08 ODIN - Improvements to installer and variable-handling. Various cosmetic fixes.
+# Revision update: 2023-10-08 ODIN - Improvements to motd-manipulation.
 #
 #
-
 
 #####
 # Variable(s), update if needed before execution of script.
@@ -69,7 +68,8 @@ HOST="plexamp"                                  # Default hostname
 SPACES="   "                                    # Default spaces
 NODE_MAJOR="16"                                 # Default NodeJS version
 PLEXAMPV=$(curl -s "https://plexamp.plex.tv/headless/version.json" | jq -r '.updateUrl' || (>&2 echo "Unable to extract download URL from version.txt for PlexAmp"; exit 1))        # Default Plexamp-version
-
+PLEXAMPVA=${PLEXAMPV/.tar.bz2}
+PLEXAMPVB=${PLEXAMPVA/https:\/\/plexamp.plex.tv\/headless\/}
 
 #####
 # prompt for updates to variables/values
@@ -312,7 +312,8 @@ echo    ""
 echo    "   Plexamp-Linux-headless-v4.8.3"
 echo " "
 EOF
-sed -i "s#Plexamp-Linux-.*#"$PLEXAMPV\""#g" /etc/update-motd.d/20-logo
+else
+sed -i "s#Plexamp-Linux-.*#"$PLEXAMPVB\""#g" /etc/update-motd.d/20-logo
 chmod +x /etc/update-motd.d/20-logo
 fi
 echo " "
@@ -575,4 +576,3 @@ echo " "
 echo    "      Logs are located at: ~/.cache/Plexamp/log/Plexamp.log"
 echo " "
 # end
-
