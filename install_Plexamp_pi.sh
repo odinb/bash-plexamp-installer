@@ -298,7 +298,7 @@ fi
 echo " "
 echo "--== Update motd ==--"
 if [ ! -f /etc/update-motd.d/20-logo ]; then
-cat >> /etc/update-motd.d/20-logo << 'EOF'
+cat >> /etc/update-motd.d/20-logo << EOF
 #!/bin/sh
 echo    ""
 echo    ""
@@ -309,13 +309,13 @@ echo    "   ██╔═══╝ ██║     ██╔══╝   ██╔�
 echo    "   ██║     ███████╗███████╗██╔╝ ██╗██║  ██║██║ ╚═╝ ██║██║"
 echo    "   ╚═╝     ╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝"
 echo    ""
-echo    "   Plexamp-Linux-headless-v4.8.3"
+echo    "   $PLEXAMPVB"
 echo " "
 EOF
 else
 sed -i "s#Plexamp-Linux-.*#"$PLEXAMPVB\""#g" /etc/update-motd.d/20-logo
-chmod +x /etc/update-motd.d/20-logo
 fi
+chmod +x /etc/update-motd.d/20-logo
 echo " "
 if [ ! -f /boot/dietpi.txt ]; then
 echo "--== Check WiFi-status and enable WiFi ==--"
