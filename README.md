@@ -8,15 +8,15 @@ Currently known issues:
 Under Debian 12 (bookworm), the audio-HAT is not detected.
 
 Debian 11 (bullseye) output:
-root@PlexAmp:~# aplay -l
+```root@PlexAmp:~# aplay -l
 **** List of PLAYBACK Hardware Devices ****
 card 0: sndrpihifiberry [snd_rpi_hifiberry_digi], device 0: HifiBerry Digi HiFi wm8804-spdif-0 [HifiBerry Digi HiFi wm8804-spdif-0]
   Subdevices: 1/1
   Subdevice #0: subdevice #0
 root@PlexAmp:~#
-
+```
 Debian 12 (bookworm):
-root@PlexAmp:~# aplay -l
+```root@PlexAmp:~# aplay -l
 **** List of PLAYBACK Hardware Devices ****
 card 0: Headphones [bcm2835 Headphones], device 0: bcm2835 Headphones [bcm2835 Headphones]
   Subdevices: 8/8
@@ -35,7 +35,7 @@ card 2: vc4hdmi1 [vc4-hdmi-1], device 0: MAI PCM i2s-hifi-0 [MAI PCM i2s-hifi-0]
   Subdevices: 1/1
   Subdevice #0: subdevice #0
 root@PlexAmp:~#
-
+```
 If you have a solution, please let me know.
 
 
