@@ -15,7 +15,7 @@ card 0: sndrpihifiberry [snd_rpi_hifiberry_digi], device 0: HifiBerry Digi HiFi 
   Subdevice #0: subdevice #0
 root@PlexAmp:~#
 ```
-Debian 12 (bookworm):
+Debian 12 (bookworm) output:
 ```root@PlexAmp:~# aplay -l
 **** List of PLAYBACK Hardware Devices ****
 card 0: Headphones [bcm2835 Headphones], device 0: bcm2835 Headphones [bcm2835 Headphones]
@@ -192,4 +192,3 @@ https://forums.raspberrypi.com/viewtopic.php?t=329299
 
 
 ======
-
