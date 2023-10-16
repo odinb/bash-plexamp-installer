@@ -122,12 +122,12 @@ You need to choose your source, i.e. Plex server or TIDAL other. This can be don
 Q:
 I got an error during the first Plexamp install and start up:
 
-xxx@PlexampPi:~ $ node /home/xxx/plexamp/js/index.js
+```xxx@PlexampPi:~ $ node /home/xxx/plexamp/js/index.js
 Starting Plexamp 4.3.0
 Please visit https://plex.tv/claim and enter the claim token: claim-xxxxxxxxxxxxxxxxxxxx
 Please give the player a name (e.g. Bedroom, Kitchen): Marantz
 DEVICE: Error loading cloud players from plex.tv HTTP status 403
-
+```
 A:
 That is not a bad thing per se, it just means you didn’t link any “cloud players”.
 See also:
@@ -162,7 +162,16 @@ My HAT-card is not recognized after installing-running the script on Raspberry P
 
 A:
 Currently it seems like the HAT-cards are not detected under "bookworm", see the following output after configuring it in /boot/config.txt:
-root@PlexAmp:~# aplay -l
+Debian 11 (bullseye) output (HAT detected):
+```root@PlexAmp:~# aplay -l
+**** List of PLAYBACK Hardware Devices ****
+card 0: sndrpihifiberry [snd_rpi_hifiberry_digi], device 0: HifiBerry Digi HiFi wm8804-spdif-0 [HifiBerry Digi HiFi wm8804-spdif-0]
+  Subdevices: 1/1
+  Subdevice #0: subdevice #0
+root@PlexAmp:~#
+```
+Debian 12 (bookworm) output (HAT not detected):
+```root@PlexAmp:~# aplay -l
 **** List of PLAYBACK Hardware Devices ****
 card 0: Headphones [bcm2835 Headphones], device 0: bcm2835 Headphones [bcm2835 Headphones]
   Subdevices: 8/8
@@ -181,7 +190,7 @@ card 2: vc4hdmi1 [vc4-hdmi-1], device 0: MAI PCM i2s-hifi-0 [MAI PCM i2s-hifi-0]
   Subdevices: 1/1
   Subdevice #0: subdevice #0
 root@PlexAmp:~#
-
+```
 If you have any information on a solution, please contact me/let me know.
 
 ======
