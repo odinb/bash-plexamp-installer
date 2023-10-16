@@ -7,7 +7,7 @@ Assumes 64-bit capable Raspberry Pi HW and Raspberry Pi OS that is 64-bit.
 Currently known issues:
 Under Debian 12 (bookworm), the audio-HAT is not detected.
 
-Debian 11 (bullseye) output:
+Debian 11 (bullseye) output (HAT detected):
 ```root@PlexAmp:~# aplay -l
 **** List of PLAYBACK Hardware Devices ****
 card 0: sndrpihifiberry [snd_rpi_hifiberry_digi], device 0: HifiBerry Digi HiFi wm8804-spdif-0 [HifiBerry Digi HiFi wm8804-spdif-0]
@@ -15,7 +15,7 @@ card 0: sndrpihifiberry [snd_rpi_hifiberry_digi], device 0: HifiBerry Digi HiFi 
   Subdevice #0: subdevice #0
 root@PlexAmp:~#
 ```
-Debian 12 (bookworm) output:
+Debian 12 (bookworm) output (HAT not detected):
 ```root@PlexAmp:~# aplay -l
 **** List of PLAYBACK Hardware Devices ****
 card 0: Headphones [bcm2835 Headphones], device 0: bcm2835 Headphones [bcm2835 Headphones]
