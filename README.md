@@ -4,7 +4,40 @@ For more information and hardware used, see here:<br /> https://github.com/odinb
 
 Assumes 64-bit capable Raspberry Pi HW and Raspberry Pi OS that is 64-bit.
 
-Currently installs/upgrades to: NodeJS v16 and Plexamp-Linux-headless-"see version in git comment".
+Currently known issues:
+Under Debian 12 (bookworm), the audio-HAT is not detected.
+
+Debian 11 (bullseye) output:
+root@PlexAmp:~# aplay -l
+**** List of PLAYBACK Hardware Devices ****
+card 0: sndrpihifiberry [snd_rpi_hifiberry_digi], device 0: HifiBerry Digi HiFi wm8804-spdif-0 [HifiBerry Digi HiFi wm8804-spdif-0]
+  Subdevices: 1/1
+  Subdevice #0: subdevice #0
+root@PlexAmp:~#
+
+Debian 12 (bookworm):
+root@PlexAmp:~# aplay -l
+**** List of PLAYBACK Hardware Devices ****
+card 0: Headphones [bcm2835 Headphones], device 0: bcm2835 Headphones [bcm2835 Headphones]
+  Subdevices: 8/8
+  Subdevice #0: subdevice #0
+  Subdevice #1: subdevice #1
+  Subdevice #2: subdevice #2
+  Subdevice #3: subdevice #3
+  Subdevice #4: subdevice #4
+  Subdevice #5: subdevice #5
+  Subdevice #6: subdevice #6
+  Subdevice #7: subdevice #7
+card 1: vc4hdmi0 [vc4-hdmi-0], device 0: MAI PCM i2s-hifi-0 [MAI PCM i2s-hifi-0]
+  Subdevices: 1/1
+  Subdevice #0: subdevice #0
+card 2: vc4hdmi1 [vc4-hdmi-1], device 0: MAI PCM i2s-hifi-0 [MAI PCM i2s-hifi-0]
+  Subdevices: 1/1
+  Subdevice #0: subdevice #0
+root@PlexAmp:~#
+
+If you have a solution, please let me know.
+
 
 If your card is not detected after upgrade & reboot (no audio) ("aplay -l" to check), please do hard reboot, and re-select the card via web-GUI. Now there should be audio!
 
@@ -19,7 +52,7 @@ Raspberry Pi Imager is the quick and easy way to install Raspberry Pi OS and oth
 [Choose the Raspberry Pi OS (other):](https://www.raspberrypi.com/software/)
 <br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/Pi-imager_OS.png" width="450">
 
-[Then Raspberry Pi OS Lite (64-bit), it is important to pick this specific image:](https://www.raspberrypi.com/software/)
+[Then Raspberry Pi OS (64-bit):](https://www.raspberrypi.com/software/)
 <br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/Pi-imager_OS_64.png" width="450">
 
 [The advanced screen of Pi-imager:](https://www.raspberrypi.com/software/)
@@ -113,7 +146,8 @@ Go to the GUI and re-select your Audio device under Settings (cogwheel lower rig
 Q:
 My HifiBerry card (or clone) is not detected after installation and reboot with ``` aplay -l ``` command, what could be wrong?
 
-A1: Sometimes the card is not detected after upgrade, try doing a hard reboot, i.e. pull the power-cable for 10 seconds and then re-insert power to boot. Card should now be detected. If needed, go to: Settings (cogwheel lower right corner) >> Playback >> Audio output >> Audio Device and re-select your audio-card.
+A1:
+Sometimes the card is not detected after upgrade, try doing a hard reboot, i.e. pull the power-cable for 10 seconds and then re-insert power to boot. Card should now be detected. If needed, go to: Settings (cogwheel lower right corner) >> Playback >> Audio output >> Audio Device and re-select your audio-card.
 
 A2:
 On your Raspberry Pi, run the following command: ``` cat /proc/device-tree/model ```. If it says “Raspberry Pi 4 Model B Rev 1.5”, the HifiBerry card might not work as expected.
@@ -121,6 +155,36 @@ The new Pi release uses a new power management circuit that doesn’t ramp up th
 
 Note that this affects only the Digi+ Pro and Digi2 Pro (and some clones of these cards).
 
+======
+
+Q:
+My HAT-card is not recognized after installing-running the script on Raspberry Pi OS "Debian version: 12 (bookworm)".
+
+A:
+Currently it seems like the HAT-cards are not detected under "bookworm", see the following output after configuring it in /boot/config.txt:
+root@PlexAmp:~# aplay -l
+**** List of PLAYBACK Hardware Devices ****
+card 0: Headphones [bcm2835 Headphones], device 0: bcm2835 Headphones [bcm2835 Headphones]
+  Subdevices: 8/8
+  Subdevice #0: subdevice #0
+  Subdevice #1: subdevice #1
+  Subdevice #2: subdevice #2
+  Subdevice #3: subdevice #3
+  Subdevice #4: subdevice #4
+  Subdevice #5: subdevice #5
+  Subdevice #6: subdevice #6
+  Subdevice #7: subdevice #7
+card 1: vc4hdmi0 [vc4-hdmi-0], device 0: MAI PCM i2s-hifi-0 [MAI PCM i2s-hifi-0]
+  Subdevices: 1/1
+  Subdevice #0: subdevice #0
+card 2: vc4hdmi1 [vc4-hdmi-1], device 0: MAI PCM i2s-hifi-0 [MAI PCM i2s-hifi-0]
+  Subdevices: 1/1
+  Subdevice #0: subdevice #0
+root@PlexAmp:~#
+
+If you have any information on a solution, please contact me/let me know.
+
+======
 For more information:
 https://www.hifiberry.com/blog/digi2-pro-raspberry-pi-4-1-5-incompatibilities/
 https://www.hifiberry.com/blog/compatibility-issues-of-the-digi2-pro-and-raspberry-pi-4-rev-1-5/
@@ -128,3 +192,4 @@ https://forums.raspberrypi.com/viewtopic.php?t=329299
 
 
 ======
+

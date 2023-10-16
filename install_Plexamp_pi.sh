@@ -49,8 +49,34 @@
 # Revision update: 2023-09-12 ODIN - Updated NodeJS-16 repo to use "https://github.com/nodesource". Removed legacy path ".config" on generic install, fixing dietpi.
 # Revision update: 2023-10-08 ODIN - Improvements to installer and variable-handling. Various cosmetic fixes.
 # Revision update: 2023-10-08 ODIN - Improvements to motd-manipulation.
+# Revision update: 2023-10-10 ODIN - Added SnapJack installation to enable multi-room / multi-device streaming. Added other improvements to script.
+# Revision update: 2023-10-15 ODIN - Verified not working on Debian version: 12 (bookworm). HAT-cards are not detected. Added other improvements to script.
 #
 #
+#
+
+
+#####
+# Banner introduction.
+#####
+echo " "
+echo    ""
+echo    "   ██████╗ ██╗     ███████╗██╗  ██╗ █████╗ ███╗   ███╗██████╗"
+echo    "   ██╔══██╗██║     ██╔════╝╚██╗██╔╝██╔══██╗████╗ ████║██╔══██╗"
+echo    "   ██████╔╝██║     █████╗   ╚███╔╝ ███████║██╔████╔██║██████╔"
+echo    "   ██╔═══╝ ██║     ██╔══╝   ██╔██╗ ██╔══██║██║╚██╔╝██║██╔═══╝"
+echo    "   ██║     ███████╗███████╗██╔╝ ██╗██║  ██║██║ ╚═╝ ██║██║"
+echo    "   ╚═╝     ╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝"
+echo    ""
+echo " "
+echo "--== Preparing to start script execution ==--"
+echo " "
+
+#####
+# Dependencies, needed before execution of script.
+#####
+echo "--== Install/upgrade jq which is needed to execute commands related to JSON data processing ==--"
+apt-get install -y jq > /dev/null 2>&1
 
 #####
 # Variable(s), update if needed before execution of script.
@@ -70,6 +96,11 @@ NODE_MAJOR="16"                                 # Default NodeJS version
 PLEXAMPV=$(curl -s "https://plexamp.plex.tv/headless/version.json" | jq -r '.updateUrl' || (>&2 echo "Unable to extract download URL from version.txt for PlexAmp"; exit 1))        # Default Plexamp-version
 PLEXAMPVA=${PLEXAMPV/.tar.bz2}
 PLEXAMPVB=${PLEXAMPVA/https:\/\/plexamp.plex.tv\/headless\/}
+SNAPJACK_URL=$(curl -s "https://plexamp.plex.tv/snapjack/version.json" | jq -r '.updateUrl' || (>&2 echo "Unable to extract download URL from version.txt for SnapJack"; exit 1))   # Default SnapJack-version
+SNAPJACK_A=${SNAPJACK_URL/.tar.bz2}
+SNAPJACK_V=${SNAPJACK_A/https:\/\/plexamp.plex.tv\/snapjack\/}
+ESCAPED_HOME="${HOME//\//\\/}"
+JACK_TEMP_FILE="/tmp/jack.txt"
 
 #####
 # prompt for updates to variables/values
@@ -77,9 +108,10 @@ PLEXAMPVB=${PLEXAMPVA/https:\/\/plexamp.plex.tv\/headless\/}
 echo " "
 echo "--== For your information ==--"
 echo -e "$INFO This script is verifed on the following image(s):"
-echo    "      2023-05-03-raspios-bullseye-arm64-lite"
+echo    "      2023-05-03-raspios-bullseye-arm64-lite - working"
+echo    "      2023-10-10-raspios-bookworm-arm64-lite - not working, HAT-card not recognized."
 echo " "
-echo    "      NOTE!!!! Raspberry Pi OS 64-bit version is assumed."
+echo    "      NOTE!!!! Raspberry Pi OS 64-bit lite version is assumed."
 echo " "
 echo    "      It cannot be guaranteed to run on other version of the image without fixes."
 echo    "      Installation assumes ARMv8, 64-bit HW, and was testen on a Raspberry Pi 4 Model B."
@@ -89,6 +121,7 @@ echo    "      DietPi is best effort, and was last tested on 2023-09-12."
 echo " "
 echo " "
 echo "--== Starting Installation ==--"
+echo " "
 echo -n "Do you want to change hostname [y/N]: "
 read answer
 answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
@@ -120,6 +153,9 @@ if [ ! -f /boot/dietpi.txt ]; then
 echo " "
 echo "Now it is time to choose Timezone, pick the number for the Timezone you want, exit with 34."
 echo "If your Timezone is not covered, additional timezones can be found here: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones"
+echo " "
+echo "Current settings are:"
+timedatectl show
 echo " "
 echo -n "Do you want to change timezone [y/N]: "
 read answer
@@ -246,7 +282,6 @@ echo " "
 echo "--== If update is needed, you can update at the end by running: "rpi-eeprom-update -d -a" ==--"
 echo "--== Please perform full OS-update prior to executing this ==--"
 echo " "
-echo " "
 echo -n "Do you want to install and set vim as your default editor [y/N]: "
 read answer
 answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
@@ -295,29 +330,8 @@ fi
 if [ -f /boot/dietpi.txt ]; then
 usermod -aG adm,dialout,cdrom,sudo,audio,video,plugdev,games,users,input,render,netdev,spi,i2c,gpio "$USER"
 fi
-echo " "
-echo "--== Update motd ==--"
-if [ ! -f /etc/update-motd.d/20-logo ]; then
-cat >> /etc/update-motd.d/20-logo << EOF
-#!/bin/sh
-echo    ""
-echo    ""
-echo    "   ██████╗ ██╗     ███████╗██╗  ██╗ █████╗ ███╗   ███╗██████╗"
-echo    "   ██╔══██╗██║     ██╔════╝╚██╗██╔╝██╔══██╗████╗ ████║██╔══██╗"
-echo    "   ██████╔╝██║     █████╗   ╚███╔╝ ███████║██╔████╔██║██████╔"
-echo    "   ██╔═══╝ ██║     ██╔══╝   ██╔██╗ ██╔══██║██║╚██╔╝██║██╔═══╝"
-echo    "   ██║     ███████╗███████╗██╔╝ ██╗██║  ██║██║ ╚═╝ ██║██║"
-echo    "   ╚═╝     ╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝"
-echo    ""
-echo    "   $PLEXAMPVB"
-echo " "
-EOF
-else
-sed -i "s#Plexamp-Linux-.*#"$PLEXAMPVB\""#g" /etc/update-motd.d/20-logo
-fi
-chmod +x /etc/update-motd.d/20-logo
-echo " "
 if [ ! -f /boot/dietpi.txt ]; then
+echo " "
 echo "--== Check WiFi-status and enable WiFi ==--"
 echo " "
 echo "--== Before ==--"
@@ -370,6 +384,9 @@ select opt in "${options[@]}" "Quit"; do
 done
 sed -i '/dtoverlay=hifiberry/d' /boot/config.txt # Remove old configuration.
 sed -i '/dtoverlay=allo/d' /boot/config.txt # Remove old configuration.
+# Not sure if next 2 lines are needed:
+sed -i '/dtoverlay=vc4-fkms-v3d/c\dtoverlay=vc4-fkms-v3d,audio=off' /boot/config.txt # If your system uses the vc4-fkms-v3d overlay, make sure, audio is disabled.
+sed -i '/dtoverlay=vc4-kms-v3d/c\dtoverlay=vc4-kms-v3d,noaudio' /boot/config.txt # If your system uses the newer vc4-kms-v3d overlay, make sure, audio is disabled.
 echo "$(cat $CNFFILE)$HIFIBERRY" > $CNFFILE
 if [ ! -f /boot/dietpi.txt ]; then
 sed -i '/#dtparam=audio=on/!s/dtparam=audio=on/#&/' /boot/config.txt # Add hashtag, disable internal audio/headphones.
@@ -378,8 +395,8 @@ sed -i 's/^[ \t]*//' /boot/config.txt # Remove empty spaces infront of line.
 sed -i ':a; /^\n*$/{ s/\n//; N;  ba};' /boot/config.txt # Remove if two consecutive blank lines and replace with one in a file.
 sed -i '/DIGI/{N;s/\n$//}' /boot/config.txt # Remove blank line after match.
 sed -i '${/^$/d}' /boot/config.txt # Remove last blank line in file.
-echo " "
 fi
+echo " "
 echo "--== Fix allo setup ==--"
 echo -e "$INFO Configuring overlay for allo HATs (or clones):"
 echo    "      If you own other audio HATs, or want to keep defaults - skip this step"
@@ -418,6 +435,9 @@ select opt in "${options[@]}" "Quit"; do
 done
 sed -i '/dtoverlay=hifiberry/d' /boot/config.txt # Remove old configuration.
 sed -i '/dtoverlay=allo/d' /boot/config.txt # Remove old configuration.
+# Not sure if next 2 lines are needed:
+sed -i '/dtoverlay=vc4-fkms-v3d/c\dtoverlay=vc4-fkms-v3d,audio=off' /boot/config.txt # If your system uses the vc4-fkms-v3d overlay, make sure, audio is disabled.
+sed -i '/dtoverlay=vc4-kms-v3d/c\dtoverlay=vc4-kms-v3d,noaudio' /boot/config.txt # If your system uses the newer vc4-kms-v3d overlay, make sure, audio is disabled.
 echo "$(cat $CNFFILE)$DIGICARD" > $CNFFILE
 if [ ! -f /boot/dietpi.txt ]; then
 sed -i '/#dtparam=audio=on/!s/dtparam=audio=on/#&/' /boot/config.txt # Add hashtag, disable internal audio/headphones.
@@ -435,7 +455,7 @@ echo    "      If you do not have an audio-HAT, you might want to set HDMI as de
 echo    " "
 echo    "      WARNING!!!     WARNING!!!      WARNiNG!!!"
 echo    " "
-echo    "      Please only run this if you did not run the HiFiBerry HAT setup above,"
+echo    "      Please only run this if you did not run any of the the Audiocard HAT setup above,"
 echo    "      and are sure you want to change from Headphones to HDMI for audio out!"
 echo
 echo -n "Do you want to configure HDMI as default audio-output [y/N]: "
@@ -447,20 +467,21 @@ sed -i 's/vc4-kms-v3d/vc4-fkms-v3d/g' /boot/config.txt # Change dtoverlay to ena
 fi
 echo " "
 echo "--== Cleanup for upgrade ==--"
-echo -n "Do you want to prep for upgrade to new version: "$PLEXAMPV", only run if you are upgrading [y/N]: "
+echo " "
+echo -n "Do you want to prep for upgrade/reinstall of version: "$PLEXAMPVB", only run if you are upgrading/reinstalling [y/N]: "
 read answer
 answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
-ps ax |grep index.js |grep -v grep |awk '{print $1}' |xargs kill
+ps ax |grep index.js |grep -v grep |awk '{print $1}' |xargs kill > /dev/null 2>&1
 rm -rf /home/"$USER"/plexamp/
 rm -rf /home/"$USER"/Plexamp-Linux-*
 fi
 echo " "
 echo "--== Install or upgrade ==--"
 echo " "
-echo "--== If upgrading to Plexamp 4.5.3 or later, you have to re-run the NodeJS install to upgrade to Node.v16 at least once! ==--"
+echo "--== If upgrading to Plexamp 4.5.3 or later from an older version, you have to re-run the NodeJS install to upgrade to Node.v16 at least once! ==--"
 echo " "
-echo -n "Do you want to install/upgrade and configure Node.v16? Needed on Plexamp 4.5.3 install/upgrade or later! [y/N]: "
+echo -n "Do you want to install/upgrade and configure Node.v16? Needed if upgrading from earlier version to Plexamp 4.5.3 or newer! [y/N]: "
 read answer
 answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
@@ -468,13 +489,18 @@ echo " "
 echo "--== Install node.v16, please be patient ==--"
 apt-mark unhold nodejs > /dev/null 2>&1
 apt-get purge -y nodejs npm > /dev/null 2>&1
-rm -rf /etc/apt/keyrings/nodesource.gpg
 rm -rf /etc/apt/sources.list.d/nodesource.list
+rm -rf /etc/apt/keyrings/nodesource.gpg
+rm -rf /etc/apt/preferences.d/preferences
+mkdir -p /etc/apt/preferences.d
 apt-get update
 apt-get install -y ca-certificates curl gnupg
 mkdir -p /etc/apt/keyrings
 curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
 echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list
+echo "Package: nodejs" >> /etc/apt/preferences.d/preferences
+echo "Pin: origin deb.nodesource.com" >> /etc/apt/preferences.d/preferences
+echo "Pin-Priority: 1001" >> /etc/apt/preferences.d/preferences
 apt-get update
 apt-get install nodejs -y
 apt-mark hold nodejs
@@ -486,14 +512,14 @@ echo "--== Verify node.v16 and npm versions, should be "v16.20.*" and "8.19.*" =
 node -v ; npm -v
 fi
 echo " "
-echo -n "Do you want to install and configure "$PLEXAMPV" [y/N]: "
+echo -n "Do you want to install and configure "$PLEXAMPVB" [y/N]: "
 read answer
 answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
 
 if [ ! -f /home/"$USER"/plexamp/plexamp.service ]; then
 echo " "
-echo "--== Fetch, unpack and install "$PLEXAMPV" ==--"
+echo "--== Fetch, unpack and install "$PLEXAMPVB" ==--"
 cd /home/"$USER"
 wget $PLEXAMPV
 chown -R "$USER":"$USER" /home/"$USER"/Plexamp-Linux-headless-*
@@ -501,8 +527,26 @@ tar -xf Plexamp-Linux-headless-*
 mkdir -p /home/"$USER"/.local/share/Plexamp/Offline
 chown -R "$USER":"$USER" /home/"$USER"/plexamp/
 chown -R "$USER":"$USER" /home/"$USER"/.local/
-sed -i "s#Plexamp-Linux-.*#"$PLEXAMPV\""#g" /etc/update-motd.d/20-logo
+rm -rf /home/"$USER"/"$PLEXAMPVB".tar.bz2
 fi
+echo "--== Update motd ==--"
+rm -rf /etc/update-motd.d/20-logo > /dev/null 2>&1
+cat >> /etc/update-motd.d/20-logo << EOF
+#!/bin/sh
+echo    ""
+echo    ""
+echo    "   ██████╗ ██╗     ███████╗██╗  ██╗ █████╗ ███╗   ███╗██████╗"
+echo    "   ██╔══██╗██║     ██╔════╝╚██╗██╔╝██╔══██╗████╗ ████║██╔══██╗"
+echo    "   ██████╔╝██║     █████╗   ╚███╔╝ ███████║██╔████╔██║██████╔"
+echo    "   ██╔═══╝ ██║     ██╔══╝   ██╔██╗ ██╔══██║██║╚██╔╝██║██╔═══╝"
+echo    "   ██║     ███████╗███████╗██╔╝ ██╗██║  ██║██║ ╚═╝ ██║██║"
+echo    "   ╚═╝     ╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝"
+echo    ""
+echo    "   $PLEXAMPVB"
+echo " "
+EOF
+chmod +x /etc/update-motd.d/20-logo
+echo " "
 echo "--== Fix plexamp.service ==--"
 if [ ! -f /boot/dietpi.txt ]; then
 sed -i "s/User=pi/User="$USER"/g" /home/"$USER"/plexamp/plexamp.service
@@ -526,13 +570,80 @@ fi
 fi
 fi
 echo " "
+# jackd2 installation and configuration
+echo "  WARNING!!!     WARNING!!!      WARNiNG!!!"
+echo "  SnapJack is currently in Beta, so install on your own risk."
+echo "  Currently this script does not include an uninstaller of SnapJack, so if installing,"
+echo "  and you later want to remove, full reinstall from scratch may be needed."
+echo " "
+echo -n "Do you want to install/upgrade SnapJack ($SNAPJACK_V)? Needed to enable multi-room / multi-device streaming. [y/N]: "
+read answer
+answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
+if [ "$answer" = "y" ]; then
+echo " "
+echo "--== Prepare for $SNAPJACK_V installation ==--"
+echo " "
+cd /home/"$USER"
+# Pre-seed JACK for realtime.
+if [[ -f "${JACK_TEMP_FILE}" ]]; then
+# Delete jack.txt as it already exists and could cause issues when created as a different user
+rm -rf ${JACK_TEMP_FILE} || (>&2 echo "Unable to delete ${JACK_TEMP_FILE} - Please get rid of it manually!"; exit 1)
+fi
+echo "jackd2 jackd/tweak_rt_limits select true" > ${JACK_TEMP_FILE} || (>&2 echo "Unable to write ${JACK_TEMP_FILE} provision file for debconf."; exit 1)
+debconf-set-selections ${JACK_TEMP_FILE}
+# Make sure we don't delete semaphores on user session destruction.
+#printf "\nRemoveIPC=no\n" >> /etc/systemd/logind.conf #old
+sed -i 's/^#RemoveIPC=/RemoveIPC=/' /etc/systemd/logind.conf # to uncomment
+sed -i 's/^RemoveIPC=yes/RemoveIPC=no/' /etc/systemd/logind.conf # to flip 'yes' to 'no'
+echo "--== Install $SNAPJACK_V and dependencies ==--"
+apt-get install -q -q -y jackd jack-tools zita-njbridge liblo-dev jq qjackctl-
+echo " "
+echo "--== Verify jackd version ==--"
+jackd --version
+echo " "
+# Stop any old service.
+echo "--== Stop and disable running SnapJack ==--"
+echo "  If this is first time you are installing, errors related to "snapjack.service" are normal."
+systemctl -q stop snapjack || echo "INFO: Couldn't stop SnapJack"
+systemctl -q disable snapjack || echo "INFO: Couldn't disable SnapJack"
+echo " "
+echo "--== Fetch, unpack and install $SNAPJACK_V ==--"
+echo " "
+cd /home/"$USER"
+wget $SNAPJACK_URL
+rm -rf /home/"$USER"/snapjack
+tar -xvf /home/"$USER"/"$SNAPJACK_V".tar.bz2
+rm -rf /home/"$USER"/"$SNAPJACK_V".tar.bz2
+chown -R "$USER":"$USER" /home/"$USER"/snapjack
+echo " "
+echo "--== Configure SnapJack and install the service as the user ==--"
+echo "  If you have a HAT configured (or any audiodevice) and this is the first time you run SnapJack install,"
+echo "  and card is not in the list, please pick anything and re-run SnapJack install/configuration after you"
+echo "  reboot/enable and verifying your card in Plexamp."
+echo "  Sometimes hard reset is needed (pull power-plug) to get it to initialize the card."
+echo "  Setup/configuration will only work if card is already initialized and enabled/chosen in Pexamp Web-GUI."
+echo " "
+echo " "
+runuser -u "$USER" -- node /home/"$USER"/snapjack/js/index.js "/home/"$USER"/.config/snapjack/Config.json" configure
+# Install the service, making sure we're using the right user.
+sed -e "s/User=pi/User=$USER/" /home/"$USER"/snapjack/snapjack.service | sed -e "s/\/home\/pi/$ESCAPED_HOME/g" > /lib/systemd/system/snapjack.service
+systemctl -q daemon-reload
+systemctl -q enable snapjack
+systemctl -q start snapjack
+# Prefer system jackd.
+if [ -f /usr/bin/jackd ]; then
+rm -rf /home/"$USER"/plexamp/treble/*/libjack*
+fi
+fi
+echo " "
 echo "--== OS-update including Node.v16 ==--"
+echo " "
 echo -n "Do you want to run full OS-update? This is recommended [y/N]: "
 read answer
 answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
 echo " "
-echo "--== Perform OS-update including Node.v16, please be patient this usually takes a while ==--"
+echo "--== Perform OS-update including Node.v16 (not installation), please be patient this usually takes quite a while ==--"
 apt update --allow-releaseinfo-change
 apt-mark unhold nodejs > /dev/null 2>&1
 apt-get -y upgrade nodejs > /dev/null 2>&1
@@ -560,13 +671,19 @@ echo    "      Please give the player a name at prompt (can be changed via Web-G
 echo    "      At this point, Plexamp is now signed in and ready, but not running!"
 echo    " "
 echo    "      Now either start Plexamp manually using: node /home/"$USER"/plexamp/js/index.js"
-echo    "      or enable the service and then start the Plexamp service."
+echo    "      or (preferred/recommended) enable the service and then start the Plexamp service."
 echo    "      If process is running, hit ctrl+c to stop process, then enter:"
 echo    "      sudo systemctl enable plexamp.service && sudo systemctl start plexamp.service"
 echo    " "
 echo    "      Once done, the web-GUI should be available on the ip-of-plexamp-pi:32500 from a browser."
 echo    "      On that GUI you will be asked to login to your Plex-account for security-reasons,"
 echo    "      and then choose a librabry where to fetch/stream music from."
+echo    "      If using a HAT, it is possible you need to select it via:"
+echo    "      Settings (cogwheel lower right corner) >> Playback >> Audio output >> Audio Device."
+echo    "      As an example, if you have chosen the “ Digi/Digi+“ option during install in the script,"
+echo    "      pick “Default” if the card is not showing, reboot the pi. Now the card will show up in the list,"
+echo    "      and at this point you can choose it!"
+echo    " "
 echo    "      Now play some music! Or control it from any other instance of Plexamp."
 echo " "
 echo    "      NOTE!! If you upgraded, only reboot is needed, tokens are preserved."
