@@ -51,26 +51,11 @@
 # Revision update: 2023-10-08 ODIN - Improvements to motd-manipulation.
 # Revision update: 2023-10-10 ODIN - Added SnapJack installation to enable multi-room / multi-device streaming. Added other improvements to script.
 # Revision update: 2023-10-15 ODIN - Verified not working on Debian version: 12 (bookworm). HAT-cards are not detected. Added other improvements to script.
+# Revision update: 2023-10-17 ODIN - Added version info at start of script execution.
 #
 #
 #
 
-
-#####
-# Banner introduction.
-#####
-echo " "
-echo    ""
-echo    "   ██████╗ ██╗     ███████╗██╗  ██╗ █████╗ ███╗   ███╗██████╗"
-echo    "   ██╔══██╗██║     ██╔════╝╚██╗██╔╝██╔══██╗████╗ ████║██╔══██╗"
-echo    "   ██████╔╝██║     █████╗   ╚███╔╝ ███████║██╔████╔██║██████╔"
-echo    "   ██╔═══╝ ██║     ██╔══╝   ██╔██╗ ██╔══██║██║╚██╔╝██║██╔═══╝"
-echo    "   ██║     ███████╗███████╗██╔╝ ██╗██║  ██║██║ ╚═╝ ██║██║"
-echo    "   ╚═╝     ╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝"
-echo    ""
-echo " "
-echo "--== Preparing to start script execution ==--"
-echo " "
 
 #####
 # Dependencies, needed before execution of script.
@@ -103,6 +88,25 @@ ESCAPED_HOME="${HOME//\//\\/}"
 JACK_TEMP_FILE="/tmp/jack.txt"
 
 #####
+# Banner introduction.
+#####
+echo " "
+echo    ""
+echo    "   ██████╗ ██╗     ███████╗██╗  ██╗ █████╗ ███╗   ███╗██████╗"
+echo    "   ██╔══██╗██║     ██╔════╝╚██╗██╔╝██╔══██╗████╗ ████║██╔══██╗"
+echo    "   ██████╔╝██║     █████╗   ╚███╔╝ ███████║██╔████╔██║██████╔"
+echo    "   ██╔═══╝ ██║     ██╔══╝   ██╔██╗ ██╔══██║██║╚██╔╝██║██╔═══╝"
+echo    "   ██║     ███████╗███████╗██╔╝ ██╗██║  ██║██║ ╚═╝ ██║██║"
+echo    "   ╚═╝     ╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝"
+echo    ""
+echo " "
+echo " This will install upgrade to:"
+echo " $PLEXAMPVB"
+echo " $SNAPJACK_V"
+echo " "
+echo "--== Preparing to start script execution ==--"
+
+#####
 # prompt for updates to variables/values
 #####
 echo " "
@@ -118,7 +122,6 @@ echo    "      Installation assumes ARMv8, 64-bit HW, and was testen on a Raspbe
 echo    "      Installation also assumes a HiFiBerry HAT or one of its clones installed."
 echo    "      If you do not have one, you can also dedicate audio to the HDMI port."
 echo    "      DietPi is best effort, and was last tested on 2023-09-12."
-echo " "
 echo " "
 echo "--== Starting Installation ==--"
 echo " "
