@@ -471,7 +471,7 @@ fi
 echo " "
 echo "--== Cleanup for upgrade ==--"
 echo " "
-echo -n "Do you want to prep for upgrade/reinstall of version: "$PLEXAMPVB", only run if you are upgrading/reinstalling [y/N]: "
+echo -n "Do you want to prep for upgrade/reinstall of version: "$PLEXAMPVB", only run if you are upgrading/reinstalling. [y/N]: "
 read answer
 answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
