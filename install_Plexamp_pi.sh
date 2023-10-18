@@ -52,6 +52,7 @@
 # Revision update: 2023-10-10 ODIN - Added SnapJack installation to enable multi-room / multi-device streaming. Added other improvements to script.
 # Revision update: 2023-10-15 ODIN - Verified not working on Debian version: 12 (bookworm). HAT-cards are not detected. Added other improvements to script.
 # Revision update: 2023-10-17 ODIN - Added version info at start of script execution.
+# Revision update: 2023-10-18 ODIN - Fixed bookworm setup of /boot/config.txt.  Removed SnapJack untill officially released.
 #
 #
 #
@@ -102,7 +103,7 @@ echo    ""
 echo " "
 echo " This will install upgrade to:"
 echo " $PLEXAMPVB"
-echo " $SNAPJACK_V"
+#echo " $SNAPJACK_V"
 echo " "
 echo "--== Preparing to start script execution ==--"
 
@@ -361,7 +362,7 @@ answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
 echo " "
 echo "Now you need to choose your HiFiBerry card, pick the number for the card you have, exit with 6."
-sed -i /hifiberry-/d /boot/config.txt # Remove existing hiFiBerry config.
+sed --in-place --follow-symlinks /hifiberry-/d /boot/config.txt # Remove existing hiFiBerry config.
 echo " " >> /boot/config.txt
 grep -qxF '# --== Configuration for DIGI-DAC ==--' /boot/config.txt || echo '# --== Configuration for DIGI-DAC ==--' >> /boot/config.txt
 echo " " >> /boot/config.txt
@@ -385,19 +386,19 @@ select opt in "${options[@]}" "Quit"; do
     *) echo "Invalid option. Try another one."; continue;;
     esac
 done
-sed -i '/dtoverlay=hifiberry/d' /boot/config.txt # Remove old configuration.
-sed -i '/dtoverlay=allo/d' /boot/config.txt # Remove old configuration.
+sed --in-place --follow-symlinks '/dtoverlay=hifiberry/d' /boot/config.txt # Remove old configuration.
+sed --in-place --follow-symlinks '/dtoverlay=allo/d' /boot/config.txt # Remove old configuration.
 # Not sure if next 2 lines are needed:
-sed -i '/dtoverlay=vc4-fkms-v3d/c\dtoverlay=vc4-fkms-v3d,audio=off' /boot/config.txt # If your system uses the vc4-fkms-v3d overlay, make sure, audio is disabled.
-sed -i '/dtoverlay=vc4-kms-v3d/c\dtoverlay=vc4-kms-v3d,noaudio' /boot/config.txt # If your system uses the newer vc4-kms-v3d overlay, make sure, audio is disabled.
+sed --in-place --follow-symlinks '/dtoverlay=vc4-fkms-v3d/c\dtoverlay=vc4-fkms-v3d,audio=off' /boot/config.txt # If your system uses the vc4-fkms-v3d overlay, make sure, audio is disabled.
+sed --in-place --follow-symlinks '/dtoverlay=vc4-kms-v3d/c\dtoverlay=vc4-kms-v3d,noaudio' /boot/config.txt # If your system uses the newer vc4-kms-v3d overlay, make sure, audio is disabled.
 echo "$(cat $CNFFILE)$HIFIBERRY" > $CNFFILE
 if [ ! -f /boot/dietpi.txt ]; then
-sed -i '/#dtparam=audio=on/!s/dtparam=audio=on/#&/' /boot/config.txt # Add hashtag, disable internal audio/headphones.
+sed --in-place --follow-symlinks '/#dtparam=audio=on/!s/dtparam=audio=on/#&/' /boot/config.txt # Add hashtag, disable internal audio/headphones.
 fi
-sed -i 's/^[ \t]*//' /boot/config.txt # Remove empty spaces infront of line.
-sed -i ':a; /^\n*$/{ s/\n//; N;  ba};' /boot/config.txt # Remove if two consecutive blank lines and replace with one in a file.
-sed -i '/DIGI/{N;s/\n$//}' /boot/config.txt # Remove blank line after match.
-sed -i '${/^$/d}' /boot/config.txt # Remove last blank line in file.
+sed --in-place --follow-symlinks 's/^[ \t]*//' /boot/config.txt # Remove empty spaces infront of line.
+sed --in-place --follow-symlinks ':a; /^\n*$/{ s/\n//; N;  ba};' /boot/config.txt # Remove if two consecutive blank lines and replace with one in a file.
+sed --in-place --follow-symlinks '/DIGI/{N;s/\n$//}' /boot/config.txt # Remove blank line after match.
+sed --in-place --follow-symlinks '${/^$/d}' /boot/config.txt # Remove last blank line in file.
 fi
 echo " "
 echo "--== Fix allo setup ==--"
@@ -416,7 +417,7 @@ answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
 echo " "
 echo "Now you need to choose your allo card, pick the number for the card you have, exit with 5."
-sed -i /allo-/d /boot/config.txt # Remove existing allo config.
+sed --in-place --follow-symlinks /allo-/d /boot/config.txt # Remove existing allo config.
 echo " " >> /boot/config.txt
 grep -qxF '# --== Configuration for DIGI-DAC ==--' /boot/config.txt || echo '# --== Configuration for DIGI-DAC ==--' >> /boot/config.txt
 echo " " >> /boot/config.txt
@@ -436,19 +437,19 @@ select opt in "${options[@]}" "Quit"; do
     *) echo "Invalid option. Try another one."; continue;;
     esac
 done
-sed -i '/dtoverlay=hifiberry/d' /boot/config.txt # Remove old configuration.
-sed -i '/dtoverlay=allo/d' /boot/config.txt # Remove old configuration.
+sed --in-place --follow-symlinks '/dtoverlay=hifiberry/d' /boot/config.txt # Remove old configuration.
+sed --in-place --follow-symlinks '/dtoverlay=allo/d' /boot/config.txt # Remove old configuration.
 # Not sure if next 2 lines are needed:
-sed -i '/dtoverlay=vc4-fkms-v3d/c\dtoverlay=vc4-fkms-v3d,audio=off' /boot/config.txt # If your system uses the vc4-fkms-v3d overlay, make sure, audio is disabled.
-sed -i '/dtoverlay=vc4-kms-v3d/c\dtoverlay=vc4-kms-v3d,noaudio' /boot/config.txt # If your system uses the newer vc4-kms-v3d overlay, make sure, audio is disabled.
+sed --in-place --follow-symlinks '/dtoverlay=vc4-fkms-v3d/c\dtoverlay=vc4-fkms-v3d,audio=off' /boot/config.txt # If your system uses the vc4-fkms-v3d overlay, make sure, audio is disabled.
+sed --in-place --follow-symlinks '/dtoverlay=vc4-kms-v3d/c\dtoverlay=vc4-kms-v3d,noaudio' /boot/config.txt # If your system uses the newer vc4-kms-v3d overlay, make sure, audio is disabled.
 echo "$(cat $CNFFILE)$DIGICARD" > $CNFFILE
 if [ ! -f /boot/dietpi.txt ]; then
-sed -i '/#dtparam=audio=on/!s/dtparam=audio=on/#&/' /boot/config.txt # Add hashtag, disable internal audio/headphones.
+sed --in-place --follow-symlinks '/#dtparam=audio=on/!s/dtparam=audio=on/#&/' /boot/config.txt # Add hashtag, disable internal audio/headphones.
 fi
-sed -i 's/^[ \t]*//' /boot/config.txt # Remove empty spaces infront of line.
-sed -i ':a; /^\n*$/{ s/\n//; N;  ba};' /boot/config.txt # Remove if two consecutive blank lines and replace with one in a file.
-sed -i '/DIGI/{N;s/\n$//}' /boot/config.txt # Remove blank line after match.
-sed -i '${/^$/d}' /boot/config.txt # Remove last blank line in file.
+sed --in-place --follow-symlinks 's/^[ \t]*//' /boot/config.txt # Remove empty spaces infront of line.
+sed --in-place --follow-symlinks ':a; /^\n*$/{ s/\n//; N;  ba};' /boot/config.txt # Remove if two consecutive blank lines and replace with one in a file.
+sed --in-place --follow-symlinks '/DIGI/{N;s/\n$//}' /boot/config.txt # Remove blank line after match.
+sed --in-place --follow-symlinks '${/^$/d}' /boot/config.txt # Remove last blank line in file.
 echo " "
 fi
 echo " "
@@ -465,8 +466,8 @@ echo -n "Do you want to configure HDMI as default audio-output [y/N]: "
 read answer
 answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
-sed -i '/#hdmi_drive=2/s/^# *//' /boot/config.txt # Remove hashtag.
-sed -i 's/vc4-kms-v3d/vc4-fkms-v3d/g' /boot/config.txt # Change dtoverlay to enable HDMI-alsa device.
+sed --in-place --follow-symlinks '/#hdmi_drive=2/s/^# *//' /boot/config.txt # Remove hashtag.
+sed --in-place --follow-symlinks 's/vc4-kms-v3d/vc4-fkms-v3d/g' /boot/config.txt # Change dtoverlay to enable HDMI-alsa device.
 fi
 echo " "
 echo "--== Cleanup for upgrade ==--"
@@ -570,72 +571,6 @@ if [ ! -f /etc/systemd/system/plexamp.service ]; then
 ln -s /home/dietpi/plexamp/plexamp.service /etc/systemd/system/plexamp.service
 systemctl daemon-reload
 fi
-fi
-fi
-echo " "
-# jackd2 installation and configuration
-echo "  WARNING!!!     WARNING!!!      WARNiNG!!!"
-echo "  SnapJack is currently in Beta, so install on your own risk."
-echo "  Currently this script does not include an uninstaller of SnapJack, so if installing,"
-echo "  and you later want to remove, full reinstall from scratch may be needed."
-echo " "
-echo -n "Do you want to install/upgrade SnapJack ($SNAPJACK_V)? Needed to enable multi-room / multi-device streaming. [y/N]: "
-read answer
-answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
-if [ "$answer" = "y" ]; then
-echo " "
-echo "--== Prepare for $SNAPJACK_V installation ==--"
-echo " "
-cd /home/"$USER"
-# Pre-seed JACK for realtime.
-if [[ -f "${JACK_TEMP_FILE}" ]]; then
-# Delete jack.txt as it already exists and could cause issues when created as a different user
-rm -rf ${JACK_TEMP_FILE} || (>&2 echo "Unable to delete ${JACK_TEMP_FILE} - Please get rid of it manually!"; exit 1)
-fi
-echo "jackd2 jackd/tweak_rt_limits select true" > ${JACK_TEMP_FILE} || (>&2 echo "Unable to write ${JACK_TEMP_FILE} provision file for debconf."; exit 1)
-debconf-set-selections ${JACK_TEMP_FILE}
-# Make sure we don't delete semaphores on user session destruction.
-#printf "\nRemoveIPC=no\n" >> /etc/systemd/logind.conf #old
-sed -i 's/^#RemoveIPC=/RemoveIPC=/' /etc/systemd/logind.conf # to uncomment
-sed -i 's/^RemoveIPC=yes/RemoveIPC=no/' /etc/systemd/logind.conf # to flip 'yes' to 'no'
-echo "--== Install $SNAPJACK_V and dependencies ==--"
-apt-get install -q -q -y jackd jack-tools zita-njbridge liblo-dev jq qjackctl-
-echo " "
-echo "--== Verify jackd version ==--"
-jackd --version
-echo " "
-# Stop any old service.
-echo "--== Stop and disable running SnapJack ==--"
-echo "  If this is first time you are installing, errors related to "snapjack.service" are normal."
-systemctl -q stop snapjack || echo "INFO: Couldn't stop SnapJack"
-systemctl -q disable snapjack || echo "INFO: Couldn't disable SnapJack"
-echo " "
-echo "--== Fetch, unpack and install $SNAPJACK_V ==--"
-echo " "
-cd /home/"$USER"
-wget $SNAPJACK_URL
-rm -rf /home/"$USER"/snapjack
-tar -xvf /home/"$USER"/"$SNAPJACK_V".tar.bz2
-rm -rf /home/"$USER"/"$SNAPJACK_V".tar.bz2
-chown -R "$USER":"$USER" /home/"$USER"/snapjack
-echo " "
-echo "--== Configure SnapJack and install the service as the user ==--"
-echo "  If you have a HAT configured (or any audiodevice) and this is the first time you run SnapJack install,"
-echo "  and card is not in the list, please pick anything and re-run SnapJack install/configuration after you"
-echo "  reboot/enable and verifying your card in Plexamp."
-echo "  Sometimes hard reset is needed (pull power-plug) to get it to initialize the card."
-echo "  Setup/configuration will only work if card is already initialized and enabled/chosen in Pexamp Web-GUI."
-echo " "
-echo " "
-runuser -u "$USER" -- node /home/"$USER"/snapjack/js/index.js "/home/"$USER"/.config/snapjack/Config.json" configure
-# Install the service, making sure we're using the right user.
-sed -e "s/User=pi/User=$USER/" /home/"$USER"/snapjack/snapjack.service | sed -e "s/\/home\/pi/$ESCAPED_HOME/g" > /lib/systemd/system/snapjack.service
-systemctl -q daemon-reload
-systemctl -q enable snapjack
-systemctl -q start snapjack
-# Prefer system jackd.
-if [ -f /usr/bin/jackd ]; then
-rm -rf /home/"$USER"/plexamp/treble/*/libjack*
 fi
 fi
 echo " "

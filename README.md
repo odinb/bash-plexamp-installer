@@ -5,37 +5,15 @@ For more information and hardware used, see here:<br /> https://github.com/odinb
 Assumes 64-bit capable Raspberry Pi HW and Raspberry Pi OS that is 64-bit.
 
 Currently known issues:
-Under Debian 12 (bookworm), the audio-HAT is not detected.
 
-Debian 11 (bullseye) output (HAT detected):
-```root@PlexAmp:~# aplay -l
-**** List of PLAYBACK Hardware Devices ****
-card 0: sndrpihifiberry [snd_rpi_hifiberry_digi], device 0: HifiBerry Digi HiFi wm8804-spdif-0 [HifiBerry Digi HiFi wm8804-spdif-0]
-  Subdevices: 1/1
-  Subdevice #0: subdevice #0
-root@PlexAmp:~#
-```
-Debian 12 (bookworm) output (HAT not detected):
-```root@PlexAmp:~# aplay -l
-**** List of PLAYBACK Hardware Devices ****
-card 0: Headphones [bcm2835 Headphones], device 0: bcm2835 Headphones [bcm2835 Headphones]
-  Subdevices: 8/8
-  Subdevice #0: subdevice #0
-  Subdevice #1: subdevice #1
-  Subdevice #2: subdevice #2
-  Subdevice #3: subdevice #3
-  Subdevice #4: subdevice #4
-  Subdevice #5: subdevice #5
-  Subdevice #6: subdevice #6
-  Subdevice #7: subdevice #7
-card 1: vc4hdmi0 [vc4-hdmi-0], device 0: MAI PCM i2s-hifi-0 [MAI PCM i2s-hifi-0]
-  Subdevices: 1/1
-  Subdevice #0: subdevice #0
-card 2: vc4hdmi1 [vc4-hdmi-1], device 0: MAI PCM i2s-hifi-0 [MAI PCM i2s-hifi-0]
-  Subdevices: 1/1
-  Subdevice #0: subdevice #0
-root@PlexAmp:~#
-```
+On a fresh install, the command ```/home/pi/plexamp/js/index.js``` will throw a ```-bash: /home/pi/plexamp/js/index.js: Permission denied``` error.
+It is not even possible to run it as root!
+
+File privileges are changed to the user using:
+```chown -R "$USER":"$USER" /home/"$USER"/plexamp/```
+```chown -R "$USER":"$USER" /home/"$USER"/.local/```
+
+
 If you have a solution, please let me know.
 
 
