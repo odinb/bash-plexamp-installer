@@ -82,11 +82,11 @@ NODE_MAJOR="16"                                 # Default NodeJS version
 PLEXAMPV=$(curl -s "https://plexamp.plex.tv/headless/version.json" | jq -r '.updateUrl' || (>&2 echo "Unable to extract download URL from version.txt for PlexAmp"; exit 1))        # Default Plexamp-version
 PLEXAMPVA=${PLEXAMPV/.tar.bz2}
 PLEXAMPVB=${PLEXAMPVA/https:\/\/plexamp.plex.tv\/headless\/}
-SNAPJACK_URL=$(curl -s "https://plexamp.plex.tv/snapjack/version.json" | jq -r '.updateUrl' || (>&2 echo "Unable to extract download URL from version.txt for SnapJack"; exit 1))   # Default SnapJack-version
-SNAPJACK_A=${SNAPJACK_URL/.tar.bz2}
-SNAPJACK_V=${SNAPJACK_A/https:\/\/plexamp.plex.tv\/snapjack\/}
-ESCAPED_HOME="${HOME//\//\\/}"
-JACK_TEMP_FILE="/tmp/jack.txt"
+#SNAPJACK_URL=$(curl -s "https://plexamp.plex.tv/snapjack/version.json" | jq -r '.updateUrl' || (>&2 echo "Unable to extract download URL from version.txt for SnapJack"; exit 1))   # Default SnapJack-version
+#SNAPJACK_A=${SNAPJACK_URL/.tar.bz2}
+#SNAPJACK_V=${SNAPJACK_A/https:\/\/plexamp.plex.tv\/snapjack\/}
+#ESCAPED_HOME="${HOME//\//\\/}"
+#JACK_TEMP_FILE="/tmp/jack.txt"
 
 #####
 # Banner introduction.
