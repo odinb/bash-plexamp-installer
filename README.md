@@ -4,18 +4,6 @@ For more information and hardware used, see here:<br /> https://github.com/odinb
 
 Assumes 64-bit capable Raspberry Pi HW and Raspberry Pi OS that is 64-bit.
 
-Currently known issues:
-
-On a fresh install, the command ```/home/pi/plexamp/js/index.js``` will throw a ```-bash: /home/pi/plexamp/js/index.js: Permission denied``` error.
-It is not even possible to run it as root!
-
-File privileges are changed to the user using:
-```chown -R "$USER":"$USER" /home/"$USER"/plexamp/```
-```chown -R "$USER":"$USER" /home/"$USER"/.local/```
-
-
-If you have a solution, please let me know.
-
 
 If your card is not detected after upgrade & reboot (no audio) ("aplay -l" to check), please do hard reboot, and re-select the card via web-GUI. Now there should be audio!
 
