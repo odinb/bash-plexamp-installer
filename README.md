@@ -155,6 +155,11 @@ The new Pi release uses a new power management circuit that doesn’t ramp up th
 
 Note that this affects only the Digi+ Pro and Digi2 Pro (and some clones of these cards).
 
+For more information:
+https://www.hifiberry.com/blog/digi2-pro-raspberry-pi-4-1-5-incompatibilities/
+https://www.hifiberry.com/blog/compatibility-issues-of-the-digi2-pro-and-raspberry-pi-4-rev-1-5/
+https://forums.raspberrypi.com/viewtopic.php?t=329299
+
 ======
 
 Q:
@@ -192,12 +197,5 @@ card 2: vc4hdmi1 [vc4-hdmi-1], device 0: MAI PCM i2s-hifi-0 [MAI PCM i2s-hifi-0]
 root@PlexAmp:~#
 ```
 If you have any information on a solution, please contact me/let me know.
-
-======
-For more information:
-https://www.hifiberry.com/blog/digi2-pro-raspberry-pi-4-1-5-incompatibilities/
-https://www.hifiberry.com/blog/compatibility-issues-of-the-digi2-pro-and-raspberry-pi-4-rev-1-5/
-https://forums.raspberrypi.com/viewtopic.php?t=329299
-
 
 ======
