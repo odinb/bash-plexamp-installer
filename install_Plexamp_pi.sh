@@ -53,6 +53,7 @@
 # Revision update: 2023-10-15 ODIN - Verified not working on Debian version: 12 (bookworm). HAT-cards are not detected. Added other improvements to script.
 # Revision update: 2023-10-17 ODIN - Added version info at start of script execution.
 # Revision update: 2023-10-18 ODIN - Fixed bookworm setup of /boot/config.txt.  Removed SnapJack untill officially released.
+# Revision update: 2023-11-24 ODIN - Replaced apt-get with apt. Added nala if running bookworm.
 #
 #
 #
@@ -62,7 +63,7 @@
 # Dependencies, needed before execution of script.
 #####
 echo "--== Install/upgrade jq which is needed to execute commands related to JSON data processing ==--"
-apt-get install -y jq > /dev/null 2>&1
+apt install -y jq > /dev/null 2>&1
 
 #####
 # Variable(s), update if needed before execution of script.
@@ -73,6 +74,7 @@ USER="dietpi"
 else
 USER=$(logname)
 fi
+OS_VERSION=$(lsb_release -sr)
 TIMEZONE="America/Chicago"                      # Default Timezone
 PASSWORD="MySecretPass123"                      # Default password
 CNFFILE="/boot/config.txt"                      # Default config file
@@ -253,7 +255,7 @@ lscpu
 echo " "
 if [ -f /boot/dietpi.txt ]; then
 echo "--== Verify alsa-utils installed ==--"
-apt-get -y install alsa-utils > /dev/null 2>&1
+apt -y install alsa-utils > /dev/null 2>&1
 echo " "
 fi
 echo "--== Verify Audio HW, list all soundcards and digital audio devices ==--"
@@ -271,7 +273,7 @@ timedatectl
 echo " "
 fi
 echo "--== Install/upgrade rpi-eeprom service ==--"
-apt-get install -y rpi-eeprom > /dev/null 2>&1
+apt install -y rpi-eeprom > /dev/null 2>&1
 echo " "
 echo "--== Run the rpi-eeprom-update to check if update is required ==--"
 rpi-eeprom-update
@@ -292,7 +294,7 @@ answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
 echo " "
 echo "--== Install vim and change to default editor ==--"
-apt-get install -y vim > /dev/null 2>&1
+apt install -y vim > /dev/null 2>&1
 update-alternatives --set editor /usr/bin/vim.basic
 fi
 echo " "
@@ -492,21 +494,21 @@ if [ "$answer" = "y" ]; then
 echo " "
 echo "--== Install node.v16, please be patient ==--"
 apt-mark unhold nodejs > /dev/null 2>&1
-apt-get purge -y nodejs npm > /dev/null 2>&1
+apt purge -y nodejs npm > /dev/null 2>&1
 rm -rf /etc/apt/sources.list.d/nodesource.list
 rm -rf /etc/apt/keyrings/nodesource.gpg
 rm -rf /etc/apt/preferences.d/preferences
 mkdir -p /etc/apt/preferences.d
-apt-get update
-apt-get install -y ca-certificates curl gnupg
+apt update
+apt install -y ca-certificates curl gnupg
 mkdir -p /etc/apt/keyrings
 curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
 echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list
 echo "Package: nodejs" >> /etc/apt/preferences.d/preferences
 echo "Pin: origin deb.nodesource.com" >> /etc/apt/preferences.d/preferences
 echo "Pin-Priority: 1001" >> /etc/apt/preferences.d/preferences
-apt-get update
-apt-get install nodejs -y
+apt update
+apt install nodejs -y
 apt-mark hold nodejs
 echo " "
 echo "--== Verify that node.v16 is set to hold ==--"
@@ -582,14 +584,16 @@ answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
 echo " "
 echo "--== Perform OS-update including Node.v16 (not installation), please be patient this usually takes quite a while ==--"
-apt update --allow-releaseinfo-change
+apt update --allow-releaseinfo-change  > /dev/null 2>&1
 apt-mark unhold nodejs > /dev/null 2>&1
-apt-get -y upgrade nodejs > /dev/null 2>&1
+apt -y upgrade nodejs > /dev/null 2>&1
 apt-mark hold nodejs > /dev/null 2>&1
-apt-get -y update ; apt-get -y upgrade ; apt-get -y dist-upgrade
-apt -y full-upgrade
-apt-get -y install deborphan > /dev/null 2>&1
-apt-get clean ; apt-get autoclean ; apt-get autoremove -y ; deborphan | xargs apt-get -y remove --purge
+if [[ $OS_VERSION == "12" ]]; then
+    apt install -y nala
+    nala clean ; nala update ; nala upgrade -y ; nala autopurge -y
+else
+    apt update ; apt upgrade -y ; apt full-upgrade -y ; apt --purge autoremove -y
+fi
 fi
 echo " "
 echo "--== For Linux 5.4 and higher ==--"
