@@ -54,7 +54,7 @@
 # Revision update: 2023-10-17 ODIN - Added version info at start of script execution.
 # Revision update: 2023-10-18 ODIN - Fixed bookworm setup of /boot/config.txt.  Removed SnapJack untill officially released.
 # Revision update: 2023-11-24 ODIN - Replaced apt-get with apt. Added nala if running bookworm.
-# Revision update: 2026-12-05 ODIN - Minor cleanup of menus and README.
+# Revision update: 2026-12-06 ODIN - Minor cleanup of menus and README.
 #
 #
 #
@@ -486,9 +486,9 @@ fi
 echo " "
 echo "--== Install or upgrade ==--"
 echo " "
-echo "--== If upgrading to Plexamp 4.5.3 or later from an older version, you have to re-run the NodeJS install to upgrade to Node.v16 at least once! ==--"
+echo "--== If upgrading to Plexamp 4.5.3 or newer from an older version, you have to re-run the NodeJS install to upgrade to Node.v16 at least once! ==--"
 echo " "
-echo -n "Do you want to install/upgrade and configure Node.v16? Needed if upgrading from earlier version to Plexamp 4.5.3 or newer! [y/N]: "
+echo -n "Do you want to install/upgrade and configure Node.v16? Needed if upgrading from older versions of Plexamp with a version number less than 4.5.3! [y/N]: "
 read answer
 answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
@@ -607,18 +607,18 @@ echo " "
 echo "--== End of Post-PlexAmp-script, please reboot for all changes to take effect ==--"
 echo " "
 echo -e "$INFO Configuration post-reboot:"
-echo    "      Note !! Only needed if fresh install, not if upgrading. Tokens are preserved during upgrade."
+echo    "      Note !! Run PlexAmp for the first time after install to manually add the claim token."
 echo    "      After reboot, as your regular user please run the following command:"
 echo    "      node /home/"$USER"/plexamp/js/index.js"
-echo " "
-echo    "      Now, go to the URL provided in response, and enter the claim token at prompt."
-echo    "      Please give the player a name at prompt (can be changed via Web-GUI later)."
+echo    " "
+echo    "      Visit https://plex.tv/claim, copy the claim code, paste it in the Terminal, and follow the prompts."
 echo    "      At this point, Plexamp is now signed in and ready, but not running!"
 echo    " "
-echo    "      Now, again as your user, run:"
+echo    "      Now, again as your user, set Plexamp to autostart and start it:"
 echo    "      sudo systemctl enable plexamp.service && sudo systemctl start plexamp.service"
 echo    " "
-echo    "      Once done, the web-GUI should be available on the ip-of-plexamp-pi:32500 from a browser."
+echo    "      Once done, the web-GUI should be available on http://#.#.#.#:32500 from a browser."
+echo    "      Replace the placeholder IP address in this example with your own."
 echo    "      On that GUI you will be asked to login to your Plex-account for security-reasons,"
 echo    "      and then choose a library where to fetch/stream music from."
 echo    " "
