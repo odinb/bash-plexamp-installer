@@ -6,7 +6,7 @@ Assumes 64-bit capable Raspberry Pi HW and Raspberry Pi OS that is 64-bit.
 
 This script will install nodeJS (currently NodeJS-16), install/upgrade/configure Plexamp-Linux-headless.
 
-NOTE!
+NOTE!<br />
 Last verified upgrade was to Plexamp-Linux-headless-v4.9.0.
 If newer version is savailable, please be aware that it is still untested by me, and script might malfunction if any major changes have been made to the application or installation procedure, and installation might fail. 
 
