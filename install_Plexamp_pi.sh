@@ -54,6 +54,7 @@
 # Revision update: 2023-10-17 ODIN - Added version info at start of script execution.
 # Revision update: 2023-10-18 ODIN - Fixed bookworm setup of /boot/config.txt.  Removed SnapJack untill officially released.
 # Revision update: 2023-11-24 ODIN - Replaced apt-get with apt. Added nala if running bookworm.
+# Revision update: 2026-12-05 ODIN - Minor cleanup of menus and README.
 #
 #
 #
@@ -103,7 +104,7 @@ echo    "   ██║     ███████╗███████╗██
 echo    "   ╚═╝     ╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝"
 echo    ""
 echo " "
-echo " This will install upgrade to:"
+echo " This will install or upgrade to:"
 echo " $PLEXAMPVB"
 #echo " $SNAPJACK_V"
 echo " "
@@ -115,8 +116,8 @@ echo "--== Preparing to start script execution ==--"
 echo " "
 echo "--== For your information ==--"
 echo -e "$INFO This script is verifed on the following image(s):"
-echo    "      2023-05-03-raspios-bullseye-arm64-lite - working."
-echo    "      2023-10-10-raspios-bookworm-arm64-lite - working."
+echo    "      2023-12-04-raspios-bullseye-arm64-lite - working."
+echo    "      2023-12-04-raspios-bookworm-arm64-lite - working."
 echo " "
 echo    "      NOTE!!!! Raspberry Pi OS 64-bit lite version is assumed."
 echo " "
@@ -269,7 +270,7 @@ echo "--== Setting NTP-servers ==--"
 sed -ri 's/^#NTP=*/NTP=0.pool.ntp.org 1.pool.ntp.org 2.pool.ntp.org 3.pool.ntp.org/' /etc/systemd/timesyncd.conf
 echo " "
 echo "--== Verify timezone-setup and NTP-sync ==--"
-timedatectl
+timedatectl show
 echo " "
 fi
 echo "--== Install/upgrade rpi-eeprom service ==--"
@@ -619,7 +620,7 @@ echo    "      sudo systemctl enable plexamp.service && sudo systemctl start ple
 echo    " "
 echo    "      Once done, the web-GUI should be available on the ip-of-plexamp-pi:32500 from a browser."
 echo    "      On that GUI you will be asked to login to your Plex-account for security-reasons,"
-echo    "      and then choose a librabry where to fetch/stream music from."
+echo    "      and then choose a library where to fetch/stream music from."
 echo    " "
 echo    "      If using a HAT, it is possible you need to select it via:"
 echo    "      Settings (cogwheel lower right corner) >> Playback >> Audio output >> Audio Device."
