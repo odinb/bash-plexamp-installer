@@ -14,47 +14,32 @@
 # Revision update: 2022-05-07 ODIN - Fixed systemd user instance terminating at logout of user.
 # Revision update: 2022-05-08 ODIN - Updated to using "Plexamp-Linux-arm64-v4.2.2-beta.3" and corrected service-file.
 # Revision update: 2022-05-09 ODIN - Updated to using "Plexamp-Linux-arm64-v4.2.2-beta.5" and added update-function. Version still hardcoded.
-# Revision update: 2022-05-09 ODIN - Updated to using "Plexamp-Linux-arm64-v4.2.2-beta.7". Version still hardcoded.
-# Revision update: 2022-06-03 ODIN - Updated to using "Plexamp-Linux-arm64-v4.2.2". No more beta. Version still hardcoded.
-# Revision update: 2022-08-01 ODIN - Added option for HifiBerry Digi2 Pro. Submitted by Andreas Diel (https://github.com/Dieler).
-# Revision update: 2022-08-02 ODIN - Updated to using "Plexamp-Linux-headless-v4.3.0". No more beta. Version still hardcoded.
+# Revision update: 2022-08-01 ODIN - Added option for HifiBerry Digi2 Pro. Requested by Andreas Diel (https://github.com/Dieler).
 # Revision update: 2022-08-14 ODIN - Added workarounds for DietPi.
-# Revision update: 2022-09-17 ODIN - Updated to using "Plexamp-Linux-headless-v4.4.0".
 # Revision update: 2022-09-18 ODIN - Made Node.v12 optional to please non-Debian/RPI-users.
 # Revision update: 2022-09-18 ODIN - changed user service to system service, and run process as limited user.
-# Revision update: 2022-09-26 ODIN - Added option for allo Boss HIFI DAC and variants. Requested for by hvddrift (https://github.com/hvddrift).
-# Revision update: 2022-10-20 ODIN - Updated to using "Plexamp-Linux-headless-v4.5.0".
-# Revision update: 2022-10-30 ODIN - Updated to using "Plexamp-Linux-headless-v4.5.1".
-# Revision update: 2022-10-30 ODIN - Updated to using "Plexamp-Linux-headless-v4.5.2".
+# Revision update: 2022-09-26 ODIN - Added option for allo Boss HIFI DAC and variants. Requested by hvddrift (https://github.com/hvddrift).
 # Revision update: 2022-11-08 ODIN - Fixed /etc/sudoers.d/010_pi-nopasswd for non-pi user.
 # Revision update: 2022-11-12 ODIN - Updated to using "Plexamp-Linux-headless-v4.5.3 and upgrading to NodeJS v16".
 # Revision update: 2022-11-13 ODIN - Improved logic for installing NodeJS v16 to only if needed.
-# Revision update: 2022-11-12 ODIN - Updated to using "Plexamp-Linux-headless-v4.6.0.
-# Revision update: 2022-12-05 ODIN - Updated to using "Plexamp-Linux-headless-v4.6.1.
 # Revision update: 2022-12-27 ODIN - Updated to remove hardcoded version, should now install latest.
 # Revision update: 2023-02-03 ODIN - Update to remove hardcoded version did not work, now using v4.6.2.
 # Revision update: 2023-02-28 ODIN - Fix HDMI-audio setup with change to "dtoverlay" to enable HDMI-alsa device.
 # Revision update: 2023-05-03 ODIN - Updated to using "Plexamp-Linux-headless-v4.7.0. If your card is not detected after boot (no audio) ("aplay -l" to check),
 #                                    please do hard reboot, and re-select the card! Now there should be audio!
-# Revision update: 2023-05-05 ODIN - Updated to using "Plexamp-Linux-headless-v4.7.1.
-# Revision update: 2023-05-05 ODIN - Updated to using "Plexamp-Linux-headless-v4.7.2.
-# Revision update: 2023-05-10 ODIN - Updated to using "Plexamp-Linux-headless-v4.7.3.
-# Revision update: 2023-05-10 ODIN - Updated to using "Plexamp-Linux-headless-v4.7.4.
-# Revision update: 2023-07-18 ODIN - Updated to using "Plexamp-Linux-headless-v4.8.0.
-# Revision update: 2023-07-23 ODIN - Updated to using "Plexamp-Linux-headless-v4.8.1.
 # Revision update: 2023-08-04 ODIN - Updated to using "Plexamp-Linux-headless-v4.8.2, and added Timezone setting as optional.
 # Revision update: 2023-09-05 ODIN - Updated prompts to correspond better with the HifiBerry Config page.
-# Revision update: 2023-09-07 ODIN - Updated to using "Plexamp-Linux-headless-v4.8.3.
 # Revision update: 2023-09-08 ODIN - Added more TimeZones.
 # Revision update: 2023-09-12 ODIN - Updated NodeJS-16 repo to use "https://github.com/nodesource". Removed legacy path ".config" on generic install, fixing dietpi.
 # Revision update: 2023-10-08 ODIN - Improvements to installer and variable-handling. Various cosmetic fixes.
 # Revision update: 2023-10-08 ODIN - Improvements to motd-manipulation.
 # Revision update: 2023-10-10 ODIN - Added SnapJack installation to enable multi-room / multi-device streaming. Added other improvements to script.
 # Revision update: 2023-10-15 ODIN - Verified not working on Debian version: 12 (bookworm). HAT-cards are not detected. Added other improvements to script.
-# Revision update: 2023-10-17 ODIN - Added version info at start of script execution.
+# Revision update: 2023-10-17 ODIN - Added version info at start of script execution. Version no longer hard-coded.
 # Revision update: 2023-10-18 ODIN - Fixed bookworm setup of /boot/config.txt.  Removed SnapJack untill officially released.
 # Revision update: 2023-11-24 ODIN - Replaced apt-get with apt. Added nala if running bookworm.
-# Revision update: 2026-12-06 ODIN - Minor cleanup of menus and README.
+# Revision update: 2023-12-06 ODIN - Minor cleanup of menus and README.
+# Revision update: 2023-12-22 ODIN - Added option for 9038Q2M-based audiophonics cards. Requested by newelement (https://github.com/newelement)
 #
 #
 #
@@ -391,6 +376,7 @@ select opt in "${options[@]}" "Quit"; do
 done
 sed --in-place --follow-symlinks '/dtoverlay=hifiberry/d' /boot/config.txt # Remove old configuration.
 sed --in-place --follow-symlinks '/dtoverlay=allo/d' /boot/config.txt # Remove old configuration.
+sed --in-place --follow-symlinks '/dtoverlay=i-sabre/d' /boot/config.txt # Remove old configuration.
 # Not sure if next 2 lines are needed:
 sed --in-place --follow-symlinks '/dtoverlay=vc4-fkms-v3d/c\dtoverlay=vc4-fkms-v3d,audio=off' /boot/config.txt # If your system uses the vc4-fkms-v3d overlay, make sure, audio is disabled.
 sed --in-place --follow-symlinks '/dtoverlay=vc4-kms-v3d/c\dtoverlay=vc4-kms-v3d,noaudio' /boot/config.txt # If your system uses the newer vc4-kms-v3d overlay, make sure, audio is disabled.
@@ -442,6 +428,57 @@ select opt in "${options[@]}" "Quit"; do
 done
 sed --in-place --follow-symlinks '/dtoverlay=hifiberry/d' /boot/config.txt # Remove old configuration.
 sed --in-place --follow-symlinks '/dtoverlay=allo/d' /boot/config.txt # Remove old configuration.
+sed --in-place --follow-symlinks '/dtoverlay=i-sabre/d' /boot/config.txt # Remove old configuration.
+# Not sure if next 2 lines are needed:
+sed --in-place --follow-symlinks '/dtoverlay=vc4-fkms-v3d/c\dtoverlay=vc4-fkms-v3d,audio=off' /boot/config.txt # If your system uses the vc4-fkms-v3d overlay, make sure, audio is disabled.
+sed --in-place --follow-symlinks '/dtoverlay=vc4-kms-v3d/c\dtoverlay=vc4-kms-v3d,noaudio' /boot/config.txt # If your system uses the newer vc4-kms-v3d overlay, make sure, audio is disabled.
+echo "$(cat $CNFFILE)$DIGICARD" > $CNFFILE
+if [ ! -f /boot/dietpi.txt ]; then
+sed --in-place --follow-symlinks '/#dtparam=audio=on/!s/dtparam=audio=on/#&/' /boot/config.txt # Add hashtag, disable internal audio/headphones.
+fi
+sed --in-place --follow-symlinks 's/^[ \t]*//' /boot/config.txt # Remove empty spaces infront of line.
+sed --in-place --follow-symlinks ':a; /^\n*$/{ s/\n//; N;  ba};' /boot/config.txt # Remove if two consecutive blank lines and replace with one in a file.
+sed --in-place --follow-symlinks '/DIGI/{N;s/\n$//}' /boot/config.txt # Remove blank line after match.
+sed --in-place --follow-symlinks '${/^$/d}' /boot/config.txt # Remove last blank line in file.
+echo " "
+fi
+echo " "
+echo "--== Fix audiophonics setup ==--"
+echo -e "$INFO Configuring overlay for audiophonics HATs (or clones):"
+echo    "      If you own other audio HATs, or want to keep defaults - skip this step"
+echo    "      you will have to manually configure your HAT later."
+echo    "      If you want to change audio-output from Headphones to HDMI as default output,"
+echo    "      skip this step, you get the option to configure that later."
+echo " "
+echo    "      Information about the audiophonics cards can be found at https://www.audiophonics.fr/en/dac-and-interface-modules/audiophonics-dac-i-sabre-es9038q2m-raspberry-pi-i2s-spdif-pcm-dsd-usb-c-power-supply-p-12795.html"
+echo    "      Configuration for the audiophonics cards can be found at https://www.audiophonics.fr/en/dac-and-interface-modules/ian-canada-dual-mono-mkii-dac-es9038q2m-hat-raspberry-pi-i2s-spdif-pcm-dsd-p-18359.html"
+echo " "
+echo -n "Do you want to configure your audiophonics HAT (or clone) [y/N]: "
+read answer
+answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
+if [ "$answer" = "y" ]; then
+echo " "
+echo "Now you need to choose your allo card, pick the number for the card you have, exit with 5."
+sed --in-place --follow-symlinks /i-sabre-q2m/d /boot/config.txt # Remove existing allo config.
+echo " " >> /boot/config.txt
+grep -qxF '# --== Configuration for DIGI-DAC ==--' /boot/config.txt || echo '# --== Configuration for DIGI-DAC ==--' >> /boot/config.txt
+echo " " >> /boot/config.txt
+echo " "
+title="Select your audiophonics card, exit with 2:"
+prompt="Pick your option:"
+options=("Setup for audiophonics I-SABRE 9038Q2M HIFI DAC")
+echo "$title"
+PS3="$prompt "
+select opt in "${options[@]}" "Quit"; do
+    case "$REPLY" in
+    1 ) echo "You picked $opt, continue with 2 or choose again!"; DIGICARD="dtoverlay=i-sabre-q2m";;
+    $(( ${#options[@]}+1 )) ) echo "Continuing!"; break;;
+    *) echo "Invalid option. Try another one."; continue;;
+    esac
+done
+sed --in-place --follow-symlinks '/dtoverlay=hifiberry/d' /boot/config.txt # Remove old configuration.
+sed --in-place --follow-symlinks '/dtoverlay=allo/d' /boot/config.txt # Remove old configuration.
+sed --in-place --follow-symlinks '/dtoverlay=i-sabre/d' /boot/config.txt # Remove old configuration.
 # Not sure if next 2 lines are needed:
 sed --in-place --follow-symlinks '/dtoverlay=vc4-fkms-v3d/c\dtoverlay=vc4-fkms-v3d,audio=off' /boot/config.txt # If your system uses the vc4-fkms-v3d overlay, make sure, audio is disabled.
 sed --in-place --follow-symlinks '/dtoverlay=vc4-kms-v3d/c\dtoverlay=vc4-kms-v3d,noaudio' /boot/config.txt # If your system uses the newer vc4-kms-v3d overlay, make sure, audio is disabled.
