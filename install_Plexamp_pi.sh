@@ -349,7 +349,7 @@ read answer
 answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
 echo " "
-echo "Now you need to choose your HiFiBerry card, pick the number for the card you have, exit with 6."
+echo "Now you need to choose your HiFiBerry card, pick the number for the card you have, exit with 9."
 sed --in-place --follow-symlinks /hifiberry-/d /boot/config.txt # Remove existing hiFiBerry config.
 echo " " >> /boot/config.txt
 grep -qxF '# --== Configuration for DIGI-DAC ==--' /boot/config.txt || echo '# --== Configuration for DIGI-DAC ==--' >> /boot/config.txt
@@ -458,7 +458,7 @@ read answer
 answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
 echo " "
-echo "Now you need to choose your allo card, pick the number for the card you have, exit with 5."
+echo "Now you need to choose your allo card, pick the number for the card you have, exit with 2."
 sed --in-place --follow-symlinks /i-sabre-q2m/d /boot/config.txt # Remove existing allo config.
 echo " " >> /boot/config.txt
 grep -qxF '# --== Configuration for DIGI-DAC ==--' /boot/config.txt || echo '# --== Configuration for DIGI-DAC ==--' >> /boot/config.txt
