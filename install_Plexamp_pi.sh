@@ -40,6 +40,7 @@
 # Revision update: 2023-11-24 ODIN - Replaced apt-get with apt. Added nala if running bookworm.
 # Revision update: 2023-12-06 ODIN - Minor cleanup of menus and README.
 # Revision update: 2023-12-22 ODIN - Added option for 9038Q2M-based audiophonics cards. Requested by newelement (https://github.com/newelement)
+# Revision update: 2023-12-28 ODIN - Added option for Allo Boss 2 DAC card. Requested by John-Pienaar (https://github.com/john-pienaar)
 #
 #
 #
@@ -399,29 +400,31 @@ echo    "      skip this step, you get the option to configure that later."
 echo " "
 echo    "      Information about the allo cards can be found at https://allo.com/sparky-dac.html"
 echo    "      Configuration for the allo cards can be found at https://www.amazon.com/clouddrive/share/vLk3XO9HOt3sStRUBpf4jwaX7k6J0Im91vo4z2FWVPV"
+echo    "      Configuration for the allo BOSS2 card can be found at https://www.amazon.com/clouddrive/share/ZHSkYGJtUZNZd3L96gyU7DkVRqMmOMP6hcclcgSrYH3"
 echo " "
 echo -n "Do you want to configure your allo HAT (or clone) [y/N]: "
 read answer
 answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
 echo " "
-echo "Now you need to choose your allo card, pick the number for the card you have, exit with 5."
+echo "Now you need to choose your allo card, pick the number for the card you have, exit with 6."
 sed --in-place --follow-symlinks /allo-/d /boot/config.txt # Remove existing allo config.
 echo " " >> /boot/config.txt
 grep -qxF '# --== Configuration for DIGI-DAC ==--' /boot/config.txt || echo '# --== Configuration for DIGI-DAC ==--' >> /boot/config.txt
 echo " " >> /boot/config.txt
 echo " "
-title="Select your allo card, exit with 5:"
+title="Select your allo card, exit with 6:"
 prompt="Pick your option:"
-options=("Setup for ALLO Piano HIFI DAC" "Setup for ALLO Piano 2.1 HIFI DAC" "Setup for ALLO Boss HIFI DAC / Mini Boss HIFI DAC" "Setup for ALLO DIGIOne")
+options=("Setup for ALLO Piano HIFI DAC" "Setup for ALLO Piano 2.1 HIFI DAC" "Setup for ALLO Boss HIFI DAC / Mini Boss HIFI DAC" "Setup for ALLO DIGIOne" "Setup for ALLO BOSS2 Player")
 echo "$title"
 PS3="$prompt "
 select opt in "${options[@]}" "Quit"; do
     case "$REPLY" in
-    1 ) echo "You picked $opt, continue with 5 or choose again!"; DIGICARD="dtoverlay=allo-piano-dac-pcm512x-audio";;
-    2 ) echo "You picked $opt, continue with 5 or choose again!"; DIGICARD="dtoverlay=allo-piano-dac-plus-pcm512x-audio";;
-    3 ) echo "You picked $opt, continue with 5 or choose again!"; DIGICARD="dtoverlay=allo-boss-dac-pcm512x-audio";;
-    4 ) echo "You picked $opt, continue with 5 or choose again!"; DIGICARD="dtoverlay=allo-digione";;
+    1 ) echo "You picked $opt, continue with 6 or choose again!"; DIGICARD="dtoverlay=allo-piano-dac-pcm512x-audio";;
+    2 ) echo "You picked $opt, continue with 6 or choose again!"; DIGICARD="dtoverlay=allo-piano-dac-plus-pcm512x-audio";;
+    3 ) echo "You picked $opt, continue with 6 or choose again!"; DIGICARD="dtoverlay=allo-boss-dac-pcm512x-audio";;
+    4 ) echo "You picked $opt, continue with 6 or choose again!"; DIGICARD="dtoverlay=allo-digione";;
+    5 ) echo "You picked $opt, continue with 6 or choose again!"; DIGICARD="dtoverlay=allo-boss2-dac-audio";;
     $(( ${#options[@]}+1 )) ) echo "Continuing!"; break;;
     *) echo "Invalid option. Try another one."; continue;;
     esac
