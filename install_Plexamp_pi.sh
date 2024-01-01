@@ -41,6 +41,7 @@
 # Revision update: 2023-12-06 ODIN - Minor cleanup of menus and README.
 # Revision update: 2023-12-22 ODIN - Added option for 9038Q2M-based audiophonics cards. Requested by newelement (https://github.com/newelement)
 # Revision update: 2023-12-28 ODIN - Added option for Allo Boss 2 DAC card. Requested by John-Pienaar (https://github.com/john-pienaar)
+# Revision update: 2023-12-31 ODIN - Added option for JustBoom DAC/DIGI cards. Suggested by Ryuzaki_2 (https://forums.plex.tv/u/Ryuzaki_2)
 #
 #
 #
@@ -377,6 +378,7 @@ select opt in "${options[@]}" "Quit"; do
 done
 sed --in-place --follow-symlinks '/dtoverlay=hifiberry/d' /boot/config.txt # Remove old configuration.
 sed --in-place --follow-symlinks '/dtoverlay=allo/d' /boot/config.txt # Remove old configuration.
+sed --in-place --follow-symlinks '/dtoverlay=justboom/d' /boot/config.txt # Remove old configuration.
 sed --in-place --follow-symlinks '/dtoverlay=i-sabre/d' /boot/config.txt # Remove old configuration.
 # Not sure if next 2 lines are needed:
 sed --in-place --follow-symlinks '/dtoverlay=vc4-fkms-v3d/c\dtoverlay=vc4-fkms-v3d,audio=off' /boot/config.txt # If your system uses the vc4-fkms-v3d overlay, make sure, audio is disabled.
@@ -431,6 +433,7 @@ select opt in "${options[@]}" "Quit"; do
 done
 sed --in-place --follow-symlinks '/dtoverlay=hifiberry/d' /boot/config.txt # Remove old configuration.
 sed --in-place --follow-symlinks '/dtoverlay=allo/d' /boot/config.txt # Remove old configuration.
+sed --in-place --follow-symlinks '/dtoverlay=justboom/d' /boot/config.txt # Remove old configuration.
 sed --in-place --follow-symlinks '/dtoverlay=i-sabre/d' /boot/config.txt # Remove old configuration.
 # Not sure if next 2 lines are needed:
 sed --in-place --follow-symlinks '/dtoverlay=vc4-fkms-v3d/c\dtoverlay=vc4-fkms-v3d,audio=off' /boot/config.txt # If your system uses the vc4-fkms-v3d overlay, make sure, audio is disabled.
@@ -443,7 +446,57 @@ sed --in-place --follow-symlinks 's/^[ \t]*//' /boot/config.txt # Remove empty s
 sed --in-place --follow-symlinks ':a; /^\n*$/{ s/\n//; N;  ba};' /boot/config.txt # Remove if two consecutive blank lines and replace with one in a file.
 sed --in-place --follow-symlinks '/DIGI/{N;s/\n$//}' /boot/config.txt # Remove blank line after match.
 sed --in-place --follow-symlinks '${/^$/d}' /boot/config.txt # Remove last blank line in file.
+fi
 echo " "
+echo "--== Fix JustBoom setup ==--"
+echo -e "$INFO Configuring overlay for JustBoom HATs (or clones):"
+echo    "      If you own other audio HATs, or want to keep defaults - skip this step"
+echo    "      you will have to manually configure your HAT later."
+echo    "      If you want to change audio-output from Headphones to HDMI as default output,"
+echo    "      skip this step, you get the option to configure that later."
+echo " "
+echo    "      Information about the JustBoom cards can be found at https://shop.justboom.co/collections/raspberry-pi-audio-boards"
+echo    "      Configuration for the JustBoom cards can be found at https://www.justboom.co/faqs/#FAQ-1"
+echo " "
+echo -n "Do you want to configure your JustBoom HAT (or clone) [y/N]: "
+read answer
+answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
+if [ "$answer" = "y" ]; then
+echo " "
+echo "Now you need to choose your JustBoom card, pick the number for the card you have, exit with 3."
+sed --in-place --follow-symlinks /JustBoom-/d /boot/config.txt # Remove existing JustBoom config.
+echo " " >> /boot/config.txt
+grep -qxF '# --== Configuration for DIGI-DAC ==--' /boot/config.txt || echo '# --== Configuration for DIGI-DAC ==--' >> /boot/config.txt
+echo " " >> /boot/config.txt
+echo " "
+title="Select your JustBoom card, exit with 3:"
+prompt="Pick your option:"
+options=("Setup for DAC and Amp cards" "Setup for Digi cards")
+echo "$title"
+PS3="$prompt "
+select opt in "${options[@]}" "Quit"; do
+    case "$REPLY" in
+    1 ) echo "You picked $opt, continue with 3 or choose again!"; DIGICARD="dtoverlay=justboom-dac";;
+    2 ) echo "You picked $opt, continue with 3 or choose again!"; DIGICARD="dtoverlay=justboom-digi";;
+    $(( ${#options[@]}+1 )) ) echo "Continuing!"; break;;
+    *) echo "Invalid option. Try another one."; continue;;
+    esac
+done
+sed --in-place --follow-symlinks '/dtoverlay=hifiberry/d' /boot/config.txt # Remove old configuration.
+sed --in-place --follow-symlinks '/dtoverlay=allo/d' /boot/config.txt # Remove old configuration.
+sed --in-place --follow-symlinks '/dtoverlay=justboom/d' /boot/config.txt # Remove old configuration.
+sed --in-place --follow-symlinks '/dtoverlay=i-sabre/d' /boot/config.txt # Remove old configuration.
+# Not sure if next 2 lines are needed:
+sed --in-place --follow-symlinks '/dtoverlay=vc4-fkms-v3d/c\dtoverlay=vc4-fkms-v3d,audio=off' /boot/config.txt # If your system uses the vc4-fkms-v3d overlay, make sure, audio is disabled.
+sed --in-place --follow-symlinks '/dtoverlay=vc4-kms-v3d/c\dtoverlay=vc4-kms-v3d,noaudio' /boot/config.txt # If your system uses the newer vc4-kms-v3d overlay, make sure, audio is disabled.
+echo "$(cat $CNFFILE)$DIGICARD" > $CNFFILE
+if [ ! -f /boot/dietpi.txt ]; then
+sed --in-place --follow-symlinks '/#dtparam=audio=on/!s/dtparam=audio=on/#&/' /boot/config.txt # Add hashtag, disable internal audio/headphones.
+fi
+sed --in-place --follow-symlinks 's/^[ \t]*//' /boot/config.txt # Remove empty spaces infront of line.
+sed --in-place --follow-symlinks ':a; /^\n*$/{ s/\n//; N;  ba};' /boot/config.txt # Remove if two consecutive blank lines and replace with one in a file.
+sed --in-place --follow-symlinks '/DIGI/{N;s/\n$//}' /boot/config.txt # Remove blank line after match.
+sed --in-place --follow-symlinks '${/^$/d}' /boot/config.txt # Remove last blank line in file.
 fi
 echo " "
 echo "--== Fix audiophonics setup ==--"
@@ -481,6 +534,7 @@ select opt in "${options[@]}" "Quit"; do
 done
 sed --in-place --follow-symlinks '/dtoverlay=hifiberry/d' /boot/config.txt # Remove old configuration.
 sed --in-place --follow-symlinks '/dtoverlay=allo/d' /boot/config.txt # Remove old configuration.
+sed --in-place --follow-symlinks '/dtoverlay=justboom/d' /boot/config.txt # Remove old configuration.
 sed --in-place --follow-symlinks '/dtoverlay=i-sabre/d' /boot/config.txt # Remove old configuration.
 # Not sure if next 2 lines are needed:
 sed --in-place --follow-symlinks '/dtoverlay=vc4-fkms-v3d/c\dtoverlay=vc4-fkms-v3d,audio=off' /boot/config.txt # If your system uses the vc4-fkms-v3d overlay, make sure, audio is disabled.
@@ -493,7 +547,6 @@ sed --in-place --follow-symlinks 's/^[ \t]*//' /boot/config.txt # Remove empty s
 sed --in-place --follow-symlinks ':a; /^\n*$/{ s/\n//; N;  ba};' /boot/config.txt # Remove if two consecutive blank lines and replace with one in a file.
 sed --in-place --follow-symlinks '/DIGI/{N;s/\n$//}' /boot/config.txt # Remove blank line after match.
 sed --in-place --follow-symlinks '${/^$/d}' /boot/config.txt # Remove last blank line in file.
-echo " "
 fi
 echo " "
 echo "--== Fix HDMI-audio setup ==--"
