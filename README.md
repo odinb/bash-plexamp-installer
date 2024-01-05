@@ -118,7 +118,7 @@ Q:
 Correct overlay has been configured, and hard reboot has been performed, but the system still doesn't load the driver.
 
 A:
---== For Linux 5.4 and higher ==--
+For Linux 5.4 and higher:  
 Disable the onboard EEPROM by adding: 'force_eeprom_read=0' to '/boot/config.txt'
 
 However, this not needed for the PiFi HIFI DiGi+ Digital Sound Card found at:
