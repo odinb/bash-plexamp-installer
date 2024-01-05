@@ -121,7 +121,7 @@ A:
 For Linux 5.4 and higher:  
 Disable the onboard EEPROM by adding: 'force_eeprom_read=0' to '/boot/config.txt'
 
-However, this not needed for the PiFi HIFI DiGi+ Digital Sound Card found at:
+However, this should not be needed for the PiFi HIFI DiGi+ Digital Sound Card found at:
       https://www.fasttech.com/p/5137000
 
 ======
