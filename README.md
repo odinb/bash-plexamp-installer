@@ -115,6 +115,18 @@ Go to the GUI and re-select your Audio device under Settings (cogwheel lower rig
 ======
 
 Q:
+Correct overlay has been configured, and hard reboot has been performed, but the system still doesn't load the driver.
+
+A:
+--== For Linux 5.4 and higher ==--
+Disable the onboard EEPROM by adding: 'force_eeprom_read=0' to '/boot/config.txt'
+
+However, this not needed for the PiFi HIFI DiGi+ Digital Sound Card found at:
+      https://www.fasttech.com/p/5137000
+
+======
+
+Q:
 My HifiBerry card (or clone) is not detected after installation and reboot with ``` aplay -l ``` command, what could be wrong?
 
 A1:
@@ -130,43 +142,5 @@ For more information:
 https://www.hifiberry.com/blog/digi2-pro-raspberry-pi-4-1-5-incompatibilities/
 https://www.hifiberry.com/blog/compatibility-issues-of-the-digi2-pro-and-raspberry-pi-4-rev-1-5/
 https://forums.raspberrypi.com/viewtopic.php?t=329299
-
-======
-
-Q:
-My HAT-card is not recognized after installing-running the script on Raspberry Pi OS "Debian version: 12 (bookworm)".
-
-A:
-Currently it seems like the HAT-cards are not detected under "bookworm", see the following output after configuring it in /boot/config.txt:
-Debian 11 (bullseye) output (HAT detected):
-```root@PlexAmp:~# aplay -l
-**** List of PLAYBACK Hardware Devices ****
-card 0: sndrpihifiberry [snd_rpi_hifiberry_digi], device 0: HifiBerry Digi HiFi wm8804-spdif-0 [HifiBerry Digi HiFi wm8804-spdif-0]
-  Subdevices: 1/1
-  Subdevice #0: subdevice #0
-root@PlexAmp:~#
-```
-Debian 12 (bookworm) output (HAT not detected):
-```root@PlexAmp:~# aplay -l
-**** List of PLAYBACK Hardware Devices ****
-card 0: Headphones [bcm2835 Headphones], device 0: bcm2835 Headphones [bcm2835 Headphones]
-  Subdevices: 8/8
-  Subdevice #0: subdevice #0
-  Subdevice #1: subdevice #1
-  Subdevice #2: subdevice #2
-  Subdevice #3: subdevice #3
-  Subdevice #4: subdevice #4
-  Subdevice #5: subdevice #5
-  Subdevice #6: subdevice #6
-  Subdevice #7: subdevice #7
-card 1: vc4hdmi0 [vc4-hdmi-0], device 0: MAI PCM i2s-hifi-0 [MAI PCM i2s-hifi-0]
-  Subdevices: 1/1
-  Subdevice #0: subdevice #0
-card 2: vc4hdmi1 [vc4-hdmi-1], device 0: MAI PCM i2s-hifi-0 [MAI PCM i2s-hifi-0]
-  Subdevices: 1/1
-  Subdevice #0: subdevice #0
-root@PlexAmp:~#
-```
-If you have any information on a solution, please contact me/let me know.
 
 ======

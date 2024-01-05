@@ -216,6 +216,14 @@ echo " "
 echo "--== Date of execution ==--"
 date
 echo " "
+if [ ! -f /boot/dietpi.txt ]; then
+echo "--== Setting NTP-servers ==--"
+sed -ri 's/^#NTP=*/NTP=0.pool.ntp.org 1.pool.ntp.org 2.pool.ntp.org 3.pool.ntp.org/' /etc/systemd/timesyncd.conf
+echo " "
+echo "--== Verify timezone-setup and NTP-sync ==--"
+timedatectl show
+echo " "
+fi
 echo "--== Check OS version ==--"
 cat /etc/os-release
 if [ ! -f /boot/dietpi.txt ]; then
@@ -252,14 +260,6 @@ echo " "
 echo "--== Verify Audio HW, list all PCMs defined ==--"
 aplay -L
 echo " "
-if [ ! -f /boot/dietpi.txt ]; then
-echo "--== Setting NTP-servers ==--"
-sed -ri 's/^#NTP=*/NTP=0.pool.ntp.org 1.pool.ntp.org 2.pool.ntp.org 3.pool.ntp.org/' /etc/systemd/timesyncd.conf
-echo " "
-echo "--== Verify timezone-setup and NTP-sync ==--"
-timedatectl show
-echo " "
-fi
 echo "--== Install/upgrade rpi-eeprom service ==--"
 apt install -y rpi-eeprom > /dev/null 2>&1
 echo " "
@@ -689,13 +689,6 @@ else
     apt update ; apt upgrade -y ; apt full-upgrade -y ; apt --purge autoremove -y
 fi
 fi
-echo " "
-echo "--== For Linux 5.4 and higher ==--"
-echo -e "$INFO This not needed for the "PiFi HIFI DiGi+ Digital Sound Card" found at:"
-echo    "      https://www.fasttech.com/p/5137000"
-echo " "
-echo    "      If correct overlay is configured, but the system still doesn’t load the driver,"
-echo    "      disable the onboard EEPROM by adding: 'force_eeprom_read=0' to '/boot/config.txt'"
 echo " "
 echo "--== End of Post-PlexAmp-script, please reboot for all changes to take effect ==--"
 echo " "
