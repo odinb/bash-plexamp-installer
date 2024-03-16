@@ -146,13 +146,13 @@ PASSWORDCRYPTED=$(echo "$PASSWORD" | openssl passwd -6 -stdin)
 fi
 if [ ! -f /boot/dietpi.txt ]; then
 echo " "
-echo "Now it is time to choose Timezone, pick the number for the Timezone you want, exit with 34."
+echo "Now it is time to choose Timezone, pick the number for the Timezone you want."
 echo "If your Timezone is not covered, additional timezones can be found here: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones"
 echo " "
 echo "Current settings are:"
 timedatectl show
 echo " "
-echo -n "Do you want to change timezone [y/N]: "
+echo -n "Do you want to change timezone, exit with 34 [y/N]: "
 read answer
 answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
