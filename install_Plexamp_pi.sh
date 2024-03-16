@@ -2,7 +2,7 @@
 # Script: PlexAmp-install for Pi
 # Purpose: Install PlexAmp on a Raspberry Pi.
 # Make sure you have a 64-bit capable Raspberry Pi and Pi OS is 64-bit.
-# Script will install node.v16 and set it on hold.
+# Script will install node.v20 and set it on hold.
 # Needs to be run as the root user.
 #
 # For more info:
@@ -42,6 +42,7 @@
 # Revision update: 2023-12-22 ODIN - Added option for 9038Q2M-based audiophonics cards. Requested by newelement (https://github.com/newelement)
 # Revision update: 2023-12-28 ODIN - Added option for Allo Boss 2 DAC card. Requested by John-Pienaar (https://github.com/john-pienaar)
 # Revision update: 2023-12-31 ODIN - Added option for JustBoom DAC/DIGI cards. Suggested by Ryuzaki_2 (https://forums.plex.tv/u/Ryuzaki_2)
+# Revision update: 2024-03-16 ODIN - Updated to using "Plexamp-Linux-headless-v4.10.0 and upgrading to NodeJS v20".
 #
 #
 #
@@ -68,7 +69,7 @@ PASSWORD="MySecretPass123"                      # Default password
 CNFFILE="/boot/config.txt"                      # Default config file
 HOST="plexamp"                                  # Default hostname
 SPACES="   "                                    # Default spaces
-NODE_MAJOR="16"                                 # Default NodeJS version
+NODE_MAJOR="20"                                 # Default NodeJS version
 PLEXAMPV=$(curl -s "https://plexamp.plex.tv/headless/version.json" | jq -r '.updateUrl' || (>&2 echo "Unable to extract download URL from version.txt for PlexAmp"; exit 1))        # Default Plexamp-version
 PLEXAMPVA=${PLEXAMPV/.tar.bz2}
 PLEXAMPVB=${PLEXAMPVA/https:\/\/plexamp.plex.tv\/headless\/}
@@ -579,14 +580,14 @@ fi
 echo " "
 echo "--== Install or upgrade ==--"
 echo " "
-echo "--== If upgrading to Plexamp 4.5.3 or newer from an older version, you have to re-run the NodeJS install to upgrade to Node.v16 at least once! ==--"
+echo "--== If upgrading to Plexamp 4.10.0 or newer from an older version, you have to re-run the NodeJS install to upgrade to Node.v20 at least once! ==--"
 echo " "
-echo -n "Do you want to install/upgrade and configure Node.v16? Needed if upgrading from older versions of Plexamp with a version number less than 4.5.3! [y/N]: "
+echo -n "Do you want to install/upgrade and configure Node.v20? Needed if upgrading from older versions of Plexamp with a version number less than 4.10.0! [y/N]: "
 read answer
 answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
 echo " "
-echo "--== Install node.v16, please be patient ==--"
+echo "--== Install node.v20, please be patient ==--"
 apt-mark unhold nodejs > /dev/null 2>&1
 apt purge -y nodejs npm > /dev/null 2>&1
 rm -rf /etc/apt/sources.list.d/nodesource.list
@@ -605,10 +606,10 @@ apt update
 apt install nodejs -y
 apt-mark hold nodejs
 echo " "
-echo "--== Verify that node.v16 is set to hold ==--"
+echo "--== Verify that node.v20 is set to hold ==--"
 apt-mark showhold
 echo " "
-echo "--== Verify node.v16 and npm versions, should be "v16.20.*" and "8.19.*" ==--"
+echo "--== Verify node.v20 and npm versions, should be "v20.11.*" and "10.2.*" ==--"
 node -v ; npm -v
 fi
 echo " "
@@ -670,14 +671,14 @@ fi
 fi
 fi
 echo " "
-echo "--== OS-update including Node.v16 ==--"
+echo "--== OS-update including Node.v20 ==--"
 echo " "
 echo -n "Do you want to run full OS-update? This is recommended [y/N]: "
 read answer
 answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
 echo " "
-echo "--== Perform OS-update including Node.v16 (not installation), please be patient this usually takes quite a while ==--"
+echo "--== Perform OS-update including Node.v20 (not installation), please be patient this usually takes quite a while! ==--"
 apt update --allow-releaseinfo-change  > /dev/null 2>&1
 apt-mark unhold nodejs > /dev/null 2>&1
 apt -y upgrade nodejs > /dev/null 2>&1
@@ -723,3 +724,4 @@ echo " "
 echo    "      Logs are located at: ~/.cache/Plexamp/log/Plexamp.log"
 echo " "
 # end
+
