@@ -7,8 +7,8 @@ Assumes 64-bit capable Raspberry Pi HW and Raspberry Pi OS that is 64-bit.
 This script will install nodeJS (currently NodeJS-16), install/upgrade/configure Plexamp-Linux-headless.
 
 NOTE!<br />
-Last verified upgrade was to Plexamp-Linux-headless-v4.9.0.
-If newer version is savailable, please be aware that it is still untested by me, and script might malfunction if any major changes have been made to the application or installation procedure, and installation might fail. 
+Last verified upgrade was to Plexamp-Linux-headless-v4.10.x.
+If newer version is available, and there have been major changes like support for new NodeJS version, please be aware that it might be untested by me, and script might malfunction if any major changes have been made to the application or installation procedure, and installation might fail. Re-running script after script-update usually fixes this, but cannot be guaranteed.
 
 If your card is not detected after upgrade & reboot (no audio) ("aplay -l" to check), please do hard reboot, and re-select the card via web-GUI. Now there should be audio!
 
