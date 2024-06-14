@@ -43,6 +43,8 @@
 # Revision update: 2023-12-28 ODIN - Added option for Allo Boss 2 DAC card. Requested by John-Pienaar (https://github.com/john-pienaar)
 # Revision update: 2023-12-31 ODIN - Added option for JustBoom DAC/DIGI cards. Suggested by Ryuzaki_2 (https://forums.plex.tv/u/Ryuzaki_2)
 # Revision update: 2024-03-16 ODIN - Updated to using "Plexamp-Linux-headless-v4.10.0 and upgrading to NodeJS v20".
+# Revision update: 2024-06-14 ODIN - Fixed Bookworm setup to use /boot/firmware/config.txt dropping support for Bullseye.
+# More info here: https://www.raspberrypi.com/documentation/computers/config_txt.html Commit contributed by ItsVRK (https://github.com/ItsVRK)
 #
 #
 #
@@ -104,8 +106,7 @@ echo "--== Preparing to start script execution ==--"
 echo " "
 echo "--== For your information ==--"
 echo -e "$INFO This script is verifed on the following image(s):"
-echo    "      2023-12-04-raspios-bullseye-arm64-lite - working."
-echo    "      2023-12-04-raspios-bookworm-arm64-lite - working."
+echo    "      2024-06-14-raspios-bookworm-arm64-lite - working."
 echo " "
 echo    "      NOTE!!!! Raspberry Pi OS 64-bit lite version is assumed."
 echo " "
