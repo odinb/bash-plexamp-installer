@@ -3,6 +3,8 @@
 For more information and hardware used, see here:<br /> https://github.com/odinb/bash-plexamp-installer/wiki
 
 Assumes 64-bit capable Raspberry Pi HW and Raspberry Pi OS that is 64-bit.
+Due to the change here: https://www.raspberrypi.com/documentation/computers/config_txt.html
+the script will no longer be backwards compatible with 11 (bullseye), and moving forward will only support 12 (bookworm).
 
 This script will install nodeJS (currently NodeJS-16), install/upgrade/configure Plexamp-Linux-headless.
 
