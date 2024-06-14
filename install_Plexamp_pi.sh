@@ -610,7 +610,7 @@ echo " "
 echo "--== Verify that node.v20 is set to hold ==--"
 apt-mark showhold
 echo " "
-echo "--== Verify node.v20 and npm versions, should be "v20.*.*" and "10.5.*" ==--"
+echo "--== Verify node.v20 and npm versions, should be "v20.*.*" and "10.*.*" ==--"
 node -v ; npm -v
 fi
 echo " "
