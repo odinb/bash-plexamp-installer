@@ -66,7 +66,7 @@ fi
 OS_VERSION=$(lsb_release -sr)
 TIMEZONE="America/Chicago"                      # Default Timezone
 PASSWORD="MySecretPass123"                      # Default password
-CNFFILE="/boot/config.txt"                      # Default config file
+CNFFILE="/boot/firmware/config.txt"             # Default config file
 HOST="plexamp"                                  # Default hostname
 SPACES="   "                                    # Default spaces
 NODE_MAJOR="20"                                 # Default NodeJS version
