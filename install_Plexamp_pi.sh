@@ -66,7 +66,7 @@ fi
 OS_VERSION=$(lsb_release -sr)
 TIMEZONE="America/Chicago"                      # Default Timezone
 PASSWORD="MySecretPass123"                      # Default password
-CNFFILE="/boot/config.txt"                      # Default config file
+CNFFILE="/boot/firmware/config.txt"             # Default config file
 HOST="plexamp"                                  # Default hostname
 SPACES="   "                                    # Default spaces
 NODE_MAJOR="20"                                 # Default NodeJS version
@@ -353,10 +353,10 @@ answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
 echo " "
 echo "Now you need to choose your HiFiBerry card, pick the number for the card you have, exit with 9."
-sed --in-place --follow-symlinks /hifiberry-/d /boot/config.txt # Remove existing hiFiBerry config.
-echo " " >> /boot/config.txt
-grep -qxF '# --== Configuration for DIGI-DAC ==--' /boot/config.txt || echo '# --== Configuration for DIGI-DAC ==--' >> /boot/config.txt
-echo " " >> /boot/config.txt
+sed --in-place --follow-symlinks /hifiberry-/d /boot/firmware/config.txt # Remove existing hiFiBerry config.
+echo " " >> /boot/firmware/config.txt
+grep -qxF '# --== Configuration for DIGI-DAC ==--' /boot/firmware/config.txt || echo '# --== Configuration for DIGI-DAC ==--' >> /boot/firmware/config.txt
+echo " " >> /boot/firmware/config.txt
 echo " "
 title="Select your HiFiBerry card, exit with 9:"
 prompt="Pick your option:"
@@ -377,21 +377,21 @@ select opt in "${options[@]}" "Quit"; do
     *) echo "Invalid option. Try another one."; continue;;
     esac
 done
-sed --in-place --follow-symlinks '/dtoverlay=hifiberry/d' /boot/config.txt # Remove old configuration.
-sed --in-place --follow-symlinks '/dtoverlay=allo/d' /boot/config.txt # Remove old configuration.
-sed --in-place --follow-symlinks '/dtoverlay=justboom/d' /boot/config.txt # Remove old configuration.
-sed --in-place --follow-symlinks '/dtoverlay=i-sabre/d' /boot/config.txt # Remove old configuration.
+sed --in-place --follow-symlinks '/dtoverlay=hifiberry/d' /boot/firmware/config.txt # Remove old configuration.
+sed --in-place --follow-symlinks '/dtoverlay=allo/d' /boot/firmware/config.txt # Remove old configuration.
+sed --in-place --follow-symlinks '/dtoverlay=justboom/d' /boot/firmware/config.txt # Remove old configuration.
+sed --in-place --follow-symlinks '/dtoverlay=i-sabre/d' /boot/firmware/config.txt # Remove old configuration.
 # Not sure if next 2 lines are needed:
-sed --in-place --follow-symlinks '/dtoverlay=vc4-fkms-v3d/c\dtoverlay=vc4-fkms-v3d,audio=off' /boot/config.txt # If your system uses the vc4-fkms-v3d overlay, make sure, audio is disabled.
-sed --in-place --follow-symlinks '/dtoverlay=vc4-kms-v3d/c\dtoverlay=vc4-kms-v3d,noaudio' /boot/config.txt # If your system uses the newer vc4-kms-v3d overlay, make sure, audio is disabled.
+sed --in-place --follow-symlinks '/dtoverlay=vc4-fkms-v3d/c\dtoverlay=vc4-fkms-v3d,audio=off' /boot/firmware/config.txt # If your system uses the vc4-fkms-v3d overlay, make sure, audio is disabled.
+sed --in-place --follow-symlinks '/dtoverlay=vc4-kms-v3d/c\dtoverlay=vc4-kms-v3d,noaudio' /boot/firmware/config.txt # If your system uses the newer vc4-kms-v3d overlay, make sure, audio is disabled.
 echo "$(cat $CNFFILE)$HIFIBERRY" > $CNFFILE
 if [ ! -f /boot/dietpi.txt ]; then
-sed --in-place --follow-symlinks '/#dtparam=audio=on/!s/dtparam=audio=on/#&/' /boot/config.txt # Add hashtag, disable internal audio/headphones.
+sed --in-place --follow-symlinks '/#dtparam=audio=on/!s/dtparam=audio=on/#&/' /boot/firmware/config.txt # Add hashtag, disable internal audio/headphones.
 fi
-sed --in-place --follow-symlinks 's/^[ \t]*//' /boot/config.txt # Remove empty spaces infront of line.
-sed --in-place --follow-symlinks ':a; /^\n*$/{ s/\n//; N;  ba};' /boot/config.txt # Remove if two consecutive blank lines and replace with one in a file.
-sed --in-place --follow-symlinks '/DIGI/{N;s/\n$//}' /boot/config.txt # Remove blank line after match.
-sed --in-place --follow-symlinks '${/^$/d}' /boot/config.txt # Remove last blank line in file.
+sed --in-place --follow-symlinks 's/^[ \t]*//' /boot/firmware/config.txt # Remove empty spaces infront of line.
+sed --in-place --follow-symlinks ':a; /^\n*$/{ s/\n//; N;  ba};' /boot/firmware/config.txt # Remove if two consecutive blank lines and replace with one in a file.
+sed --in-place --follow-symlinks '/DIGI/{N;s/\n$//}' /boot/firmware/config.txt # Remove blank line after match.
+sed --in-place --follow-symlinks '${/^$/d}' /boot/firmware/config.txt # Remove last blank line in file.
 fi
 echo " "
 echo "--== Fix allo setup ==--"
@@ -411,10 +411,10 @@ answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
 echo " "
 echo "Now you need to choose your allo card, pick the number for the card you have, exit with 6."
-sed --in-place --follow-symlinks /allo-/d /boot/config.txt # Remove existing allo config.
-echo " " >> /boot/config.txt
-grep -qxF '# --== Configuration for DIGI-DAC ==--' /boot/config.txt || echo '# --== Configuration for DIGI-DAC ==--' >> /boot/config.txt
-echo " " >> /boot/config.txt
+sed --in-place --follow-symlinks /allo-/d /boot/firmware/config.txt # Remove existing allo config.
+echo " " >> /boot/firmware/config.txt
+grep -qxF '# --== Configuration for DIGI-DAC ==--' /boot/firmware/config.txt || echo '# --== Configuration for DIGI-DAC ==--' >> /boot/firmware/config.txt
+echo " " >> /boot/firmware/config.txt
 echo " "
 title="Select your allo card, exit with 6:"
 prompt="Pick your option:"
@@ -432,21 +432,21 @@ select opt in "${options[@]}" "Quit"; do
     *) echo "Invalid option. Try another one."; continue;;
     esac
 done
-sed --in-place --follow-symlinks '/dtoverlay=hifiberry/d' /boot/config.txt # Remove old configuration.
-sed --in-place --follow-symlinks '/dtoverlay=allo/d' /boot/config.txt # Remove old configuration.
-sed --in-place --follow-symlinks '/dtoverlay=justboom/d' /boot/config.txt # Remove old configuration.
-sed --in-place --follow-symlinks '/dtoverlay=i-sabre/d' /boot/config.txt # Remove old configuration.
+sed --in-place --follow-symlinks '/dtoverlay=hifiberry/d' /boot/firmware/config.txt # Remove old configuration.
+sed --in-place --follow-symlinks '/dtoverlay=allo/d' /boot/firmware/config.txt # Remove old configuration.
+sed --in-place --follow-symlinks '/dtoverlay=justboom/d' /boot/firmware/config.txt # Remove old configuration.
+sed --in-place --follow-symlinks '/dtoverlay=i-sabre/d' /boot/firmware/config.txt # Remove old configuration.
 # Not sure if next 2 lines are needed:
-sed --in-place --follow-symlinks '/dtoverlay=vc4-fkms-v3d/c\dtoverlay=vc4-fkms-v3d,audio=off' /boot/config.txt # If your system uses the vc4-fkms-v3d overlay, make sure, audio is disabled.
-sed --in-place --follow-symlinks '/dtoverlay=vc4-kms-v3d/c\dtoverlay=vc4-kms-v3d,noaudio' /boot/config.txt # If your system uses the newer vc4-kms-v3d overlay, make sure, audio is disabled.
+sed --in-place --follow-symlinks '/dtoverlay=vc4-fkms-v3d/c\dtoverlay=vc4-fkms-v3d,audio=off' /boot/firmware/config.txt # If your system uses the vc4-fkms-v3d overlay, make sure, audio is disabled.
+sed --in-place --follow-symlinks '/dtoverlay=vc4-kms-v3d/c\dtoverlay=vc4-kms-v3d,noaudio' /boot/firmware/config.txt # If your system uses the newer vc4-kms-v3d overlay, make sure, audio is disabled.
 echo "$(cat $CNFFILE)$DIGICARD" > $CNFFILE
 if [ ! -f /boot/dietpi.txt ]; then
-sed --in-place --follow-symlinks '/#dtparam=audio=on/!s/dtparam=audio=on/#&/' /boot/config.txt # Add hashtag, disable internal audio/headphones.
+sed --in-place --follow-symlinks '/#dtparam=audio=on/!s/dtparam=audio=on/#&/' /boot/firmware/config.txt # Add hashtag, disable internal audio/headphones.
 fi
-sed --in-place --follow-symlinks 's/^[ \t]*//' /boot/config.txt # Remove empty spaces infront of line.
-sed --in-place --follow-symlinks ':a; /^\n*$/{ s/\n//; N;  ba};' /boot/config.txt # Remove if two consecutive blank lines and replace with one in a file.
-sed --in-place --follow-symlinks '/DIGI/{N;s/\n$//}' /boot/config.txt # Remove blank line after match.
-sed --in-place --follow-symlinks '${/^$/d}' /boot/config.txt # Remove last blank line in file.
+sed --in-place --follow-symlinks 's/^[ \t]*//' /boot/firmware/config.txt # Remove empty spaces infront of line.
+sed --in-place --follow-symlinks ':a; /^\n*$/{ s/\n//; N;  ba};' /boot/firmware/config.txt # Remove if two consecutive blank lines and replace with one in a file.
+sed --in-place --follow-symlinks '/DIGI/{N;s/\n$//}' /boot/firmware/config.txt # Remove blank line after match.
+sed --in-place --follow-symlinks '${/^$/d}' /boot/firmware/config.txt # Remove last blank line in file.
 fi
 echo " "
 echo "--== Fix JustBoom setup ==--"
@@ -465,10 +465,10 @@ answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
 echo " "
 echo "Now you need to choose your JustBoom card, pick the number for the card you have, exit with 3."
-sed --in-place --follow-symlinks /JustBoom-/d /boot/config.txt # Remove existing JustBoom config.
-echo " " >> /boot/config.txt
-grep -qxF '# --== Configuration for DIGI-DAC ==--' /boot/config.txt || echo '# --== Configuration for DIGI-DAC ==--' >> /boot/config.txt
-echo " " >> /boot/config.txt
+sed --in-place --follow-symlinks /JustBoom-/d /boot/firmware/config.txt # Remove existing JustBoom config.
+echo " " >> /boot/firmware/config.txt
+grep -qxF '# --== Configuration for DIGI-DAC ==--' /boot/firmware/config.txt || echo '# --== Configuration for DIGI-DAC ==--' >> /boot/firmware/config.txt
+echo " " >> /boot/firmware/config.txt
 echo " "
 title="Select your JustBoom card, exit with 3:"
 prompt="Pick your option:"
@@ -483,21 +483,21 @@ select opt in "${options[@]}" "Quit"; do
     *) echo "Invalid option. Try another one."; continue;;
     esac
 done
-sed --in-place --follow-symlinks '/dtoverlay=hifiberry/d' /boot/config.txt # Remove old configuration.
-sed --in-place --follow-symlinks '/dtoverlay=allo/d' /boot/config.txt # Remove old configuration.
-sed --in-place --follow-symlinks '/dtoverlay=justboom/d' /boot/config.txt # Remove old configuration.
-sed --in-place --follow-symlinks '/dtoverlay=i-sabre/d' /boot/config.txt # Remove old configuration.
+sed --in-place --follow-symlinks '/dtoverlay=hifiberry/d' /boot/firmware/config.txt # Remove old configuration.
+sed --in-place --follow-symlinks '/dtoverlay=allo/d' /boot/firmware/config.txt # Remove old configuration.
+sed --in-place --follow-symlinks '/dtoverlay=justboom/d' /boot/firmware/config.txt # Remove old configuration.
+sed --in-place --follow-symlinks '/dtoverlay=i-sabre/d' /boot/firmware/config.txt # Remove old configuration.
 # Not sure if next 2 lines are needed:
-sed --in-place --follow-symlinks '/dtoverlay=vc4-fkms-v3d/c\dtoverlay=vc4-fkms-v3d,audio=off' /boot/config.txt # If your system uses the vc4-fkms-v3d overlay, make sure, audio is disabled.
-sed --in-place --follow-symlinks '/dtoverlay=vc4-kms-v3d/c\dtoverlay=vc4-kms-v3d,noaudio' /boot/config.txt # If your system uses the newer vc4-kms-v3d overlay, make sure, audio is disabled.
+sed --in-place --follow-symlinks '/dtoverlay=vc4-fkms-v3d/c\dtoverlay=vc4-fkms-v3d,audio=off' /boot/firmware/config.txt # If your system uses the vc4-fkms-v3d overlay, make sure, audio is disabled.
+sed --in-place --follow-symlinks '/dtoverlay=vc4-kms-v3d/c\dtoverlay=vc4-kms-v3d,noaudio' /boot/firmware/config.txt # If your system uses the newer vc4-kms-v3d overlay, make sure, audio is disabled.
 echo "$(cat $CNFFILE)$DIGICARD" > $CNFFILE
 if [ ! -f /boot/dietpi.txt ]; then
-sed --in-place --follow-symlinks '/#dtparam=audio=on/!s/dtparam=audio=on/#&/' /boot/config.txt # Add hashtag, disable internal audio/headphones.
+sed --in-place --follow-symlinks '/#dtparam=audio=on/!s/dtparam=audio=on/#&/' /boot/firmware/config.txt # Add hashtag, disable internal audio/headphones.
 fi
-sed --in-place --follow-symlinks 's/^[ \t]*//' /boot/config.txt # Remove empty spaces infront of line.
-sed --in-place --follow-symlinks ':a; /^\n*$/{ s/\n//; N;  ba};' /boot/config.txt # Remove if two consecutive blank lines and replace with one in a file.
-sed --in-place --follow-symlinks '/DIGI/{N;s/\n$//}' /boot/config.txt # Remove blank line after match.
-sed --in-place --follow-symlinks '${/^$/d}' /boot/config.txt # Remove last blank line in file.
+sed --in-place --follow-symlinks 's/^[ \t]*//' /boot/firmware/config.txt # Remove empty spaces infront of line.
+sed --in-place --follow-symlinks ':a; /^\n*$/{ s/\n//; N;  ba};' /boot/firmware/config.txt # Remove if two consecutive blank lines and replace with one in a file.
+sed --in-place --follow-symlinks '/DIGI/{N;s/\n$//}' /boot/firmware/config.txt # Remove blank line after match.
+sed --in-place --follow-symlinks '${/^$/d}' /boot/firmware/config.txt # Remove last blank line in file.
 fi
 echo " "
 echo "--== Fix audiophonics setup ==--"
@@ -516,10 +516,10 @@ answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
 echo " "
 echo "Now you need to choose your allo card, pick the number for the card you have, exit with 2."
-sed --in-place --follow-symlinks /i-sabre-q2m/d /boot/config.txt # Remove existing allo config.
-echo " " >> /boot/config.txt
-grep -qxF '# --== Configuration for DIGI-DAC ==--' /boot/config.txt || echo '# --== Configuration for DIGI-DAC ==--' >> /boot/config.txt
-echo " " >> /boot/config.txt
+sed --in-place --follow-symlinks /i-sabre-q2m/d /boot/firmware/config.txt # Remove existing allo config.
+echo " " >> /boot/firmware/config.txt
+grep -qxF '# --== Configuration for DIGI-DAC ==--' /boot/firmware/config.txt || echo '# --== Configuration for DIGI-DAC ==--' >> /boot/firmware/config.txt
+echo " " >> /boot/firmware/config.txt
 echo " "
 title="Select your audiophonics card, exit with 2:"
 prompt="Pick your option:"
@@ -533,21 +533,21 @@ select opt in "${options[@]}" "Quit"; do
     *) echo "Invalid option. Try another one."; continue;;
     esac
 done
-sed --in-place --follow-symlinks '/dtoverlay=hifiberry/d' /boot/config.txt # Remove old configuration.
-sed --in-place --follow-symlinks '/dtoverlay=allo/d' /boot/config.txt # Remove old configuration.
-sed --in-place --follow-symlinks '/dtoverlay=justboom/d' /boot/config.txt # Remove old configuration.
-sed --in-place --follow-symlinks '/dtoverlay=i-sabre/d' /boot/config.txt # Remove old configuration.
+sed --in-place --follow-symlinks '/dtoverlay=hifiberry/d' /boot/firmware/config.txt # Remove old configuration.
+sed --in-place --follow-symlinks '/dtoverlay=allo/d' /boot/firmware/config.txt # Remove old configuration.
+sed --in-place --follow-symlinks '/dtoverlay=justboom/d' /boot/firmware/config.txt # Remove old configuration.
+sed --in-place --follow-symlinks '/dtoverlay=i-sabre/d' /boot/firmware/config.txt # Remove old configuration.
 # Not sure if next 2 lines are needed:
-sed --in-place --follow-symlinks '/dtoverlay=vc4-fkms-v3d/c\dtoverlay=vc4-fkms-v3d,audio=off' /boot/config.txt # If your system uses the vc4-fkms-v3d overlay, make sure, audio is disabled.
-sed --in-place --follow-symlinks '/dtoverlay=vc4-kms-v3d/c\dtoverlay=vc4-kms-v3d,noaudio' /boot/config.txt # If your system uses the newer vc4-kms-v3d overlay, make sure, audio is disabled.
+sed --in-place --follow-symlinks '/dtoverlay=vc4-fkms-v3d/c\dtoverlay=vc4-fkms-v3d,audio=off' /boot/firmware/config.txt # If your system uses the vc4-fkms-v3d overlay, make sure, audio is disabled.
+sed --in-place --follow-symlinks '/dtoverlay=vc4-kms-v3d/c\dtoverlay=vc4-kms-v3d,noaudio' /boot/firmware/config.txt # If your system uses the newer vc4-kms-v3d overlay, make sure, audio is disabled.
 echo "$(cat $CNFFILE)$DIGICARD" > $CNFFILE
 if [ ! -f /boot/dietpi.txt ]; then
-sed --in-place --follow-symlinks '/#dtparam=audio=on/!s/dtparam=audio=on/#&/' /boot/config.txt # Add hashtag, disable internal audio/headphones.
+sed --in-place --follow-symlinks '/#dtparam=audio=on/!s/dtparam=audio=on/#&/' /boot/firmware/config.txt # Add hashtag, disable internal audio/headphones.
 fi
-sed --in-place --follow-symlinks 's/^[ \t]*//' /boot/config.txt # Remove empty spaces infront of line.
-sed --in-place --follow-symlinks ':a; /^\n*$/{ s/\n//; N;  ba};' /boot/config.txt # Remove if two consecutive blank lines and replace with one in a file.
-sed --in-place --follow-symlinks '/DIGI/{N;s/\n$//}' /boot/config.txt # Remove blank line after match.
-sed --in-place --follow-symlinks '${/^$/d}' /boot/config.txt # Remove last blank line in file.
+sed --in-place --follow-symlinks 's/^[ \t]*//' /boot/firmware/config.txt # Remove empty spaces infront of line.
+sed --in-place --follow-symlinks ':a; /^\n*$/{ s/\n//; N;  ba};' /boot/firmware/config.txt # Remove if two consecutive blank lines and replace with one in a file.
+sed --in-place --follow-symlinks '/DIGI/{N;s/\n$//}' /boot/firmware/config.txt # Remove blank line after match.
+sed --in-place --follow-symlinks '${/^$/d}' /boot/firmware/config.txt # Remove last blank line in file.
 fi
 echo " "
 echo "--== Fix HDMI-audio setup ==--"
@@ -563,8 +563,8 @@ echo -n "Do you want to configure HDMI as default audio-output [y/N]: "
 read answer
 answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
-sed --in-place --follow-symlinks '/#hdmi_drive=2/s/^# *//' /boot/config.txt # Remove hashtag.
-sed --in-place --follow-symlinks 's/vc4-kms-v3d/vc4-fkms-v3d/g' /boot/config.txt # Change dtoverlay to enable HDMI-alsa device.
+sed --in-place --follow-symlinks '/#hdmi_drive=2/s/^# *//' /boot/firmware/config.txt # Remove hashtag.
+sed --in-place --follow-symlinks 's/vc4-kms-v3d/vc4-fkms-v3d/g' /boot/firmware/config.txt # Change dtoverlay to enable HDMI-alsa device.
 fi
 echo " "
 echo "--== Cleanup for upgrade ==--"
