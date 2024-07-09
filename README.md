@@ -5,7 +5,8 @@ For more information and hardware used, see here:<br /> https://github.com/odinb
 Assumes 64-bit capable Raspberry Pi HW and Raspberry Pi OS that is 64-bit.<br />
 
 Due to the change here: https://www.raspberrypi.com/documentation/computers/config_txt.html<br />
-the script will no longer be backwards compatible with 11 (bullseye), and moving forward will only support 12 (bookworm).
+the script will no longer be backwards compatible with 11 (bullseye), and moving forward will only support 12 (bookworm).<br />
+Bullseye has a planned end-of-life end of summer/early fall: https://wiki.debian.org/DebianReleases#Current_Releases.2FRepositories
 
 This script will install nodeJS (currently NodeJS-20), install/upgrade/configure Plexamp-Linux-headless.
 
