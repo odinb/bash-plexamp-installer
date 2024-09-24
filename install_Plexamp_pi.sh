@@ -45,6 +45,7 @@
 # Revision update: 2024-03-16 ODIN - Updated to using "Plexamp-Linux-headless-v4.10.0 and upgrading to NodeJS v20".
 # Revision update: 2024-06-14 ODIN - Fixed Bookworm setup to use /boot/firmware/config.txt dropping support for Bullseye.
 # More info here: https://www.raspberrypi.com/documentation/computers/config_txt.html Commit contributed by ItsVRK (https://github.com/ItsVRK)
+# Revision update: 2024-09-24 ODIN - Updated to "dtoverlay=vc4-kms-v3d" from "fkms" due to deprecation after input in issues #29 from bhcompy (https://github.com/bhcompy).
 #
 #
 #
@@ -383,7 +384,7 @@ sed --in-place --follow-symlinks '/dtoverlay=allo/d' /boot/firmware/config.txt #
 sed --in-place --follow-symlinks '/dtoverlay=justboom/d' /boot/firmware/config.txt # Remove old configuration.
 sed --in-place --follow-symlinks '/dtoverlay=i-sabre/d' /boot/firmware/config.txt # Remove old configuration.
 # Not sure if next 2 lines are needed:
-sed --in-place --follow-symlinks '/dtoverlay=vc4-fkms-v3d/c\dtoverlay=vc4-fkms-v3d,audio=off' /boot/firmware/config.txt # If your system uses the vc4-fkms-v3d overlay, make sure, audio is disabled.
+sed --in-place --follow-symlinks '/dtoverlay=vc4-kms-v3d/c\dtoverlay=vc4-kms-v3d,audio=off' /boot/firmware/config.txt # If your system uses the vc4-kms-v3d overlay, make sure, audio is disabled.
 sed --in-place --follow-symlinks '/dtoverlay=vc4-kms-v3d/c\dtoverlay=vc4-kms-v3d,noaudio' /boot/firmware/config.txt # If your system uses the newer vc4-kms-v3d overlay, make sure, audio is disabled.
 echo "$(cat $CNFFILE)$HIFIBERRY" > $CNFFILE
 if [ ! -f /boot/dietpi.txt ]; then
@@ -438,7 +439,7 @@ sed --in-place --follow-symlinks '/dtoverlay=allo/d' /boot/firmware/config.txt #
 sed --in-place --follow-symlinks '/dtoverlay=justboom/d' /boot/firmware/config.txt # Remove old configuration.
 sed --in-place --follow-symlinks '/dtoverlay=i-sabre/d' /boot/firmware/config.txt # Remove old configuration.
 # Not sure if next 2 lines are needed:
-sed --in-place --follow-symlinks '/dtoverlay=vc4-fkms-v3d/c\dtoverlay=vc4-fkms-v3d,audio=off' /boot/firmware/config.txt # If your system uses the vc4-fkms-v3d overlay, make sure, audio is disabled.
+sed --in-place --follow-symlinks '/dtoverlay=vc4-kms-v3d/c\dtoverlay=vc4-kms-v3d,audio=off' /boot/firmware/config.txt # If your system uses the vc4-kms-v3d overlay, make sure, audio is disabled.
 sed --in-place --follow-symlinks '/dtoverlay=vc4-kms-v3d/c\dtoverlay=vc4-kms-v3d,noaudio' /boot/firmware/config.txt # If your system uses the newer vc4-kms-v3d overlay, make sure, audio is disabled.
 echo "$(cat $CNFFILE)$DIGICARD" > $CNFFILE
 if [ ! -f /boot/dietpi.txt ]; then
@@ -489,7 +490,7 @@ sed --in-place --follow-symlinks '/dtoverlay=allo/d' /boot/firmware/config.txt #
 sed --in-place --follow-symlinks '/dtoverlay=justboom/d' /boot/firmware/config.txt # Remove old configuration.
 sed --in-place --follow-symlinks '/dtoverlay=i-sabre/d' /boot/firmware/config.txt # Remove old configuration.
 # Not sure if next 2 lines are needed:
-sed --in-place --follow-symlinks '/dtoverlay=vc4-fkms-v3d/c\dtoverlay=vc4-fkms-v3d,audio=off' /boot/firmware/config.txt # If your system uses the vc4-fkms-v3d overlay, make sure, audio is disabled.
+sed --in-place --follow-symlinks '/dtoverlay=vc4-kms-v3d/c\dtoverlay=vc4-kms-v3d,audio=off' /boot/firmware/config.txt # If your system uses the vc4-kms-v3d overlay, make sure, audio is disabled.
 sed --in-place --follow-symlinks '/dtoverlay=vc4-kms-v3d/c\dtoverlay=vc4-kms-v3d,noaudio' /boot/firmware/config.txt # If your system uses the newer vc4-kms-v3d overlay, make sure, audio is disabled.
 echo "$(cat $CNFFILE)$DIGICARD" > $CNFFILE
 if [ ! -f /boot/dietpi.txt ]; then
@@ -539,7 +540,7 @@ sed --in-place --follow-symlinks '/dtoverlay=allo/d' /boot/firmware/config.txt #
 sed --in-place --follow-symlinks '/dtoverlay=justboom/d' /boot/firmware/config.txt # Remove old configuration.
 sed --in-place --follow-symlinks '/dtoverlay=i-sabre/d' /boot/firmware/config.txt # Remove old configuration.
 # Not sure if next 2 lines are needed:
-sed --in-place --follow-symlinks '/dtoverlay=vc4-fkms-v3d/c\dtoverlay=vc4-fkms-v3d,audio=off' /boot/firmware/config.txt # If your system uses the vc4-fkms-v3d overlay, make sure, audio is disabled.
+sed --in-place --follow-symlinks '/dtoverlay=vc4-kms-v3d/c\dtoverlay=vc4-kms-v3d,audio=off' /boot/firmware/config.txt # If your system uses the vc4-kms-v3d overlay, make sure, audio is disabled.
 sed --in-place --follow-symlinks '/dtoverlay=vc4-kms-v3d/c\dtoverlay=vc4-kms-v3d,noaudio' /boot/firmware/config.txt # If your system uses the newer vc4-kms-v3d overlay, make sure, audio is disabled.
 echo "$(cat $CNFFILE)$DIGICARD" > $CNFFILE
 if [ ! -f /boot/dietpi.txt ]; then
@@ -565,7 +566,7 @@ read answer
 answer=`echo "$answer" | tr '[:upper:]' '[:lower:]'`
 if [ "$answer" = "y" ]; then
 sed --in-place --follow-symlinks '/#hdmi_drive=2/s/^# *//' /boot/firmware/config.txt # Remove hashtag.
-sed --in-place --follow-symlinks 's/vc4-kms-v3d/vc4-fkms-v3d/g' /boot/firmware/config.txt # Change dtoverlay to enable HDMI-alsa device.
+sed --in-place --follow-symlinks 's/vc4-kms-v3d/vc4-kms-v3d/g' /boot/firmware/config.txt # Change dtoverlay to enable HDMI-alsa device.
 fi
 echo " "
 echo "--== Cleanup for upgrade ==--"
