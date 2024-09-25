@@ -148,3 +148,51 @@ https://www.hifiberry.com/blog/compatibility-issues-of-the-digi2-pro-and-raspber
 https://forums.raspberrypi.com/viewtopic.php?t=329299
 
 ======
+
+Q:
+Having issues with audio on HDMI on desktop install.
+Tried setting "dtoverlay=vc4-fkms-v3d" and "adding hdmi_drive=2" etc. to config.txt but still does not work.
+
+A:
+Script now sets "dtoverlay=vc4-kms-v3d" since this is recommended from RPi4 and newer.
+
+Some background info:
+
+Here's what we know at time of writing about KMS (Kernel Mode Setting) and FKMS (Fake Kernel Mode Setting) on Raspberry Pi:
+
+KMS vs FKMS
+KMS (Kernel Mode Setting):
+- Is the standard Linux framework for setting video modes
+- Directly accesses hardware registers for HDMI/DSI initialization
+- More extensible and open-source
+- Generally preferred for newer Raspberry Pi models, especially Pi 4 or later
+
+FKMS (Fake Kernel Mode Setting):
+- A special driver for Raspberry Pi
+= Uses the proprietary DispmanX API to set up HDMI
+- Simpler for Linux to use but relies on closed-source components
+- Was more common on older Pi models
+
+Recommendations
+For Raspberry Pi 4 or later:
+- KMS is now the preferred and more actively developed option
+- FKMS has some significant bugs on Pi 4 and is less supported
+
+For older Raspberry Pi models:
+-FKMS may still be a viable option, especially if having issues with KMS
+
+Important Considerations
+1. KMS on Pi affects more than just mode setting - it also configures 2D compositing planes through the DRM (Direct Render Manager) subsystem.
+2. Switching between KMS and FKMS may require additional configuration changes:
+- Modifying boot/config.txt
+- Potentially adjusting hdmi_mode and group_mode parameters
+- Possibly editing /boot/cmdline.txt
+
+3. The choice between KMS and FKMS can impact performance and compatibility with certain features or software.
+4. If using the official Raspberry Pi 7" Touchscreen, additional overlays may be needed for KMS:
+   dtoverlay=vc4-kms-dsi-7inch
+   dtoverlay=rpi-ft5406
+
+5. For the most up-to-date and model-specific recommendations, it's best to consult the official Raspberry Pi documentation or forums, as the preferred options can change with software updates.
+
+======
