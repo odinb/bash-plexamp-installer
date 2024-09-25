@@ -126,7 +126,9 @@ For Linux 5.4 and higher:
 Disable the onboard EEPROM by adding: 'force_eeprom_read=0' to '/boot/config.txt'
 
 However, this should not be needed for the PiFi HIFI DiGi+ Digital Sound Card found at:
-      https://www.fasttech.com/p/5137000
+https://www.aliexpress.us/w/wholesale-HIFI-DiGi-Digital-Sound-Card-I2S-SPDI.html
+Alt. DAC version:
+https://www.aliexpress.us/w/wholesale-PIFI-Digi-DAC%2BHIFI-DAC-Audio-Sound-Card-Module-I2S.html
 
 ======
 
@@ -194,5 +196,9 @@ Important Considerations
    dtoverlay=rpi-ft5406
 
 5. For the most up-to-date and model-specific recommendations, it's best to consult the official Raspberry Pi documentation or forums, as the preferred options can change with software updates.
+
+https://forums.raspberrypi.com/viewtopic.php?t=359847#p2158626
+https://forums.raspberrypi.com/viewtopic.php?p=1598691#p1598691
+https://forums.raspberrypi.com/viewtopic.php?t=342661&sid=27f581984f8d93321b227d3b981d3c15#p2053197
 
 ======
