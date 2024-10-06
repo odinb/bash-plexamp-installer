@@ -45,7 +45,8 @@
 # Revision update: 2024-03-16 ODIN - Updated to using "Plexamp-Linux-headless-v4.10.0 and upgrading to NodeJS v20".
 # Revision update: 2024-06-14 ODIN - Fixed Bookworm setup to use /boot/firmware/config.txt dropping support for Bullseye.
 # More info here: https://www.raspberrypi.com/documentation/computers/config_txt.html Commit contributed by ItsVRK (https://github.com/ItsVRK)
-# Revision update: 2024-09-24 ODIN - Updated to "dtoverlay=vc4-kms-v3d" from "fkms" due to deprecation after input in issues #29 from bhcompy (https://github.com/bhcompy).
+# Revision update: 2024-09-24 ODIN - Updated to "dtoverlay=vc4-kms-v3d" due to deprecation of "fkms" after input (issue #29) from bhcompy (https://github.com/bhcompy).
+# Revision update: 2024-10-06 ODIN - Added workarounds for DietPi for /boot/config.txt.
 #
 #
 #
@@ -115,7 +116,7 @@ echo    "      It cannot be guaranteed to run on other version of the image with
 echo    "      Installation assumes ARMv8, 64-bit HW, and was testen on a Raspberry Pi 4 Model B."
 echo    "      Installation also assumes a HiFiBerry HAT or one of its clones installed."
 echo    "      If you do not have one, you can also dedicate audio to the HDMI port."
-echo    "      DietPi is best effort, and was last tested on 2023-09-12."
+echo    "      DietPi is best effort, and was last tested on 2024-10-06 on DietPi v9.7.1."
 echo " "
 echo "--== Starting Installation ==--"
 echo " "
@@ -326,6 +327,7 @@ grep -qxF $USER' ALL=(ALL) NOPASSWD: ALL' /etc/sudoers.d/010_pi-nopasswd || echo
 fi
 if [ -f /boot/dietpi.txt ]; then
 usermod -aG adm,dialout,cdrom,sudo,audio,video,plugdev,games,users,input,render,netdev,spi,i2c,gpio "$USER"
+echo " "
 fi
 if [ ! -f /boot/dietpi.txt ]; then
 echo " "
@@ -339,6 +341,14 @@ echo "--== After ==--"
 rfkill list all
 echo " "
 fi
+
+# workaround for DietPi part 1 of 2
+if [ -f /boot/dietpi.txt ] && [ -f /boot/config.txt ] && [ ! -f /boot/firmware/config.txt ]; then
+    mkdir -p /boot/firmware/
+    touch /boot/firmware/tempfolder
+    cp /boot/config.txt /boot/firmware/config.txt
+fi
+
 echo "--== Fix HiFiBerry setup ==--"
 echo -e "$INFO Configuring overlay for HifiBerry HATs (or clones):"
 echo    "      If you own other audio HATs, or want to keep defaults - skip this step"
@@ -568,6 +578,13 @@ if [ "$answer" = "y" ]; then
 sed --in-place --follow-symlinks '/#hdmi_drive=2/s/^# *//' /boot/firmware/config.txt # Remove hashtag.
 sed --in-place --follow-symlinks 's/vc4-kms-v3d/vc4-kms-v3d/g' /boot/firmware/config.txt # Change dtoverlay to enable HDMI-alsa device.
 fi
+
+# workaround for DietPi part 2 of 2
+if [ -f /boot/dietpi.txt ] && [ -f /boot/config.txt ] && [ -f /boot/firmware/tempfolder ]; then
+    cp /boot/firmware/config.txt /boot/config.txt
+    rm -rf /boot/firmware/
+fi
+
 echo " "
 echo "--== Cleanup for upgrade ==--"
 echo " "
