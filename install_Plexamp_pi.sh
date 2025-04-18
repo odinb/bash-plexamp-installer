@@ -10,7 +10,7 @@
 #
 # Revision update: 2020-12-06 ODIN - Initial version.
 # Revision update: 2020-12-16 ODIN - Added MacOS information for Plexamp V1.x.x and workarounds for DietPi.
-# Revision update: 2022-05-04 ODIN - Changed to new version of Pi OS (64-bit), Plexamp V4.2.2. Not tested on DietPi.
+# Revision update: 2022-05-04 ODIN - Changed to new version of Pi OS (64-bit), Plexamp V4.2.2. Not tested on `DietPi.
 # Revision update: 2022-05-07 ODIN - Fixed systemd user instance terminating at logout of user.
 # Revision update: 2022-05-08 ODIN - Updated to using "Plexamp-Linux-arm64-v4.2.2-beta.3" and corrected service-file.
 # Revision update: 2022-05-09 ODIN - Updated to using "Plexamp-Linux-arm64-v4.2.2-beta.5" and added update-function. Version still hardcoded.
@@ -117,7 +117,7 @@ echo    "      It cannot be guaranteed to run on other version of the image with
 echo    "      Installation assumes ARMv8, 64-bit HW, and was testen on a Raspberry Pi 4 Model B."
 echo    "      Installation also assumes a HiFiBerry HAT or one of its clones installed."
 echo    "      If you do not have one, you can also dedicate audio to the HDMI port."
-echo    "      DietPi is best effort, and was last tested on 2024-10-06 on DietPi v9.7.1."
+echo    "      DietPi is best effort, and was last tested on 2025-04-18 on DietPi v9.12.1."
 echo " "
 echo "--== Starting Installation ==--"
 echo " "

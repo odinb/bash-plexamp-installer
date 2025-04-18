@@ -37,7 +37,7 @@ Once done, unmount and insert card into Raspberry Pi and boot it.
 
 SSH access on "DietPi OS" as user: dietpi/dietpi and as root: root/dietpi<br />
 NOTE!!! DietPi is best-effort, and might not work.
-DietPi is best effort, and was last tested on 2024-10-06 on DietPi v9.7.1.
+DietPi is best effort, and was last tested on 2025-04-18 on DietPi v9.12.1.
 
 After SSH-ing to the SBC, on the "Raspberry Pi OS", change to root (```sudo -i```) and run script with:
 
