@@ -47,6 +47,7 @@
 # More info here: https://www.raspberrypi.com/documentation/computers/config_txt.html Commit contributed by ItsVRK (https://github.com/ItsVRK)
 # Revision update: 2024-09-24 ODIN - Updated to "dtoverlay=vc4-kms-v3d" due to deprecation of "fkms" after input (issue #29) from bhcompy (https://github.com/bhcompy).
 # Revision update: 2024-10-06 ODIN - Added workarounds for DietPi for /boot/config.txt.
+# Revision update: 2025-04-18 ODIN - Added update for new wifi setting to fix "Wi-Fi is currently blocked by rfkill".
 #
 #
 #
@@ -108,7 +109,7 @@ echo "--== Preparing to start script execution ==--"
 echo " "
 echo "--== For your information ==--"
 echo -e "$INFO This script is verifed on the following image(s):"
-echo    "      2024-03-15-raspios-bookworm-arm64-lite - working."
+echo    "      2025-04-18-Debian GNU/Linux 12 (bookworm) - working."
 echo " "
 echo    "      NOTE!!!! Raspberry Pi OS 64-bit lite version is assumed."
 echo " "
@@ -336,6 +337,7 @@ echo " "
 echo "--== Before ==--"
 rfkill list all
 rfkill unblock 0
+rfkill unblock 1
 echo " "
 echo "--== After ==--"
 rfkill list all
