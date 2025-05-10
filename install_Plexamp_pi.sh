@@ -49,6 +49,7 @@
 # Revision update: 2024-10-06 ODIN - Added workarounds for DietPi for /boot/config.txt.
 # Revision update: 2025-04-18 ODIN - Added update for new wifi setting to fix "Wi-Fi is currently blocked by rfkill".
 # Revision update: 2025-05-09 ODIN - Modified to run Plexamp as a user-level service with DAC access, and automatically enable plexamp user-service. Added WiFi Country Code Setup.
+# Revision update: 2025-05-09 ODIN - Modified to detect DietPi and use a system-level service instead of a user-level service, as system services are more reliable in DietPi’s minimal environment.
 
 #####
 # Dependencies, needed before execution of script.
@@ -677,9 +678,32 @@ if [ "$answer" = "y" ]; then
     chown -R "$USER":"$USER" /home/"$USER"/.local/
     rm -rf /home/"$USER"/"$PLEXAMPVB".tar.bz2
     echo " "
-    echo "--== Create user-level plexamp.service ==--"
-    mkdir -p /home/"$USER"/.config/systemd/user
-    cat > /home/"$USER"/.config/systemd/user/plexamp.service << EOF
+    if [ -f /boot/dietpi.txt ]; then
+        echo "--== Create system-level plexamp.service for DietPi ==--"
+        cat > /etc/systemd/system/plexamp.service << EOF
+[Unit]
+Description=Plexamp Headless (System Service)
+After=network.target
+
+[Service]
+User=$USER
+Group=$USER
+ExecStart=/usr/bin/node /home/$USER/plexamp/js/index.js
+WorkingDirectory=/home/$USER/plexamp
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+EOF
+        echo " "
+        echo "--== Enable and start system-level plexamp.service ==--"
+        systemctl daemon-reload
+        systemctl enable plexamp.service
+        systemctl start plexamp.service
+    else
+        echo "--== Create user-level plexamp.service ==--"
+        mkdir -p /home/"$USER"/.config/systemd/user
+        cat > /home/"$USER"/.config/systemd/user/plexamp.service << EOF
 [Unit]
 Description=Plexamp Headless
 After=network.target
@@ -692,19 +716,19 @@ Restart=always
 [Install]
 WantedBy=default.target
 EOF
-    chown -R "$USER":"$USER" /home/"$USER"/.config
-    echo " "
-    echo "--== Ensure runtime directory exists ==--"
-    USER_UID=$(id -u "$USER")
-    mkdir -p /run/user/"$USER_UID"
-    chown "$USER":"$USER" /run/user/"$USER_UID"
-    echo " "
-    echo "--== Enable lingering for user to keep service running after logout ==--"
-    loginctl enable-linger "$USER"
-    echo " "
-    echo "--== Set up plexamp.service to enable and start on first login ==--"
-    # NEW: Create a one-time script to enable and start the service
-    cat > /home/"$USER"/.plexamp_setup.sh << EOF
+        chown -R "$USER":"$USER" /home/"$USER"/.config
+        echo " "
+        echo "--== Ensure runtime directory exists ==--"
+        USER_UID=$(id -u "$USER")
+        mkdir -p /run/user/"$USER_UID"
+        chown "$USER":"$USER" /run/user/"$USER_UID"
+        echo " "
+        echo "--== Enable lingering for user to keep service running after logout ==--"
+        loginctl enable-linger "$USER"
+        echo " "
+        echo "--== Set up plexamp.service to enable and start on first login ==--"
+        # Create a one-time script to enable and start the service
+        cat > /home/"$USER"/.plexamp_setup.sh << EOF
 #!/bin/bash
 systemctl --user daemon-reload
 systemctl --user enable plexamp.service
@@ -714,10 +738,11 @@ rm -f /home/$USER/.plexamp_setup.sh
 # Remove the line that sources this script from .profile
 sed -i '/.plexamp_setup.sh/d' /home/$USER/.profile
 EOF
-    chown "$USER":"$USER" /home/"$USER"/.plexamp_setup.sh
-    chmod +x /home/"$USER"/.plexamp_setup.sh
-    # NEW: Add the script to .profile to run on first login
-    echo "[ -f /home/$USER/.plexamp_setup.sh ] && /home/$USER/.plexamp_setup.sh" >> /home/"$USER"/.profile
+        chown "$USER":"$USER" /home/"$USER"/.plexamp_setup.sh
+        chmod +x /home/"$USER"/.plexamp_setup.sh
+        # Add the script to .profile to run on first login
+        echo "[ -f /home/$USER/.plexamp_setup.sh ] && /home/$USER/.plexamp_setup.sh" >> /home/"$USER"/.profile
+    fi
 fi
 echo " "
 echo "--== Update motd ==--"
