@@ -6,12 +6,12 @@ Assumes 64-bit capable Raspberry Pi HW and Raspberry Pi OS that is 64-bit.<br />
 
 Due to the change here: https://www.raspberrypi.com/documentation/computers/config_txt.html<br />
 the script will no longer be backwards compatible with 11 (bullseye), and moving forward will only support 12 (bookworm).<br />
-Bullseye has a planned end-of-life end of summer/early fall: https://wiki.debian.org/DebianReleases#Current_Releases.2FRepositories
+Bullseye was end-of-life on 2024-08-014: https://wiki.debian.org/DebianReleases#Current_Releases.2FRepositories
 
 This script will install nodeJS (currently NodeJS-20), install/upgrade/configure Plexamp-Linux-headless.
 
 NOTE!<br />
-Last verified upgrade was to Plexamp-Linux-headless-v4.10.x.
+Last verified upgrade was to Plexamp-Linux-headless-v4.12.x.
 If newer version is available, and there have been major changes like support for new NodeJS version, please be aware that it might be untested by me, and script might malfunction if any major changes have been made to the application or installation procedure, and installation might fail. Re-running script after script-update usually fixes this, but cannot be guaranteed.
 
 If your card is not detected after upgrade & reboot (no audio) ("aplay -l" to check), please do hard reboot, and re-select the card via web-GUI. Now there should be audio!
@@ -27,7 +27,7 @@ Raspberry Pi Imager is the quick and easy way to install Raspberry Pi OS and oth
 [Choose the Raspberry Pi OS (other):](https://www.raspberrypi.com/software/)
 <br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/Pi-imager_OS.png" width="450">
 
-[Then Raspberry Pi OS (64-bit):](https://www.raspberrypi.com/software/)
+[Then Raspberry Pi OS Lite (64-bit):](https://www.raspberrypi.com/software/)
 <br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/Pi-imager_OS_64.png" width="450">
 
 [The advanced screen of Pi-imager:](https://www.raspberrypi.com/software/)
@@ -37,34 +37,11 @@ Once done, unmount and insert card into Raspberry Pi and boot it.
 
 SSH access on "DietPi OS" as user: dietpi/dietpi and as root: root/dietpi<br />
 NOTE!!! DietPi is best-effort, and might not work.
-DietPi is best effort, and was last tested on 2025-04-18 on DietPi v9.12.1.
+DietPi is best effort, and was last tested on 2025-07-22 on DietPi v9.14.2.
 
 After SSH-ing to the SBC, on the "Raspberry Pi OS", change to root (```sudo -i```) and run script with:
 
 ```bash <(wget -qO- https://raw.githubusercontent.com/odinb/bash-plexamp-installer/main/install_Plexamp_pi.sh)```
-
-### Post-install and post-reboot tasks
-Note !! Only needed if fresh install, not if upgrading. Tokens are preserved during upgrade.
-After reboot, as your regular user please run the command:
-
-```node /home/USER/plexamp/js/index.js```
-where USER is your user, normally pi.
-Now, go to the URL provided in response, and enter the claim token at prompt.
-Please give the player a name at prompt (can be changed via Web-GUI later).
-At this point, Plexamp is now signed in and ready, but not running!
-
-Now, again as your user, run ```sudo systemctl enable plexamp.service && sudo systemctl restart plexamp.service``` to set plexamp to start on reboot, and to run it immediately.
-
-Once done, the web-GUI should be available on "ip-of-plexamp-pi:32500" from a browser.
-On that GUI you will be asked to login to your Plex-account for security-reasons, and then choose a librabry where to fetch/stream music from.
-
-Wherever possible, you should choose output device via the script (gets set in "/boot/config.txt") when installing, to make it default system-wide.
-If you have audio-problems, or want to choose output after install, go to the web-GUI.
-Here the menu is found via: Settings (cogwheel lower right corner) >> Playback >> Audio output >> Audio Device.
-As an example, if you have chosen the “ Digi/Digi+“ option during install in the script, pick “Default” if the card is not showing, then reboot the pi. Now the card will show up in the list, and you can choose it!
-
-Now play some music! Or control it from any other instance of Plexamp.
-
 
 ### Re-running the script
 
@@ -80,8 +57,7 @@ Q:
 The RPi will show up in my cast list. However the moment I select a song to play, it either keeps loading forever (black screen with loading circle) or it flips back to the album overview without starting the selected song. This is the case for all file types tried.
 
 A:
-Go into the plexamp settings (via the web UI) and select the right audio output device. Rebooting the RPi a second time sometimes also helps (or restarting/veirfying the PlexAmp service), this of course will only help if correct audio device is already chosen.
-(```sudo systemctl enable plexamp.service && sudo systemctl restart plexamp.service```)
+Go into the plexamp settings (via the web UI) and select the right audio output device. Rebooting the RPi a second time sometimes also helps (or restarting/verifying the PlexAmp service), this of course will only help if correct audio device is already chosen.
 
 ======
 
@@ -126,10 +102,7 @@ A:
 For Linux 5.4 and higher:  
 Disable the onboard EEPROM by adding: 'force_eeprom_read=0' to '/boot/config.txt'
 
-However, this should not be needed for the PiFi HIFI DiGi+ Digital Sound Card found at:
-https://www.aliexpress.us/w/wholesale-HIFI-DiGi-Digital-Sound-Card-I2S-SPDI.html
-Alt. DAC version:
-https://www.aliexpress.us/w/wholesale-PIFI-Digi-DAC%2BHIFI-DAC-Audio-Sound-Card-Module-I2S.html
+However, this should not be needed for the PiFi HIFI DiGi+ Digital Sound Card.
 
 ======
 
