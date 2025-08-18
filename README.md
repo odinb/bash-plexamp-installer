@@ -4,9 +4,10 @@ For more information and hardware used, see here:<br /> https://github.com/odinb
 
 Assumes 64-bit capable Raspberry Pi HW and Raspberry Pi OS that is 64-bit.<br />
 
-Due to the change here: https://www.raspberrypi.com/documentation/computers/config_txt.html<br />
-the script will no longer be backwards compatible with 11 (bullseye), and moving forward will only support 12 (bookworm).<br />
-Bullseye was end-of-life on 2024-08-014: https://wiki.debian.org/DebianReleases#Current_Releases.2FRepositories
+The script is currently maintained for Debian Bookworm and Trixie.<br />
+Debian Trixie was released on 2024-08-09.<br />
+Bullseye was end-of-life on 2024-08-014.<br />
+https://wiki.debian.org/DebianReleases#Current_Releases.2FRepositories
 
 This script will install nodeJS (currently NodeJS-20), install/upgrade/configure Plexamp-Linux-headless.
 
@@ -14,7 +15,7 @@ NOTE!<br />
 Last verified upgrade was to Plexamp-Linux-headless-v4.12.x.
 If newer version is available, and there have been major changes like support for new NodeJS version, please be aware that it might be untested by me, and script might malfunction if any major changes have been made to the application or installation procedure, and installation might fail. Re-running script after script-update usually fixes this, but cannot be guaranteed.
 
-If your card is not detected after upgrade & reboot (no audio) ("aplay -l" to check), please do hard reboot, and re-select the card via web-GUI. Now there should be audio!
+If your card is not detected after upgrade & reboot (no audio) ("aplay -l" to check), please do hard reboot (pull power), and re-select the card via web-GUI. Now there should be audio!
 
 ## Install Raspberry Pi OS using Raspberry Pi Imager.
 Raspberry Pi Imager is the quick and easy way to install Raspberry Pi OS and other operating systems to a microSD card, ready to use with your Raspberry Pi.
@@ -37,9 +38,9 @@ Once done, unmount and insert card into Raspberry Pi and boot it.
 
 SSH access on "DietPi OS" as user: dietpi/dietpi and as root: root/dietpi<br />
 NOTE!!! DietPi is best-effort, and might not work.
-DietPi is best effort, and was last tested on 2025-07-22 on DietPi v9.14.2.
+DietPi is best effort, and was last tested on 2025-08-17 on DietPi v9.15.2.
 
-After SSH-ing to the SBC, on the "Raspberry Pi OS", change to root (```sudo -i```) and run script with:
+After SSH-ing to the SBC, on the "Raspberry Pi OS", change to root (```sudo su -i```) and run script with:
 
 ```bash <(wget -qO- https://raw.githubusercontent.com/odinb/bash-plexamp-installer/main/install_Plexamp_pi.sh)```
 
