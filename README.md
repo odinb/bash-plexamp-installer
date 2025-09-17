@@ -40,7 +40,7 @@ SSH access on "DietPi OS" as user: dietpi/dietpi and as root: root/dietpi<br />
 NOTE!!! DietPi is best-effort, and might not work.
 DietPi is best effort, and was last tested on 2025-08-17 on DietPi v9.15.2.
 
-After SSH-ing to the SBC, on the "Raspberry Pi OS", change to root (```sudo su -i```) and run script with:
+After SSH-ing to the SBC, on the "Raspberry Pi OS", change to root (```sudo su -```) and run script with:
 
 ```bash <(wget -qO- https://raw.githubusercontent.com/odinb/bash-plexamp-installer/main/install_Plexamp_pi.sh)```
 
@@ -175,5 +175,36 @@ Important Considerations
 https://forums.raspberrypi.com/viewtopic.php?t=359847#p2158626
 https://forums.raspberrypi.com/viewtopic.php?p=1598691#p1598691
 https://forums.raspberrypi.com/viewtopic.php?t=342661&sid=27f581984f8d93321b227d3b981d3c15#p2053197
+
+======
+
+Q:
+Performed a password reset and now things are funky!
+
+A1 (Raspberry Pi OS):
+After a Plex password reset + auto sign-out from all devices, follow the steps below to get headless back up and running (needs improvement).
+
+- Restart plexamp systemd service: "systemctl --user restart plexamp.service", or reboot the device.
+
+- After restart, stop plexamp service: "systemctl --user stop plexamp.service".
+
+- Manually start plexamp from terminal (as same user who did the original install) "node ~/plexamp/js/index.js" Enter claim code and player name, wait for plexamp to start, ignore other messages.
+
+- Restart plexamp service: "systemctl --user restart plexamp.service", or reboot device. Headless should now be visible to other players.
+
+- Go to the headless browser interface: hostname:32500, then go to "settings" > "account" and sign out. Now sign back in, then click on the "cast" icon and re-select the headless player. Check any playback settings that revert to defaults after sign-in, things like sample rate matching, sample rate conversion, autoplay, etc.
+
+A2 (DietPi):
+After a Plex password reset + auto sign-out from all devices, follow the steps below to get headless back up and running (needs improvement).
+
+- Restart plexamp systemd service: "sudo systemctl restart plexamp.service", or reboot the device.
+
+- After restart, stop plexamp service: "sudo systemctl stop plexamp.service".
+
+- Manually start plexamp from terminal (as same user who did the original install) "node ~/plexamp/js/index.js" Enter claim code and player name, wait for plexamp to start, ignore other messages.
+
+- Restart plexamp service: "sudo systemctl restart plexamp.service", or reboot device. Headless should now be visible to other players.
+
+- Go to the headless browser interface: hostname:32500, then go to "settings" > "account" and sign out. Now sign back in, then click on the cast icon and re-select the headless player. Check any playback settings that revert to defaults after sign-in, things like sample rate matching, sample rate conversion, autoplay, etc.
 
 ======
