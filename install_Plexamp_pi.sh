@@ -864,6 +864,8 @@ echo "      The web-GUI should be available on http://hostname:32500 from a brow
 echo "      Replace the hostname with IP address in this example with your own."
 echo "      On that GUI you will be asked to login to your Plex-account for security-reasons,"
 echo "      and then choose a library where to fetch/stream music from."
+echo "      If not asked to login, then go to "settings" > "account" and sign out."
+echo "      Now sign back in, then click on the "cast" icon and re-select the headless player."
 echo ""
 echo "      If web-GUI is not accessible after following above, try rebooting once more, and then load the GUI."
 echo ""
