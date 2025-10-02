@@ -382,14 +382,14 @@ if [ "$answer" = "y" ]; then
         echo "Detected DietPi ($DEBIAN_VERSION), using $CNFFILE for configuration"
     elif [ "$DEBIAN_VERSION" = "trixie" ]; then
         CNFFILE="/boot/firmware/usercfg.txt"
+        SECONDFILE="/boot/firmware/config.txt"
         echo ""
-        echo "--== Checking for Trixie, and creating /boot/firmware/usercfg.txt if needed ==--"
-        echo "Detected Debian Trixie, using $CNFFILE for configuration"
+        echo "--== Detected Debian Trixie, using $CNFFILE and $SECONDFILE for configuration ==--"
     else
         CNFFILE="/boot/firmware/config.txt"
         echo "Detected Debian Bookworm or compatible, using $CNFFILE for configuration"
     fi
-    # Ensure config file exists
+    # Ensure primary config file exists
     if [ ! -f "$CNFFILE" ]; then
         mkdir -p "$(dirname "$CNFFILE")"
         touch "$CNFFILE"
@@ -441,8 +441,19 @@ if [ "$answer" = "y" ]; then
                 fi
                 echo "$HIFIBERRY" | tee -a "$CNFFILE"
                 echo "dtparam=audio=on" | tee -a "$CNFFILE"
+                if [ -n "$SECONDFILE" ]; then
+                    sed -i '/dtoverlay=hifiberry/d' "$SECONDFILE"
+                    sed -i '/dtoverlay=allo/d' "$SECONDFILE"
+                    sed -i '/dtoverlay=justboom/d' "$SECONDFILE"
+                    sed -i '/dtoverlay=i-sabre/d' "$SECONDFILE"
+                    sed -i '/hdmi_force_hotplug=/d' "$SECONDFILE"
+                    sed -i '/hdmi_drive=/d' "$SECONDFILE"
+                    echo "$HIFIBERRY" | tee -a "$SECONDFILE"
+                    echo "dtparam=audio=on" | tee -a "$SECONDFILE"
+                fi
                 echo ""
                 echo "Configured $HIFIBERRY with dtparam=audio=on in $CNFFILE"
+                [ -n "$SECONDFILE" ] && echo "Configured $HIFIBERRY with dtparam=audio=on in $SECONDFILE"
             fi
             break
             ;;
@@ -478,8 +489,19 @@ if [ "$answer" = "y" ]; then
                 fi
                 echo "$DIGICARD" | tee -a "$CNFFILE"
                 echo "dtparam=audio=on" | tee -a "$CNFFILE"
+                if [ -n "$SECONDFILE" ]; then
+                    sed -i '/dtoverlay=hifiberry/d' "$SECONDFILE"
+                    sed -i '/dtoverlay=allo/d' "$SECONDFILE"
+                    sed -i '/dtoverlay=justboom/d' "$SECONDFILE"
+                    sed -i '/dtoverlay=i-sabre/d' "$SECONDFILE"
+                    sed -i '/hdmi_force_hotplug=/d' "$SECONDFILE"
+                    sed -i '/hdmi_drive=/d' "$SECONDFILE"
+                    echo "$DIGICARD" | tee -a "$SECONDFILE"
+                    echo "dtparam=audio=on" | tee -a "$SECONDFILE"
+                fi
                 echo ""
                 echo "Configured $DIGICARD with dtparam=audio=on in $CNFFILE"
+                [ -n "$SECONDFILE" ] && echo "Configured $DIGICARD with dtparam=audio=on in $SECONDFILE"
             fi
             break
             ;;
@@ -512,8 +534,19 @@ if [ "$answer" = "y" ]; then
                 fi
                 echo "$DIGICARD" | tee -a "$CNFFILE"
                 echo "dtparam=audio=on" | tee -a "$CNFFILE"
+                if [ -n "$SECONDFILE" ]; then
+                    sed -i '/dtoverlay=hifiberry/d' "$SECONDFILE"
+                    sed -i '/dtoverlay=allo/d' "$SECONDFILE"
+                    sed -i '/dtoverlay=justboom/d' "$SECONDFILE"
+                    sed -i '/dtoverlay=i-sabre/d' "$SECONDFILE"
+                    sed -i '/hdmi_force_hotplug=/d' "$SECONDFILE"
+                    sed -i '/hdmi_drive=/d' "$SECONDFILE"
+                    echo "$DIGICARD" | tee -a "$SECONDFILE"
+                    echo "dtparam=audio=on" | tee -a "$SECONDFILE"
+                fi
                 echo ""
                 echo "Configured $DIGICARD with dtparam=audio=on in $CNFFILE"
+                [ -n "$SECONDFILE" ] && echo "Configured $DIGICARD with dtparam=audio=on in $SECONDFILE"
             fi
             break
             ;;
@@ -545,8 +578,19 @@ if [ "$answer" = "y" ]; then
                 fi
                 echo "$DIGICARD" | tee -a "$CNFFILE"
                 echo "dtparam=audio=on" | tee -a "$CNFFILE"
+                if [ -n "$SECONDFILE" ]; then
+                    sed -i '/dtoverlay=hifiberry/d' "$SECONDFILE"
+                    sed -i '/dtoverlay=allo/d' "$SECONDFILE"
+                    sed -i '/dtoverlay=justboom/d' "$SECONDFILE"
+                    sed -i '/dtoverlay=i-sabre/d' "$SECONDFILE"
+                    sed -i '/hdmi_force_hotplug=/d' "$SECONDFILE"
+                    sed -i '/hdmi_drive=/d' "$SECONDFILE"
+                    echo "$DIGICARD" | tee -a "$SECONDFILE"
+                    echo "dtparam=audio=on" | tee -a "$SECONDFILE"
+                fi
                 echo ""
                 echo "Configured $DIGICARD with dtparam=audio=on in $CNFFILE"
+                [ -n "$SECONDFILE" ] && echo "Configured $DIGICARD with dtparam=audio=on in $SECONDFILE"
             fi
             break
             ;;
@@ -563,8 +607,21 @@ if [ "$answer" = "y" ]; then
             echo "hdmi_force_hotplug=1" | tee -a "$CNFFILE"
             echo "hdmi_drive=2" | tee -a "$CNFFILE"
             sed -i 's/dtoverlay=vc4-kms-v3d\(,noaudio\)\?/dtoverlay=vc4-kms-v3d/' "$CNFFILE"
+            if [ -n "$SECONDFILE" ]; then
+                sed -i '/dtoverlay=hifiberry/d' "$SECONDFILE"
+                sed -i '/dtoverlay=allo/d' "$SECONDFILE"
+                sed -i '/dtoverlay=justboom/d' "$SECONDFILE"
+                sed -i '/dtoverlay=i-sabre/d' "$SECONDFILE"
+                sed -i '/hdmi_force_hotplug=/d' "$SECONDFILE"
+                sed -i '/hdmi_drive=/d' "$SECONDFILE"
+                sed -i '/#dtparam=audio=on/!s/dtparam=audio=on/#&/' "$SECONDFILE"
+                echo "hdmi_force_hotplug=1" | tee -a "$SECONDFILE"
+                echo "hdmi_drive=2" | tee -a "$SECONDFILE"
+                sed -i 's/dtoverlay=vc4-kms-v3d\(,noaudio\)\?/dtoverlay=vc4-kms-v3d/' "$SECONDFILE"
+            fi
             echo ""
             echo "Configured HDMI audio in $CNFFILE"
+            [ -n "$SECONDFILE" ] && echo "Configured HDMI audio in $SECONDFILE"
             break
             ;;
         6)
@@ -578,6 +635,12 @@ if [ "$answer" = "y" ]; then
     sed -i ':a; /^\n*$/{ s/\n//; N; ba};' "$CNFFILE"
     sed -i '/DIGI/{N;s/\n$//}' "$CNFFILE"
     sed -i '${/^$/d}' "$CNFFILE"
+    if [ -n "$SECONDFILE" ]; then
+        sed -i 's/^[ \t]*//' "$SECONDFILE"
+        sed -i ':a; /^\n*$/{ s/\n//; N; ba};' "$SECONDFILE"
+        sed -i '/DIGI/{N;s/\n$//}' "$SECONDFILE"
+        sed -i '${/^$/d}' "$SECONDFILE"
+    fi
 else
     echo "Skipping sound output configuration"
 fi
