@@ -374,28 +374,28 @@ if [ "$answer" = "y" ]; then
     echo "--== PCMs defined ==--"
     aplay -L
 
-# Detect OS and Debian version
-OS_ID=$(grep '^ID=' /etc/os-release | cut -d'=' -f2 | tr -d '"')
-DEBIAN_VERSION=$(grep VERSION_CODENAME /etc/os-release | cut -d'=' -f2 | tr -d '"')
-if [ -f /boot/dietpi.txt ] || [ -d /DietPi ]; then
-    CNFFILE="/boot/firmware/config.txt"
-    echo "Detected DietPi ($DEBIAN_VERSION), using $CNFFILE for configuration"
-elif [ "$DEBIAN_VERSION" = "trixie" ]; then
-    CNFFILE="/boot/firmware/usercfg.txt"
-    echo ""
-    echo "--== Checking for Trixie, and creating /boot/firmware/usercfg.txt if needed ==--"
-    echo "Detected Debian Trixie, using $CNFFILE for configuration"
-else
-    CNFFILE="/boot/firmware/config.txt"
-    echo "Detected Debian Bookworm or compatible, using $CNFFILE for configuration"
-fi
-# Ensure config file exists
-if [ ! -f "$CNFFILE" ]; then
-    mkdir -p "$(dirname "$CNFFILE")"
-    touch "$CNFFILE"
-    chmod 644 "$CNFFILE"
-    echo "Created $CNFFILE"
-fi
+    # Detect OS and Debian version
+    OS_ID=$(grep '^ID=' /etc/os-release | cut -d'=' -f2 | tr -d '"')
+    DEBIAN_VERSION=$(grep VERSION_CODENAME /etc/os-release | cut -d'=' -f2 | tr -d '"')
+    if [ -f /boot/dietpi.txt ] || [ -d /DietPi ]; then
+        CNFFILE="/boot/firmware/config.txt"
+        echo "Detected DietPi ($DEBIAN_VERSION), using $CNFFILE for configuration"
+    elif [ "$DEBIAN_VERSION" = "trixie" ]; then
+        CNFFILE="/boot/firmware/usercfg.txt"
+        echo ""
+        echo "--== Checking for Trixie, and creating /boot/firmware/usercfg.txt if needed ==--"
+        echo "Detected Debian Trixie, using $CNFFILE for configuration"
+    else
+        CNFFILE="/boot/firmware/config.txt"
+        echo "Detected Debian Bookworm or compatible, using $CNFFILE for configuration"
+    fi
+    # Ensure config file exists
+    if [ ! -f "$CNFFILE" ]; then
+        mkdir -p "$(dirname "$CNFFILE")"
+        touch "$CNFFILE"
+        chmod 644 "$CNFFILE"
+        echo "Created $CNFFILE"
+    fi
 
     echo ""
     echo "--== Select audio configuration ==--"
@@ -440,9 +440,9 @@ fi
                     sed -i 's/dtoverlay=vc4-kms-v3d\(,noaudio\)\?/dtoverlay=vc4-kms-v3d,noaudio/' "$CNFFILE"
                 fi
                 echo "$HIFIBERRY" | tee -a "$CNFFILE"
-                sed -i '/#dtparam=audio=on/!s/dtparam=audio=on/#&/' "$CNFFILE"
+                echo "dtparam=audio=on" | tee -a "$CNFFILE"
                 echo ""
-                echo "Configured $HIFIBERRY in $CNFFILE"
+                echo "Configured $HIFIBERRY with dtparam=audio=on in $CNFFILE"
             fi
             break
             ;;
@@ -477,9 +477,9 @@ fi
                     sed -i 's/dtoverlay=vc4-kms-v3d\(,noaudio\)\?/dtoverlay=vc4-kms-v3d,noaudio/' "$CNFFILE"
                 fi
                 echo "$DIGICARD" | tee -a "$CNFFILE"
-                sed -i '/#dtparam=audio=on/!s/dtparam=audio=on/#&/' "$CNFFILE"
+                echo "dtparam=audio=on" | tee -a "$CNFFILE"
                 echo ""
-                echo "Configured $DIGICARD in $CNFFILE"
+                echo "Configured $DIGICARD with dtparam=audio=on in $CNFFILE"
             fi
             break
             ;;
@@ -511,9 +511,9 @@ fi
                     sed -i 's/dtoverlay=vc4-kms-v3d\(,noaudio\)\?/dtoverlay=vc4-kms-v3d,noaudio/' "$CNFFILE"
                 fi
                 echo "$DIGICARD" | tee -a "$CNFFILE"
-                sed -i '/#dtparam=audio=on/!s/dtparam=audio=on/#&/' "$CNFFILE"
+                echo "dtparam=audio=on" | tee -a "$CNFFILE"
                 echo ""
-                echo "Configured $DIGICARD in $CNFFILE"
+                echo "Configured $DIGICARD with dtparam=audio=on in $CNFFILE"
             fi
             break
             ;;
@@ -544,9 +544,9 @@ fi
                     sed -i 's/dtoverlay=vc4-kms-v3d\(,noaudio\)\?/dtoverlay=vc4-kms-v3d,noaudio/' "$CNFFILE"
                 fi
                 echo "$DIGICARD" | tee -a "$CNFFILE"
-                sed -i '/#dtparam=audio=on/!s/dtparam=audio=on/#&/' "$CNFFILE"
+                echo "dtparam=audio=on" | tee -a "$CNFFILE"
                 echo ""
-                echo "Configured $DIGICARD in $CNFFILE"
+                echo "Configured $DIGICARD with dtparam=audio=on in $CNFFILE"
             fi
             break
             ;;
@@ -559,6 +559,7 @@ fi
             sed -i '/dtoverlay=i-sabre/d' "$CNFFILE"
             sed -i '/hdmi_force_hotplug=/d' "$CNFFILE"
             sed -i '/hdmi_drive=/d' "$CNFFILE"
+            sed -i '/#dtparam=audio=on/!s/dtparam=audio=on/#&/' "$CNFFILE"
             echo "hdmi_force_hotplug=1" | tee -a "$CNFFILE"
             echo "hdmi_drive=2" | tee -a "$CNFFILE"
             sed -i 's/dtoverlay=vc4-kms-v3d\(,noaudio\)\?/dtoverlay=vc4-kms-v3d/' "$CNFFILE"
