@@ -434,6 +434,7 @@ if [ "$answer" = "y" ]; then
                 sed -i '/dtoverlay=i-sabre/d' "$CNFFILE"
                 sed -i '/hdmi_force_hotplug=/d' "$CNFFILE"
                 sed -i '/hdmi_drive=/d' "$CNFFILE"
+                sed -i '/dtparam=audio=on/d' "$CNFFILE"
                 if ! grep -q "dtoverlay=vc4-kms-v3d" "$CNFFILE"; then
                     echo "dtoverlay=vc4-kms-v3d,noaudio" | tee -a "$CNFFILE"
                 else
@@ -448,6 +449,7 @@ if [ "$answer" = "y" ]; then
                     sed -i '/dtoverlay=i-sabre/d' "$SECONDFILE"
                     sed -i '/hdmi_force_hotplug=/d' "$SECONDFILE"
                     sed -i '/hdmi_drive=/d' "$SECONDFILE"
+                    sed -i '/dtparam=audio=on/d' "$SECONDFILE"
                     echo "$HIFIBERRY" | tee -a "$SECONDFILE"
                     echo "dtparam=audio=on" | tee -a "$SECONDFILE"
                 fi
@@ -482,6 +484,7 @@ if [ "$answer" = "y" ]; then
                 sed -i '/dtoverlay=i-sabre/d' "$CNFFILE"
                 sed -i '/hdmi_force_hotplug=/d' "$CNFFILE"
                 sed -i '/hdmi_drive=/d' "$CNFFILE"
+                sed -i '/dtparam=audio=on/d' "$CNFFILE"
                 if ! grep -q "dtoverlay=vc4-kms-v3d" "$CNFFILE"; then
                     echo "dtoverlay=vc4-kms-v3d,noaudio" | tee -a "$CNFFILE"
                 else
@@ -496,6 +499,7 @@ if [ "$answer" = "y" ]; then
                     sed -i '/dtoverlay=i-sabre/d' "$SECONDFILE"
                     sed -i '/hdmi_force_hotplug=/d' "$SECONDFILE"
                     sed -i '/hdmi_drive=/d' "$SECONDFILE"
+                    sed -i '/dtparam=audio=on/d' "$SECONDFILE"
                     echo "$DIGICARD" | tee -a "$SECONDFILE"
                     echo "dtparam=audio=on" | tee -a "$SECONDFILE"
                 fi
@@ -527,6 +531,7 @@ if [ "$answer" = "y" ]; then
                 sed -i '/dtoverlay=i-sabre/d' "$CNFFILE"
                 sed -i '/hdmi_force_hotplug=/d' "$CNFFILE"
                 sed -i '/hdmi_drive=/d' "$CNFFILE"
+                sed -i '/dtparam=audio=on/d' "$CNFFILE"
                 if ! grep -q "dtoverlay=vc4-kms-v3d" "$CNFFILE"; then
                     echo "dtoverlay=vc4-kms-v3d,noaudio" | tee -a "$CNFFILE"
                 else
@@ -541,6 +546,7 @@ if [ "$answer" = "y" ]; then
                     sed -i '/dtoverlay=i-sabre/d' "$SECONDFILE"
                     sed -i '/hdmi_force_hotplug=/d' "$SECONDFILE"
                     sed -i '/hdmi_drive=/d' "$SECONDFILE"
+                    sed -i '/dtparam=audio=on/d' "$SECONDFILE"
                     echo "$DIGICARD" | tee -a "$SECONDFILE"
                     echo "dtparam=audio=on" | tee -a "$SECONDFILE"
                 fi
@@ -571,6 +577,7 @@ if [ "$answer" = "y" ]; then
                 sed -i '/dtoverlay=i-sabre/d' "$CNFFILE"
                 sed -i '/hdmi_force_hotplug=/d' "$CNFFILE"
                 sed -i '/hdmi_drive=/d' "$CNFFILE"
+                sed -i '/dtparam=audio=on/d' "$CNFFILE"
                 if ! grep -q "dtoverlay=vc4-kms-v3d" "$CNFFILE"; then
                     echo "dtoverlay=vc4-kms-v3d,noaudio" | tee -a "$CNFFILE"
                 else
@@ -585,6 +592,7 @@ if [ "$answer" = "y" ]; then
                     sed -i '/dtoverlay=i-sabre/d' "$SECONDFILE"
                     sed -i '/hdmi_force_hotplug=/d' "$SECONDFILE"
                     sed -i '/hdmi_drive=/d' "$SECONDFILE"
+                    sed -i '/dtparam=audio=on/d' "$SECONDFILE"
                     echo "$DIGICARD" | tee -a "$SECONDFILE"
                     echo "dtparam=audio=on" | tee -a "$SECONDFILE"
                 fi
@@ -603,7 +611,7 @@ if [ "$answer" = "y" ]; then
             sed -i '/dtoverlay=i-sabre/d' "$CNFFILE"
             sed -i '/hdmi_force_hotplug=/d' "$CNFFILE"
             sed -i '/hdmi_drive=/d' "$CNFFILE"
-            sed -i '/#dtparam=audio=on/!s/dtparam=audio=on/#&/' "$CNFFILE"
+            sed -i '/dtparam=audio=on/d' "$CNFFILE"
             echo "hdmi_force_hotplug=1" | tee -a "$CNFFILE"
             echo "hdmi_drive=2" | tee -a "$CNFFILE"
             sed -i 's/dtoverlay=vc4-kms-v3d\(,noaudio\)\?/dtoverlay=vc4-kms-v3d/' "$CNFFILE"
@@ -614,7 +622,7 @@ if [ "$answer" = "y" ]; then
                 sed -i '/dtoverlay=i-sabre/d' "$SECONDFILE"
                 sed -i '/hdmi_force_hotplug=/d' "$SECONDFILE"
                 sed -i '/hdmi_drive=/d' "$SECONDFILE"
-                sed -i '/#dtparam=audio=on/!s/dtparam=audio=on/#&/' "$SECONDFILE"
+                sed -i '/dtparam=audio=on/d' "$SECONDFILE"
                 echo "hdmi_force_hotplug=1" | tee -a "$SECONDFILE"
                 echo "hdmi_drive=2" | tee -a "$SECONDFILE"
                 sed -i 's/dtoverlay=vc4-kms-v3d\(,noaudio\)\?/dtoverlay=vc4-kms-v3d/' "$SECONDFILE"
