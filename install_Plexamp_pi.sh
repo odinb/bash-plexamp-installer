@@ -51,6 +51,7 @@
 # Revision update: 2025-05-09 ODIN - Modified to run Plexamp as a user-level service with DAC access, and automatically enable plexamp user-service. Added WiFi Country Code Setup.
 # Revision update: 2025-05-09 ODIN - Modified to detect DietPi and use a system-level service instead of a user-level service, as system services are more reliable in DietPi’s minimal environment.
 # Revision update: 2025-08-17 ODIN - Updated for Trixie (Debian v13) configuration. Cleanup of major areas performed to speedup script execution and remove legacy code.
+# Revision update: 2025-10-03 ODIN - Updated for Trixie (Debian v13) configuration for Raspberry Pi OS, including DietPi on Trixie.
 
 
 # Update package lists
