@@ -5,8 +5,8 @@ For more information and hardware used, see here:<br /> https://github.com/odinb
 Assumes 64-bit capable Raspberry Pi HW and Raspberry Pi OS that is 64-bit.<br />
 
 The script is currently maintained for Debian Bookworm and Trixie.<br />
-Debian Trixie was released on 2024-08-09.<br />
-Bullseye was end-of-life on 2024-08-014.<br />
+Debian Trixie Raspbian OS was officially released on 2024-10-01.<br />
+Bullseye was end-of-life on 2024-08-14.<br />
 https://wiki.debian.org/DebianReleases#Current_Releases.2FRepositories
 
 This script will install nodeJS (currently NodeJS-20), install/upgrade/configure Plexamp-Linux-headless.
