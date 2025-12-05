@@ -53,6 +53,8 @@
 # Revision update: 2025-08-17 ODIN - Updated for Trixie (Debian v13) configuration. Cleanup of major areas performed to speedup script execution and remove legacy code.
 # Revision update: 2025-10-03 ODIN - Updated for Trixie (Debian v13) configuration for Raspberry Pi OS, including DietPi on Trixie.
 # Revision update: 2025-10-03 ODIN - Updated HDMI audio-settings, adding "hdmi_force_edid_audio=1" and ensuring "dtoverlay=vc4-kms-v3d" whereas non-HDMI will have "dtoverlay=vc4-kms-v3d,noaudio".
+# Revision update: 2025-12-05 ODIN - Updated service file (Environment="CLIENT_NAME=$HOSTNAME") to try and avoid all the "undefined" calls to DNS. This seems to be a bug.
+
 
 
 # Update package lists
@@ -87,7 +89,7 @@ else
     USER=$(logname)
 fi
 
-HOST=":PlexAmp"
+HOST="PlexAmp"
 NODE_MAJOR="20"
 PLEXAMPV=$(curl -s "https://plexamp.plex.tv/headless/version.json" | jq -r '.updateUrl' || { echo "Unable to extract Plexamp download URL"; exit 1; })
 PLEXAMPVA=${PLEXAMPV/.tar.bz2}
@@ -848,6 +850,7 @@ After=network.target
 [Service]
 User=$USER
 Group=$USER
+Environment="CLIENT_NAME=$HOSTNAME"
 ExecStart=/usr/bin/node /home/$USER/plexamp/js/index.js
 WorkingDirectory=/home/$USER/plexamp
 Restart=always
@@ -864,10 +867,11 @@ EOF
         mkdir -p /home/"$USER"/.config/systemd/user
         cat > /home/"$USER"/.config/systemd/user/plexamp.service << EOF
 [Unit]
-Description=Plexamp Headless
+Description=Plexamp Headless  (User Service)
 After=network.target
 
 [Service]
+Environment="CLIENT_NAME=$HOSTNAME"
 ExecStart=/usr/bin/node /home/$USER/plexamp/js/index.js
 WorkingDirectory=/home/$USER/plexamp
 Restart=always
