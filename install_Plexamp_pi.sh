@@ -54,7 +54,7 @@
 # Revision update: 2025-10-03 ODIN - Updated for Trixie (Debian v13) configuration for Raspberry Pi OS, including DietPi on Trixie.
 # Revision update: 2025-10-03 ODIN - Updated HDMI audio-settings, adding "hdmi_force_edid_audio=1" and ensuring "dtoverlay=vc4-kms-v3d" whereas non-HDMI will have "dtoverlay=vc4-kms-v3d,noaudio".
 # Revision update: 2025-12-05 ODIN - Updated service file (Environment="CLIENT_NAME=$HOSTNAME") to try and avoid all the "undefined" calls to DNS. This seems to be a bug.
-
+# Revision update: 2026-01-03 ODIN - Updated IPv6 disable to fully disable. Updated service file (ExecStart=) to try and avoid all the "undefined" calls to DNS. This is a bug in Plexamp, which assumes CLIENT_NAME exists. Plexamp never checks if the variable is undefined before constructing a hostname; it doesn't fall back gracefully!
 
 
 # Update package lists
@@ -710,7 +710,11 @@ if [ ! -f /boot/dietpi.txt ]; then
         echo ""
         echo "--== Disabling IPv6 ==--"
         if [ ! -f /etc/sysctl.d/disable-ipv6.conf ]; then
-            echo "net.ipv6.conf.all.disable_ipv6 = 1" > /etc/sysctl.d/disable-ipv6.conf
+            cat > /etc/sysctl.d/disable-ipv6.conf <<EOF
+net.ipv6.conf.all.disable_ipv6 = 1
+net.ipv6.conf.default.disable_ipv6 = 1
+net.ipv6.conf.lo.disable_ipv6 = 1
+EOF
             sysctl -p /etc/sysctl.d/disable-ipv6.conf
             echo "IPv6 disabled"
         else
@@ -850,8 +854,7 @@ After=network.target
 [Service]
 User=$USER
 Group=$USER
-Environment="CLIENT_NAME=$HOSTNAME"
-ExecStart=/usr/bin/node /home/$USER/plexamp/js/index.js
+ExecStart=/usr/bin/env CLIENT_NAME=$HOSTNAME /usr/bin/node /home/$USER/plexamp/js/index.js
 WorkingDirectory=/home/$USER/plexamp
 Restart=always
 
@@ -867,12 +870,11 @@ EOF
         mkdir -p /home/"$USER"/.config/systemd/user
         cat > /home/"$USER"/.config/systemd/user/plexamp.service << EOF
 [Unit]
-Description=Plexamp Headless  (User Service)
+Description=Plexamp Headless (User Service)
 After=network.target
 
 [Service]
-Environment="CLIENT_NAME=$HOSTNAME"
-ExecStart=/usr/bin/node /home/$USER/plexamp/js/index.js
+ExecStart=/usr/bin/env CLIENT_NAME=$HOSTNAME /usr/bin/node /home/$USER/plexamp/js/index.js
 WorkingDirectory=/home/$USER/plexamp
 Restart=always
 
