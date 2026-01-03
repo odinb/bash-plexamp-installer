@@ -785,8 +785,10 @@ fi
 echo ""
 echo "--== Installing Node.js v$NODE_MAJOR ==--"
 echo "--== This is mandatory to run at least once prior to installing Plexamp initially ==--"
-echo "--== This is also needed if upgrade of Node.js is required ==--"
-echo "--== If already run, or no upgrade is needed, it can be skipped ==--"
+echo "--== If already run, it can be skipped ==--"
+echo "--== If upgrade of Node.js is required, it is quicker to run full update at the end of the script ==--"
+echo "--== Running full update at the end will updat to next minor version ==--"
+echo ""
 echo -n "Do you want to install/upgrade Node.js v$NODE_MAJOR? [y/N]: "
 read -r answer
 answer=$(echo "$answer" | tr '[:upper:]' '[:lower:]')
