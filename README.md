@@ -253,8 +253,8 @@ For Dietpi, the file can be found here:<br />
 $ sudo cat /home/dietpi/.local/share/Plexamp/Settings/%40Plexamp%3Astat
 
 Remove with:<br />
-$ sudo systemctl stop plexamp
-$ sudo rm /home/dietpi/.local/share/Plexamp/Settings/%40Plexamp%3Astat
+$ sudo systemctl stop plexamp<br />
+$ sudo rm /home/dietpi/.local/share/Plexamp/Settings/%40Plexamp%3Astat<br />
 $ sudo systemctl start plexamp
 
 ======
