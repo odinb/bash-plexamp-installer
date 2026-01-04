@@ -249,4 +249,12 @@ $ cat ~/.local/share/Plexamp/Settings/%40Plexamp%3Astate
 
 The DNS spam with "undefined" should now be gone untill next time this file is corrupted.
 
+For Dietpi, the file can be found here:<br />
+$ sudo cat /home/dietpi/.local/share/Plexamp/Settings/%40Plexamp%3Astat
+
+Remove with:<br />
+$ sudo systemctl stop plexamp
+$ sudo rm /home/dietpi/.local/share/Plexamp/Settings/%40Plexamp%3Astat
+$ sudo systemctl start plexamp
+
 ======
