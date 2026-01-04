@@ -210,7 +210,7 @@ After a Plex password reset + auto sign-out from all devices, follow the steps b
 ======
 
 Q:
-Performed an update, but I am still seeing "undefined" in my DNS!
+Performed an update of PlexAmp, but I am still seeing "undefined" in my DNS!
 
 A:
 This Plexamp "Undefined" bug is VERY persistent! So why is it happening?
@@ -241,8 +241,8 @@ Surgical way, removing only fields that are empty or contain undefined:<br />
 Check file for corrupt/empty fields, if output is "[]", there are no corrupt fields.<br />
 $ jq 'to_entries | map(select(.value == null or .value == "" or .value == "undefined"))' ~/.local/share/Plexamp/Settings/%40Plexamp%3Astate
 
-Cleanup only empty/undefined fields (requires "sponge to be installed, done with "sudo apt install moreutils"").<br />
-$ jq 'with_entries(select(.value != null and .value != "" and .value != "undefined"))'   ~/.local/share/Plexamp/Settings/%40Plexamp%3Astate | sponge ~/.local/share/Plexamp/Settings/%40Plexamp%3Astate
+Cleanup only empty/undefined fields (requires "sponge" to be installed, done with "sudo apt install moreutils").<br />
+$ jq 'with_entries(select(.value != null and .value != "" and .value != "undefined"))' ~/.local/share/Plexamp/Settings/%40Plexamp%3Astate | sponge ~/.local/share/Plexamp/Settings/%40Plexamp%3Astate
 
 Output the full file.<br />
 $ cat ~/.local/share/Plexamp/Settings/%40Plexamp%3Astate
