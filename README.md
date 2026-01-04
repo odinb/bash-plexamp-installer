@@ -184,26 +184,26 @@ Performed a password reset and now things are funky!
 A1 (Raspberry Pi OS):
 After a Plex password reset + auto sign-out from all devices, follow the steps below to get headless back up and running (needs improvement).
 
-- Restart plexamp systemd service: "systemctl --user restart plexamp.service", or reboot the device.
+- Restart plexamp systemd service: ```systemctl --user restart plexamp.service```, or reboot the device.
 
-- After restart, stop plexamp service: "systemctl --user stop plexamp.service".
+- After restart, stop plexamp service: ```systemctl --user stop plexamp.service```.
 
-- Manually start plexamp from terminal (as same user who did the original install) "node ~/plexamp/js/index.js" Enter claim code and player name, wait for plexamp to start, ignore other messages.
+- Manually start plexamp from terminal (as same user who did the original install) ```node ~/plexamp/js/index.js``` Enter claim code and player name, wait for plexamp to start, ignore other messages.
 
-- Restart plexamp service: "systemctl --user restart plexamp.service", or reboot device. Headless should now be visible to other players.
+- Restart plexamp service: ```systemctl --user restart plexamp.service```, or reboot device. Headless should now be visible to other players.
 
 - Go to the headless browser interface: hostname:32500, then go to "settings" > "account" and sign out. Now sign back in, then click on the "cast" icon and re-select the headless player. Check any playback settings that revert to defaults after sign-in, things like sample rate matching, sample rate conversion, autoplay, etc.
 
 A2 (DietPi):
 After a Plex password reset + auto sign-out from all devices, follow the steps below to get headless back up and running (needs improvement).
 
-- Restart plexamp systemd service: "sudo systemctl restart plexamp.service", or reboot the device.
+- Restart plexamp systemd service: ```sudo systemctl restart plexamp.service```, or reboot the device.
 
-- After restart, stop plexamp service: "sudo systemctl stop plexamp.service".
+- After restart, stop plexamp service: ```sudo systemctl stop plexamp.service```.
 
-- Manually start plexamp from terminal (as same user who did the original install) "node ~/plexamp/js/index.js" Enter claim code and player name, wait for plexamp to start, ignore other messages.
+- Manually start plexamp from terminal (as same user who did the original install) ```node ~/plexamp/js/index.js``` Enter claim code and player name, wait for plexamp to start, ignore other messages.
 
-- Restart plexamp service: "sudo systemctl restart plexamp.service", or reboot device. Headless should now be visible to other players.
+- Restart plexamp service: ```sudo systemctl restart plexamp.service```, or reboot device. Headless should now be visible to other players.
 
 - Go to the headless browser interface: hostname:32500, then go to "settings" > "account" and sign out. Now sign back in, then click on the cast icon and re-select the headless player. Check any playback settings that revert to defaults after sign-in, things like sample rate matching, sample rate conversion, autoplay, etc.
 
@@ -228,33 +228,33 @@ The situation seen here is a known headless Plexamp networking quirk that dozens
 So, to fix this, one have 2 options. Pick the one that feels best.<br />
 Bruteforce-way, removing the whole status/state file. Need to stop/start the service:<br />
 Stop the service.<br />
-$ systemctl --user stop plexamp.service
+```systemctl --user stop plexamp.service```
 
 Remove the cachefile.<br />
-$ rm ~/.local/share/Plexamp/Settings/%40Plexamp%3Astate
+```rm ~/.local/share/Plexamp/Settings/%40Plexamp%3Astate```
 
 Restart the service.<br />
-$ systemctl --user start plexamp.service
+```systemctl --user start plexamp.service```
 
 
 Surgical way, removing only fields that are empty or contain undefined. No need to stop service:<br />
-Check file for corrupt/empty fields, if output is "[]", there are no corrupt fields.<br />
-$ jq 'to_entries | map(select(.value == null or .value == "" or .value == "undefined"))' ~/.local/share/Plexamp/Settings/%40Plexamp%3Astate
+Check file for corrupt/empty fields, if output is ```[]```, there are no corrupt fields.<br />
+```jq 'to_entries | map(select(.value == null or .value == "" or .value == "undefined"))' ~/.local/share/Plexamp/Settings/%40Plexamp%3Astate```
 
-Cleanup only empty/undefined fields (requires "sponge" to be installed, done with "sudo apt install moreutils").<br />
-$ jq 'with_entries(select(.value != null and .value != "" and .value != "undefined"))' ~/.local/share/Plexamp/Settings/%40Plexamp%3Astate | sponge ~/.local/share/Plexamp/Settings/%40Plexamp%3Astate
+Cleanup only empty/undefined fields (requires "sponge" to be installed, done with ```sudo apt install moreutils```).<br />
+```jq 'with_entries(select(.value != null and .value != "" and .value != "undefined"))' ~/.local/share/Plexamp/Settings/%40Plexamp%3Astate | sponge ~/.local/share/Plexamp/Settings/%40Plexamp%3Astate```
 
 Output the full file.<br />
-$ cat ~/.local/share/Plexamp/Settings/%40Plexamp%3Astate
+```cat ~/.local/share/Plexamp/Settings/%40Plexamp%3Astate```
 
 The DNS spam with "undefined" should now be gone untill next time this file is corrupted.
 
 For Dietpi, the file can be found here:<br />
-$ sudo cat /home/dietpi/.local/share/Plexamp/Settings/%40Plexamp%3Astat
+```sudo cat /home/dietpi/.local/share/Plexamp/Settings/%40Plexamp%3Astat```
 
 Remove with:<br />
-$ sudo systemctl stop plexamp<br />
-$ sudo rm /home/dietpi/.local/share/Plexamp/Settings/%40Plexamp%3Astat<br />
-$ sudo systemctl start plexamp
+```sudo systemctl stop plexamp```<br />
+```sudo rm /home/dietpi/.local/share/Plexamp/Settings/%40Plexamp%3Astat```<br />
+```sudo systemctl start plexamp```
 
 ======
