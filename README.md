@@ -226,7 +226,7 @@ The situation seen here is a known headless Plexamp networking quirk that dozens
 - Strange behavior after power loss or state corruption
 
 So, to fix this, one have 2 options.
-Bruteforce-way, removing the whole status/state file:<br />
+Bruteforce-way, removing the whole status/state file. Need to stop/start the service:<br />
 Stop the service.<br />
 $ systemctl --user stop plexamp.service
 
@@ -237,7 +237,7 @@ Restart the service.<br />
 $ systemctl --user start plexamp.service
 
 
-Surgical way, removing only fields that are empty or contain undefined:<br />
+Surgical way, removing only fields that are empty or contain undefined. No need to stop service:<br />
 Check file for corrupt/empty fields, if output is "[]", there are no corrupt fields.<br />
 $ jq 'to_entries | map(select(.value == null or .value == "" or .value == "undefined"))' ~/.local/share/Plexamp/Settings/%40Plexamp%3Astate
 
