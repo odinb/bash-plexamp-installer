@@ -220,33 +220,31 @@ JavaScript/Node will string-concatenate or interpolate "undefined" into hostname
 Plexamp then tries to resolve that string as a hostname via DNS, leading to repeated DNS lookups (your DNS/Pi-hole logs).
 
 This pattern is consistent with headless network discovery being unreliable and buggy in certain setups, and many community threads focus on related networking oddities.
-The situation seen here is a known headless Plexamp networking quirk that dozens of users have reported in different forms:
+The situation seen here is a known headless Plexamp networking quirk that dozens of users have reported in different forms:<br />
 - Unexpected hostnames used for resolution
 - DNS resolution failures for local services
 - Strange behavior after power loss or state corruption
 
 So, to fix this, one have 2 options.
-Bruteforce-way, removing the whole status/state file:
-
-Stop the service.
+Bruteforce-way, removing the whole status/state file:<br />
+Stop the service.<br />
 $ systemctl --user stop plexamp.service
 
-Remove the cachefile.
+Remove the cachefile.<br />
 $ rm ~/.local/share/Plexamp/Settings/%40Plexamp%3Astate
 
-Restart the service
+Restart the service.<br />
 $ systemctl --user start plexamp.service
 
 
-Surgical way, removing only fields that are empty or contain undefined:
-
-Check file for corrupt/empty fields, if output is "[]", there are no corrupt fields.
+Surgical way, removing only fields that are empty or contain undefined:<br />
+Check file for corrupt/empty fields, if output is "[]", there are no corrupt fields.<br />
 $ jq 'to_entries | map(select(.value == null or .value == "" or .value == "undefined"))' ~/.local/share/Plexamp/Settings/%40Plexamp%3Astate
 
-Cleanup only empty/undefined fields (requires "sponge to be installed, done with "sudo apt install moreutils"").
+Cleanup only empty/undefined fields (requires "sponge to be installed, done with "sudo apt install moreutils"").<br />
 $ jq 'with_entries(select(.value != null and .value != "" and .value != "undefined"))'   ~/.local/share/Plexamp/Settings/%40Plexamp%3Astate | sponge ~/.local/share/Plexamp/Settings/%40Plexamp%3Astate
 
-Output the full file.
+Output the full file.<br />
 $ cat ~/.local/share/Plexamp/Settings/%40Plexamp%3Astate
 
 The DNS spam with "undefined" should now be gone untill next time this file is corrupted.
