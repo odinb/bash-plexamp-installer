@@ -225,7 +225,7 @@ The situation seen here is a known headless Plexamp networking quirk that dozens
 - DNS resolution failures for local services
 - Strange behavior after power loss or state corruption
 
-So, to fix this, one have 2 options.
+So, to fix this, one have 2 options. Pick the one that feels best.<br />
 Bruteforce-way, removing the whole status/state file. Need to stop/start the service:<br />
 Stop the service.<br />
 $ systemctl --user stop plexamp.service
