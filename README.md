@@ -100,7 +100,7 @@ Q:
 Correct overlay has been configured, and hard reboot has been performed, but the system still doesn't load the driver.
 
 A:
-For Linux 5.4 and higher:  
+For Linux 5.4 and higher:<br />
 Disable the onboard EEPROM by adding: 'force_eeprom_read=0' to '/boot/config.txt'
 
 However, this should not be needed for the PiFi HIFI DiGi+ Digital Sound Card.
@@ -188,7 +188,7 @@ After a Plex password reset + auto sign-out from all devices, follow the steps b
 
 - After restart, stop plexamp service: ```systemctl --user stop plexamp.service```.
 
-- Manually start plexamp from terminal (as same user who did the original install) ```node ~/plexamp/js/index.js``` Enter claim code and player name, wait for plexamp to start, ignore other messages.
+- Manually start plexamp from terminal (as same user who did the original install) with ```node ~/plexamp/js/index.js``` Enter claim code and player name, wait for plexamp to start, ignore other messages.
 
 - Restart plexamp service: ```systemctl --user restart plexamp.service```, or reboot device. Headless should now be visible to other players.
 
