@@ -4,7 +4,7 @@ For more information and hardware used, see here:<br /> https://github.com/odinb
 
 Assumes 64-bit capable Raspberry Pi HW and Raspberry Pi OS that is 64-bit.<br />
 
-The script is currently maintained for Debian Bookworm and Trixie.<br />
+The script is currently maintained for Trixie.<br />
 Debian Trixie Raspbian OS was officially released on 2024-10-01.<br />
 Bullseye was end-of-life on 2024-08-14.<br />
 https://wiki.debian.org/DebianReleases#Current_Releases.2FRepositories
@@ -37,8 +37,7 @@ Raspberry Pi Imager is the quick and easy way to install Raspberry Pi OS and oth
 Once done, unmount and insert card into Raspberry Pi and boot it.
 
 SSH access on "DietPi OS" as user: dietpi/dietpi and as root: root/dietpi<br />
-NOTE!!! DietPi is best-effort, and might not work.
-DietPi is best effort, and was last tested on 2025-10-03 on DietPi v9.17.2 (Trixie).
+NOTE!!! DietPi is best effort, and was last tested on 2025-10-03 on DietPi v9.17.2 (Trixie).
 
 After SSH-ing to the SBC, on the "Raspberry Pi OS", change to root (```sudo su -```) and run script with:
 
