@@ -257,3 +257,18 @@ Remove with:<br />
 ```sudo systemctl start plexamp```
 
 ======
+Q:
+Performing an OS-update on Trixie, I am getting:<br />
+An error occurred during the signature verification. The repository is not updated and the previous index files will be used. OpenPGP signature verification failed: https://deb.nodesource.com/node_20.x nodistro InRelease: Sub-process /usr/bin/sqv returned an error code (1), error message is: Signing key on 6F71F525282841EEDAF851B42F59B5F99B1BE0B4 is not bound:            No binding signature at time 2026-01-19T15:27:46Z   because: Policy rejected non-revocation signature (PositiveCertification) requiring second pre-image resistance   because: SHA1 is not considered secure since 2026-02-01T00:00:00Z
+W: Failed to fetch https://deb.nodesource.com/node_20.x/dists/nodistro/InRelease  Sub-process /usr/bin/sqv returned an error code (1), error message is: Signing key on 6F71F525282841EEDAF851B42F59B5F99B1BE0B4 is not bound:            No binding signature at time 2026-01-19T15:27:46Z   because: Policy rejected non-revocation signature (PositiveCertification) requiring second pre-image resistance   because: SHA1 is not considered secure since 2026-02-01T00:00:00Z
+
+A:
+The issue is related to a GPG signing key problem with the NodeSource repository specifically.<br />
+SHA1 is not considered secure since 2026-02-01T00:00:00Z.<br />
+Today is after February 1, 2026 - Debian has on this day enforced stricter signature requirements, and NodeSource's signing key uses SHA1 which is now rejected.<br />
+
+Fix: Update the NodeSource GPG Key by re-running the installer-script as root, saying "Yes" to the following prompt: "Do you want to install/upgrade Node.js v20? [y/N]: y"
+<br />
+After this, upgrades should work as usual again!
+
+======
