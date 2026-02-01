@@ -268,7 +268,7 @@ The issue is related to a GPG signing key problem with the NodeSource repository
 SHA1 is not considered secure since 2026-02-01T00:00:00Z.<br />
 Today is after February 1, 2026 - Debian has on this day enforced stricter signature requirements, and NodeSource's signing key uses SHA1 which is now rejected.<br />
 
-Fix: Update the NodeSource GPG Key by re-running the installer-script as root, saying "Yes" to the following prompt: "Do you want to install/upgrade Node.js v20? [y/N]: y"<br />
+Fix: Update the NodeSource GPG Key by re-running the "install_Plexamp_pi.sh" installer-script as root, saying "Yes" to the following prompt: "Do you want to install/upgrade Node.js v20? [y/N]: y"<br />
 <br />
 After this, upgrades should work as usual again!
 
