@@ -851,12 +851,13 @@ if ! command -v wget &>/dev/null; then
         cat > /etc/systemd/system/plexamp.service << EOF
 [Unit]
 Description=Plexamp Headless (System Service)
-After=network-online.target
-Wants=network-online.target
+After=network-online.target nss-lookup.target
+Wants=network-online.target nss-lookup.target
 
 [Service]
 User=$USER
 Group=$USER
+ExecStartPre=/bin/sh -c "/bin/rm -f /home/$USER/.local/share/Plexamp/Settings/%%40Plexamp%%3Astate"
 ExecStart=/usr/bin/env CLIENT_NAME=$HOSTNAME /usr/bin/node /home/$USER/plexamp/js/index.js
 WorkingDirectory=/home/$USER/plexamp
 Restart=always
@@ -875,10 +876,11 @@ EOF
         cat > /home/"$USER"/.config/systemd/user/plexamp.service << EOF
 [Unit]
 Description=Plexamp Headless (User Service)
-After=network-online.target
-Wants=network-online.target
+After=network-online.target nss-lookup.target
+Wants=network-online.target nss-lookup.target
 
 [Service]
+ExecStartPre=/bin/sh -c "/bin/rm -f /home/$USER/.local/share/Plexamp/Settings/%%40Plexamp%%3Astate"
 ExecStart=/usr/bin/env CLIENT_NAME=$HOSTNAME /usr/bin/node /home/$USER/plexamp/js/index.js
 WorkingDirectory=/home/$USER/plexamp
 Restart=always
