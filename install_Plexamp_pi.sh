@@ -860,7 +860,6 @@ Group=$USER
 ExecStart=/usr/bin/env CLIENT_NAME=$HOSTNAME /usr/bin/node /home/$USER/plexamp/js/index.js
 WorkingDirectory=/home/$USER/plexamp
 Restart=always
-RestartSec=10
 
 [Install]
 WantedBy=multi-user.target
@@ -882,7 +881,6 @@ Wants=network-online.target
 ExecStart=/usr/bin/env CLIENT_NAME=$HOSTNAME /usr/bin/node /home/$USER/plexamp/js/index.js
 WorkingDirectory=/home/$USER/plexamp
 Restart=always
-RestartSec=10
 
 [Install]
 WantedBy=default.target
