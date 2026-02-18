@@ -848,11 +848,12 @@ if ! command -v wget &>/dev/null; then
     rm -f /home/"$USER"/"$PLEXAMPVB".tar.bz2
     if [ -f /boot/dietpi.txt ]; then
         echo "--== Creating system-level plexamp.service for DietPi ==--"
+    if [ -f /boot/dietpi.txt ]; then
+        echo "--== Creating system-level plexamp.service for DietPi ==--"
         cat > /etc/systemd/system/plexamp.service << EOF
 [Unit]
 Description=Plexamp Headless (System Service)
-After=network-online.target
-Wants=network-online.target
+After=network.target
 
 [Service]
 User=$USER
@@ -874,8 +875,7 @@ EOF
         cat > /home/"$USER"/.config/systemd/user/plexamp.service << EOF
 [Unit]
 Description=Plexamp Headless (User Service)
-After=network-online.target
-Wants=network-online.target
+After=network.target
 
 [Service]
 ExecStart=/usr/bin/env CLIENT_NAME=$HOSTNAME /usr/bin/node /home/$USER/plexamp/js/index.js
@@ -884,8 +884,8 @@ Restart=always
 
 [Install]
 WantedBy=default.target
-EOF
-        chown -R "$USER":"$USER" /home/"$USER"/.config
+EOF        
+	chown -R "$USER":"$USER" /home/"$USER"/.config
         USER_UID=$(id -u "$USER")
         mkdir -p /run/user/"$USER_UID"
         chown "$USER":"$USER" /run/user/"$USER_UID"
