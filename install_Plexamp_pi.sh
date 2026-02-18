@@ -857,7 +857,7 @@ Wants=network-online.target
 [Service]
 User=$USER
 Group=$USER
-ExecStartPre=/bin/rm -f %h/.local/share/Plexamp/Settings/%%40Plexamp%%3Astate
+ExecStartPre=/bin/bash -c "/bin/sleep 5; /bin/rm -f /home/$USER/.local/share/Plexamp/Settings/%%40Plexamp%%3Astate"
 ExecStart=/usr/bin/env CLIENT_NAME=$HOSTNAME /usr/bin/node /home/$USER/plexamp/js/index.js
 WorkingDirectory=/home/$USER/plexamp
 Restart=always
@@ -880,7 +880,7 @@ After=network-online.target
 Wants=network-online.target
 
 [Service]
-ExecStartPre=/bin/rm -f %h/.local/share/Plexamp/Settings/%%40Plexamp%%3Astate
+ExecStartPre=/bin/bash -c "/bin/sleep 5; /bin/rm -f /home/$USER/.local/share/Plexamp/Settings/%%40Plexamp%%3Astate"
 ExecStart=/usr/bin/env CLIENT_NAME=$HOSTNAME /usr/bin/node /home/$USER/plexamp/js/index.js
 WorkingDirectory=/home/$USER/plexamp
 Restart=always
