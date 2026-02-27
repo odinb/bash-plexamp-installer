@@ -55,7 +55,7 @@
 # Revision update: 2025-10-03 ODIN - Updated HDMI audio-settings, adding "hdmi_force_edid_audio=1" and ensuring "dtoverlay=vc4-kms-v3d" whereas non-HDMI will have "dtoverlay=vc4-kms-v3d,noaudio".
 # Revision update: 2025-12-05 ODIN - Updated service file (Environment="CLIENT_NAME=$HOSTNAME") to try and avoid all the "undefined" calls to DNS. This seems to be a bug.
 # Revision update: 2026-01-03 ODIN - Updated IPv6 disable to fully disable. Updated service file (ExecStart=) to try and avoid all the "undefined" calls to DNS. This is a bug in Plexamp, which assumes CLIENT_NAME exists. Plexamp never checks if the variable is undefined before constructing a hostname; it doesn't fall back gracefully!
-
+# Revision update: 2026-02-27 ODIN - Updated service file one more time, making it more robust, to try and avoid all the "undefined" calls to DNS. This seems to be a bug.
 
 # Update package lists
 echo ""
@@ -786,8 +786,8 @@ echo ""
 echo "--== Installing Node.js v$NODE_MAJOR ==--"
 echo "--== This is mandatory to run at least once prior to installing Plexamp initially ==--"
 echo "--== If already run, it can be skipped ==--"
-echo "--== If upgrade of Node.js is required, it is quicker to run full update at the end of the script ==--"
-echo "--== Running full update at the end will updat to next minor version ==--"
+echo "--== If minor upgrade of Node.js is required, it is quicker to run full update at the end of the script ==--"
+echo "--== Running full update at the end will update to next minor version ==--"
 echo ""
 echo -n "Do you want to install/upgrade Node.js v$NODE_MAJOR? [y/N]: "
 read -r answer
@@ -851,14 +851,19 @@ if ! command -v wget &>/dev/null; then
         cat > /etc/systemd/system/plexamp.service << EOF
 [Unit]
 Description=Plexamp Headless (System Service)
-After=network.target
+After=network-online.target
+Wants=network-online.target
 
 [Service]
 User=$USER
 Group=$USER
-ExecStart=/usr/bin/env CLIENT_NAME=$HOSTNAME /usr/bin/node /home/$USER/plexamp/js/index.js
+Environment=CLIENT_NAME=$HOSTNAME
+ExecStart=/usr/bin/node /home/$USER/plexamp/js/index.js
 WorkingDirectory=/home/$USER/plexamp
-Restart=always
+Restart=on-failure
+RestartSec=5
+KillSignal=SIGINT
+TimeoutStopSec=5
 
 [Install]
 WantedBy=multi-user.target
@@ -873,12 +878,17 @@ EOF
         cat > /home/"$USER"/.config/systemd/user/plexamp.service << EOF
 [Unit]
 Description=Plexamp Headless (User Service)
-After=network.target
+After=network-online.target
+Wants=network-online.target
 
 [Service]
-ExecStart=/usr/bin/env CLIENT_NAME=$HOSTNAME /usr/bin/node /home/$USER/plexamp/js/index.js
+Environment=CLIENT_NAME=$HOSTNAME
+ExecStart=/usr/bin/node /home/$USER/plexamp/js/index.js
 WorkingDirectory=/home/$USER/plexamp
-Restart=always
+Restart=on-failure
+RestartSec=5
+KillSignal=SIGINT
+TimeoutStopSec=5
 
 [Install]
 WantedBy=default.target
@@ -954,7 +964,7 @@ echo "      At this point, Plexamp is now signed in and ready."
 echo ""
 echo "      NOTE!! A reboot and re-login as user $USER is at this point needed to automatically create the symlink for autostart."
 echo "      Please go ahead and issue a reboot at this point and login as user $USER."
-echo "      The re-login after reboot is not needed on DietPi, since it is a system-service there"
+echo "      The re-login after reboot is not needed on DietPi, since it is a system-service there."
 echo ""
 echo "      The Plexamp service has now been automatically enabled and started."
 echo "      You can verify the service with: systemctl --user status plexamp.service"
@@ -979,7 +989,7 @@ echo "      Now play some music! Or control it from any other instance of Plexam
 echo ""
 echo "      NOTE!! For upgrades from an older version, a second reboot might be needed to automatically create the symlink for autostart."
 echo "      Please go ahead and issue a reboot to create this symlink."
-echo "      This is not needed on DietPi, since it is a system-service there"
+echo "      This is not needed on DietPi, since it is a system-service there."
 echo "      The login-tokens are preserved. All should work at this point."
 echo ""
 echo "      Logs are located at: ~/.cache/Plexamp/log/Plexamp.log"
