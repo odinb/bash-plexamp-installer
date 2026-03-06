@@ -5,15 +5,17 @@ For more information and hardware used, see here:<br /> https://github.com/odinb
 Assumes 64-bit capable Raspberry Pi HW and Raspberry Pi OS that is 64-bit.<br />
 
 The script is currently maintained for Trixie.<br />
-Debian Trixie Raspbian OS was officially released on 2024-10-01.<br />
-Bullseye was end-of-life on 2024-08-14.<br />
+Debian 13 Trixie Raspberry Pi OS was officially released on 2025-10-02.<br />
+Debian 13 Trixie Raspberry Pi OS will be end-of-regular-support sometime 2028.<br />
+Debian 12 Bookworm Raspberry Pi OS will be end-of-regular-support on 2026-06-10.<br />
+Debian 11 Bullseye Raspberry Pi OS was end-of-regular-support on 2024-08-14.<br />
 https://wiki.debian.org/DebianReleases#Current_Releases.2FRepositories
 
-This script will install nodeJS (currently NodeJS-20), install/upgrade/configure Plexamp-Linux-headless.
+This script will install Node.js (currently Node.js-20), configure audio HAT/USB & install/upgrade/configure Plexamp-Linux-headless.
 
 NOTE!<br />
 Last verified upgrade was to Plexamp-Linux-headless-v4.12.x.
-If newer version is available, and there have been major changes like support for new NodeJS version, please be aware that it might be untested by me, and script might malfunction if any major changes have been made to the application or installation procedure, and installation might fail. Re-running script after script-update usually fixes this, but cannot be guaranteed.
+If newer version is available, and there have been major changes like support for new Node.js version, please be aware that it might be untested by me, and script might malfunction if any major changes have been made to the application or installation procedure, and installation might fail. Re-running script after script-update usually fixes this, but cannot be guaranteed.
 
 If your card is not detected after upgrade & reboot (no audio) ("aplay -l" to check), please do hard reboot (pull power), and re-select the card via web-GUI. Now there should be audio!
 
@@ -23,18 +25,39 @@ Raspberry Pi Imager is the quick and easy way to install Raspberry Pi OS and oth
 [Download and install Raspberry Pi Imager](https://www.raspberrypi.com/software/) to a computer with an SD card reader. Put the SD card you'll use with your Raspberry Pi into the reader and run Raspberry Pi Imager.
 
 [The main screen of Pi-imager:](https://www.raspberrypi.com/software/)
-<br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/Pi-imager_Main.png" width="450">
+<br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/01-Select_Device.png" width="450">
 
 [Choose the Raspberry Pi OS (other):](https://www.raspberrypi.com/software/)
-<br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/Pi-imager_OS.png" width="450">
+<br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/02-Choose_OS_other.png" width="450">
 
 [Then Raspberry Pi OS Lite (64-bit):](https://www.raspberrypi.com/software/)
-<br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/Pi-imager_OS_64.png" width="450">
+<br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/03-Choose_OS_Lite.png" width="450">
 
-[The advanced screen of Pi-imager:](https://www.raspberrypi.com/software/)
-<br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/Pi-imager_Advanced.png" width="400">
+[Then select Storage Media:](https://www.raspberrypi.com/software/)
+<br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/04-Pick_target_Media.png" width="450">
 
-Once done, unmount and insert card into Raspberry Pi and boot it.
+[Then choose hostname:](https://www.raspberrypi.com/software/)
+<br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/05-Hostname.png" width="450">
+
+[Then set localisation:](https://www.raspberrypi.com/software/)
+<br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/06-Localisation.png" width="450">
+
+[Then choose username:](https://www.raspberrypi.com/software/)
+<br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/07-User.png" width="450">
+
+[Setup WiFi if needed:](https://www.raspberrypi.com/software/)
+<br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/08-WiFi.png" width="450">
+
+[Enable SSH:](https://www.raspberrypi.com/software/)
+<br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/09-Enable_SSH.png" width="450">
+
+[Enable Pi Connect if needed:](https://www.raspberrypi.com/software/)
+<br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/10-Pi-Connect.png" width="450">
+
+[Finally write the Media:](https://www.raspberrypi.com/software/)
+<br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/11-Write_Media.png" width="450">
+
+Once done, unmount and insert SD-card/NVME into Raspberry Pi and boot it.
 
 SSH access on "DietPi OS" as user: dietpi/dietpi and as root: root/dietpi<br />
 NOTE!!! DietPi is best effort, and was last tested on 2025-10-03 on DietPi v9.17.2 (Trixie).
@@ -49,7 +72,7 @@ The script can be re-run to fix configuration/setup errors, just say no/bypass t
 
 If there is a new version, and script has been updated, you can upgrade by re-running the script, and reboot.
 
-For hostname-change, please make sure to reboot in-between, or you might face issues.
+For hostname-change, please make sure to reboot in-between, or you might face issues with the service-file.
 
 ### Q & A
 
