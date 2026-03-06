@@ -47,7 +47,7 @@
 #                                  - More info here: https://www.raspberrypi.com/documentation/computers/config_txt.html Commit contributed by ItsVRK[](https://github.com/ItsVRK)
 # Revision update: 2024-09-24 ODIN - Updated to "dtoverlay=vc4-kms-v3d" due to deprecation of "fkms" after input (issue #29) from bhcompy[](https://github.com/bhcompy).
 # Revision update: 2024-10-06 ODIN - Added workarounds for DietPi for /boot/config.txt.
-# Revision update: 2025-04-18 ODIN - Added update for new wifi setting to fix "Wi-Fi is currently blocked by rfkill".
+# Revision update: 2025-04-18 ODIN - Added update for new WiFi setting to fix "Wi-Fi is currently blocked by rfkill".
 # Revision update: 2025-05-09 ODIN - Modified to run Plexamp as a user-level service with DAC access, and automatically enable plexamp user-service. Added WiFi Country Code Setup.
 # Revision update: 2025-05-09 ODIN - Modified to detect DietPi and use a system-level service instead of a user-level service, as system services are more reliable in DietPi's minimal environment.
 # Revision update: 2025-08-17 ODIN - Updated for Trixie (Debian v13) configuration. Cleanup of major areas performed to speedup script execution and remove legacy code.
@@ -63,6 +63,8 @@
 #                                  - Improved USB audio to use card name instead of index for reboot stability. Added Pi 5 specific audio handling (dtparam=audio=off for HATs).
 #                                  - Added post-config audio verification step. Fixed USER detection under sudo (uses SUDO_USER). Added root check at script start.
 #                                  - Added Plexamp API response validation. Added Pi model detection for Pi 3/4/5 compatibility.
+# Revision update: 2026-03-06 ODIN - Updated service file again to try and avoid all the "undefined" calls to DNS. Added firmware Update check, and inform user of state.
+#                                  - Added possible audio enhancement trix. Improved the "Wi-Fi is currently blocked by rfkill" section to allow country changes.
 
 # ============================================================
 #
@@ -135,6 +137,13 @@ if [ -f /boot/dietpi.txt ] || [ -d /DietPi ]; then
 fi
 DEBIAN_VERSION=$(grep VERSION_CODENAME /etc/os-release 2>/dev/null | cut -d'=' -f2 | tr -d '"' || echo "unknown")
 
+# Derive human-readable OS label for banner
+if [ "$IS_DIETPI" = true ]; then
+    OS_LABEL="DietPi ($DEBIAN_VERSION)"
+else
+    OS_LABEL="Raspberry Pi OS ($DEBIAN_VERSION)"
+fi
+
 # Banner
 echo ""
 echo ""
@@ -146,8 +155,9 @@ echo "   ██║     ███████╗███████╗██╔
 echo "   ╚═╝     ╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝"
 echo ""
 echo " This will install/upgrade to: $PLEXAMPVB"
-echo " Pi model: $PI_MODEL"
-echo " OS: $DEBIAN_VERSION | DietPi: $IS_DIETPI | Pi 5: $IS_PI5"
+echo ""
+echo " Hardware : $PI_MODEL"
+echo " OS       : $OS_LABEL"
 echo ""
 echo "--== Preparing to start script execution ==--"
 
@@ -355,7 +365,7 @@ fi
 # Hardware configuration
 echo ""
 echo "--== Hardware Configuration ==--"
-echo -n "Do you want to list hardware configuration (Partitioning, RAM, CPUs)? [y/N]: "
+echo -n "Do you want to list hardware configuration (Partitioning, RAM, WiFi, CPUs)? [y/N]: "
 read -r answer
 answer=$(echo "$answer" | tr '[:upper:]' '[:lower:]')
 if [ "$answer" = "y" ]; then
@@ -370,6 +380,160 @@ if [ "$answer" = "y" ]; then
     lscpu
 else
     echo "Skipping hardware configuration"
+fi
+
+# Firmware update check
+echo ""
+echo "--== Firmware update check ==--"
+
+# Install rpi-update if not present
+if ! command -v rpi-update &>/dev/null; then
+    echo "rpi-update not found, installing..."
+    apt install -y rpi-update > /dev/null 2>&1 || true
+    if command -v rpi-update &>/dev/null; then
+        echo "rpi-update installed"
+    else
+        echo "rpi-update could not be installed, skipping firmware check."
+    fi
+else
+    echo "rpi-update is already installed"
+fi
+
+if command -v rpi-update &>/dev/null; then
+    echo ""
+
+    # Show current revision from known file locations
+    CURRENT_FW=""
+    for fw_file in \
+        /boot/firmware/.firmware_revision \
+        /boot/.firmware_revision; do
+        if [ -f "$fw_file" ]; then
+            CURRENT_FW=$(cat "$fw_file" 2>/dev/null | tr -d '[:space:]' || true)
+            [ -n "$CURRENT_FW" ] && break
+        fi
+    done
+    if [ -n "$CURRENT_FW" ]; then
+        echo "Current firmware revision : $CURRENT_FW"
+    else
+        echo "Current firmware revision : unable to determine"
+    fi
+
+    echo "Checking for firmware updates (this may take a moment)..."
+    # JUST_CHECK=1 makes rpi-update check and report without applying anything
+    # SKIP_BACKUP=1 prevents it from trying to write a backup during check
+    FW_CHECK=$(JUST_CHECK=1 SKIP_BACKUP=1 rpi-update 2>&1 || true)
+
+    if echo "$FW_CHECK" | grep -q "already up to date"; then
+        echo "Firmware is up to date."
+    elif echo "$FW_CHECK" | grep -q "update available\|would be updated\|Downloading"; then
+        echo ""
+        echo "      A firmware update is available!"
+        echo ""
+        echo "      NOTE: rpi-update installs pre-release firmware directly from GitHub."
+        echo "      It is NOT the same as the stable firmware delivered via apt, and it"
+        echo "      can confuse apt into thinking a downgrade is needed on next upgrade."
+        echo "      Only use rpi-update if you need a specific fix or have been asked"
+        echo "      to test pre-release firmware."
+        echo ""
+        echo "      To update firmware, run the following command and reboot:"
+        echo "      sudo rpi-update"
+    else
+        echo "rpi-update check output:"
+        echo "$FW_CHECK" | grep -v "^$" | head -20
+        echo ""
+        echo "      If an update is needed, run:"
+        echo "      sudo rpi-update"
+    fi
+fi
+
+# Wi-Fi rfkill configuration
+if [ "$IS_DIETPI" = false ]; then
+    echo ""
+    echo "--== Wi-Fi configuration ==--"
+    if ! command -v rfkill &>/dev/null; then
+        apt install -y rfkill > /dev/null 2>&1 || { echo "Failed to install rfkill"; exit 1; }
+        echo "rfkill installed"
+    else
+        echo "rfkill is already installed"
+    fi
+
+    # Show current rfkill status
+    echo ""
+    echo "--== Current Wi-Fi status ==--"
+    rfkill list wifi
+
+    # Detect current country code
+    CURRENT_CC=""
+    if command -v raspi-config >/dev/null; then
+        CURRENT_CC=$(raspi-config nonint get_wifi_country 2>/dev/null || true)
+    fi
+    if [ -z "$CURRENT_CC" ] && [ -f /etc/wpa_supplicant/wpa_supplicant.conf ]; then
+        CURRENT_CC=$(grep "^country=" /etc/wpa_supplicant/wpa_supplicant.conf | cut -d'=' -f2 | tr -d ' ' || true)
+    fi
+    if [ -z "$CURRENT_CC" ]; then
+        CURRENT_CC="not set"
+    fi
+    echo "Current Wi-Fi country code: $CURRENT_CC"
+
+    # Derive suggested CC from timezone
+    current_timezone=$(timedatectl show --property=Timezone --value 2>/dev/null || cat /etc/timezone 2>/dev/null || echo "Unknown")
+    ZONETAB=/usr/share/zoneinfo/zone.tab
+    SUGGESTED_CC=$(awk -v tz="$current_timezone" '$3 == tz {print $1}' $ZONETAB 2>/dev/null || true)
+    if [ -n "$SUGGESTED_CC" ] && [ "$SUGGESTED_CC" != "$CURRENT_CC" ]; then
+        echo "Suggested country code based on timezone ($current_timezone): $SUGGESTED_CC"
+    fi
+
+    # Ask about rfkill block if blocked
+    if rfkill list wifi | grep -q "Soft blocked: yes"; then
+        echo ""
+        echo "Wi-Fi is currently soft-blocked by rfkill."
+        echo -n "Do you want to remove the Wi-Fi rfkill block? [y/N]: "
+        read -r answer
+        answer=$(echo "$answer" | tr '[:upper:]' '[:lower:]')
+        if [ "$answer" = "y" ]; then
+            if command -v raspi-config >/dev/null; then
+                raspi-config nonint do_wifi_country "${SUGGESTED_CC:-$CURRENT_CC}"
+            else
+                sed -i "/^country=/d" /etc/wpa_supplicant/wpa_supplicant.conf
+                echo "country=${SUGGESTED_CC:-$CURRENT_CC}" | tee -a /etc/wpa_supplicant/wpa_supplicant.conf >/dev/null
+                wpa_cli -i wlan0 reconfigure 2>/dev/null || true
+            fi
+            rfkill unblock wifi
+            echo "Wi-Fi unblocked with country code: ${SUGGESTED_CC:-$CURRENT_CC}"
+        fi
+    else
+        echo "Wi-Fi is not blocked."
+    fi
+
+    # Always ask about country code change, regardless of rfkill state
+    echo ""
+    echo -n "Do you want to change the Wi-Fi country code (currently: $CURRENT_CC)? [y/N]: "
+    read -r answer
+    answer=$(echo "$answer" | tr '[:upper:]' '[:lower:]')
+    if [ "$answer" = "y" ]; then
+        echo ""
+        echo "Available country codes (2-letter ISO 3166-1)."
+        echo "Common examples: US, GB, DE, FR, CA, AU, NL, SE, DK, NO, FI"
+        if [ -n "$SUGGESTED_CC" ]; then
+            echo "Suggested based on your timezone: $SUGGESTED_CC"
+            read -e -p "Enter country code: " -i "$SUGGESTED_CC" NEW_CC
+        else
+            read -e -p "Enter country code: " NEW_CC
+        fi
+        NEW_CC=$(echo "$NEW_CC" | tr '[:lower:]' '[:upper:]' | tr -d ' ')
+        if [ -n "$NEW_CC" ]; then
+            if command -v raspi-config >/dev/null; then
+                raspi-config nonint do_wifi_country "$NEW_CC"
+            else
+                sed -i "/^country=/d" /etc/wpa_supplicant/wpa_supplicant.conf
+                echo "country=$NEW_CC" | tee -a /etc/wpa_supplicant/wpa_supplicant.conf >/dev/null
+                wpa_cli -i wlan0 reconfigure 2>/dev/null || true
+            fi
+            echo "Wi-Fi country code set to: $NEW_CC"
+        else
+            echo "No country code entered, keeping current: $CURRENT_CC"
+        fi
+    fi
 fi
 
 # Sound output configuration
@@ -732,6 +896,160 @@ else
     echo "Skipping sound output configuration"
 fi
 
+# Possible Audio enhancements
+echo ""
+echo "--== Possible Audio Enhancement Tricks ==--"
+echo "     The Raspberry Pi 5 can be noisier than older versions of the Raspberry Pi"
+echo "     due to these Raspberry Pi 5 introductions:"
+echo "     - Faster CPU"
+echo "     - PCIe controller"
+echo "     - Higher switching currents"
+echo "     - More aggressive power management"
+echo ""
+echo "     These factors create more broadband RF noise inside the board compared to earlier versions."
+echo ""
+echo "     NOTE: These enhancements are most effective for HAT DAC and USB audio users."
+echo "           HDMI audio is a fully digital signal and is inherently immune to power rail"
+echo "           and RF noise — these tweaks will have no audible effect for HDMI audio users."
+echo ""
+echo -n "Do you want to set or remove additional audio enhancements? [y/N]: "
+read -r answer
+answer=$(echo "$answer" | tr '[:upper:]' '[:lower:]')
+if [ "$answer" = "y" ]; then
+
+    # Detect config.txt path if not already set (in case sound section was skipped)
+    if [ -z "${CNFFILE:-}" ]; then
+        detect_config_path
+    fi
+
+    # Detect current audio output type for context-aware advice
+    AUDIO_TYPE="unknown"
+    if [ -n "${CNFFILE:-}" ] && [ -f "$CNFFILE" ]; then
+        if grep -q "hdmi_force_hotplug" "$CNFFILE" 2>/dev/null; then
+            AUDIO_TYPE="hdmi"
+        elif grep -q "dtoverlay=hifiberry\|dtoverlay=allo\|dtoverlay=justboom\|dtoverlay=i-sabre" "$CNFFILE" 2>/dev/null; then
+            AUDIO_TYPE="hat"
+        elif [ -f /etc/asound.conf ] && grep -q "USB" /etc/asound.conf 2>/dev/null; then
+            AUDIO_TYPE="usb"
+        fi
+    fi
+
+    if [ "$AUDIO_TYPE" = "hdmi" ]; then
+        echo ""
+        echo "      Detected HDMI audio configuration."
+        echo "      HDMI transmits audio as a fully digital signal — it is inherently immune"
+        echo "      to power rail switching noise and RF interference from WiFi/Bluetooth."
+        echo "      The enhancements below will have no audible effect for HDMI audio."
+        echo "      Continuing anyway in case your setup has changed since audio was configured."
+        echo ""
+    fi
+
+    # WiFi and Bluetooth
+    echo ""
+    echo "      Disabling WiFi and Bluetooth removes RF interference from the 2.4GHz radio"
+    echo "      which shares a chip on the Pi and can bleed into the I2S bus and power rails"
+    echo "      used by HAT DACs and USB audio devices."
+    if [ "$AUDIO_TYPE" = "hdmi" ]; then
+        echo "      For HDMI audio this is unlikely to have any audible effect."
+    fi
+    echo "      Only recommended if your Pi is on wired ethernet."
+    echo ""
+
+    WIFI_BT_DISABLED=false
+    if grep -q "dtoverlay=disable-wifi" "$CNFFILE" 2>/dev/null; then
+        WIFI_BT_DISABLED=true
+    fi
+
+    if [ "$WIFI_BT_DISABLED" = false ]; then
+        echo -n "Do you want to disable WiFi and Bluetooth to remove possible switching noise? [y/N]: "
+        read -r answer
+        answer=$(echo "$answer" | tr '[:upper:]' '[:lower:]')
+        if [ "$answer" = "y" ]; then
+            grep -q "dtoverlay=disable-wifi" "$CNFFILE" || echo "dtoverlay=disable-wifi" >> "$CNFFILE"
+            grep -q "dtoverlay=disable-bt"   "$CNFFILE" || echo "dtoverlay=disable-bt"   >> "$CNFFILE"
+            echo "WiFi and Bluetooth disabled. Reboot to activate."
+        fi
+    else
+        echo "WiFi and Bluetooth are currently disabled."
+        echo -n "Do you want to re-enable WiFi and Bluetooth? [y/N]: "
+        read -r answer
+        answer=$(echo "$answer" | tr '[:upper:]' '[:lower:]')
+        if [ "$answer" = "y" ]; then
+            sed -i '/dtoverlay=disable-wifi/d' "$CNFFILE"
+            sed -i '/dtoverlay=disable-bt/d'   "$CNFFILE"
+            echo "WiFi and Bluetooth re-enabled. Reboot to activate."
+        fi
+    fi
+
+# CPU frequency governor
+    echo ""
+    echo "      Setting the CPU governor to powersave locks the CPU to its minimum frequency,"
+    echo "      eliminating switching spikes on the power rail caused by CPU frequency changes."
+    echo "      This is most effective for USB audio dongles which share the Pi's power rail"
+    echo "      directly, and for HAT DACs on Pi 5 which has more aggressive power management."
+
+# Check current state BEFORE printing the prompt
+    CPU_POWERSAVE=false
+    if [ -f /etc/default/cpufrequtils ] && grep -q 'GOVERNOR="powersave"' /etc/default/cpufrequtils; then
+        CPU_POWERSAVE=true
+    fi
+
+    if [ "$CPU_POWERSAVE" = false ]; then
+        if [ "$AUDIO_TYPE" = "hdmi" ]; then
+            echo ""
+            echo "      HDMI audio is fully digital and immune to power rail noise."
+            echo "      This setting will have no audible effect for HDMI audio users and is"
+            echo "      not recommended as it reduces CPU performance for no audio benefit."
+            echo -n "Do you want to set the CPU governor to powersave anyway? [y/N]: "
+        elif [ "$AUDIO_TYPE" = "usb" ]; then
+            echo "      USB audio shares the Pi's 5V rail directly — this is the most"
+            echo "      impactful setting for USB audio dongles."
+            echo ""
+            echo -n "Do you want to set the CPU governor to powersave? [y/N]: "
+        else
+            echo ""
+            echo -n "Do you want to set the CPU governor to powersave? [y/N]: "
+        fi
+        read -r answer
+        answer=$(echo "$answer" | tr '[:upper:]' '[:lower:]')
+        if [ "$answer" = "y" ]; then
+            apt install -y cpufrequtils > /dev/null 2>&1 || true
+            echo 'GOVERNOR="powersave"' > /etc/default/cpufrequtils
+            if command -v cpufreq-set &>/dev/null; then
+                for cpu in /sys/devices/system/cpu/cpu[0-9]*; do
+                    cpufreq-set -c "${cpu##*cpu}" -g powersave 2>/dev/null || true
+                done
+                echo "CPU frequency governor set to powersave (active now and on reboot)."
+            else
+                for gov in /sys/devices/system/cpu/cpu[0-9]*/cpufreq/scaling_governor; do
+                    echo "powersave" > "$gov" 2>/dev/null || true
+                done
+                echo "CPU frequency governor set to powersave via sysfs (active now and on reboot)."
+            fi
+        fi
+    else
+        echo ""
+        echo "CPU frequency governor is currently set to powersave."
+        echo -n "Do you want to re-enable dynamic CPU frequency scaling? [y/N]: "
+        read -r answer
+        answer=$(echo "$answer" | tr '[:upper:]' '[:lower:]')
+        if [ "$answer" = "y" ]; then
+            rm -f /etc/default/cpufrequtils
+            if command -v cpufreq-set &>/dev/null; then
+                for cpu in /sys/devices/system/cpu/cpu[0-9]*; do
+                    cpufreq-set -c "${cpu##*cpu}" -g ondemand 2>/dev/null || true
+                done
+                echo "CPU frequency governor restored to ondemand (active now and on reboot)."
+            else
+                for gov in /sys/devices/system/cpu/cpu[0-9]*/cpufreq/scaling_governor; do
+                    echo "ondemand" > "$gov" 2>/dev/null || true
+                done
+                echo "CPU frequency governor restored to ondemand via sysfs (active now and on reboot)."
+            fi
+        fi
+    fi
+fi
+
 # vim configuration
 echo ""
 echo "--== Installing and configuring vim ==--"
@@ -773,44 +1091,6 @@ EOF
             echo "IPv6 disabled"
         else
             echo "IPv6 already disabled"
-        fi
-    fi
-fi
-
-# Wi-Fi rfkill configuration
-if [ "$IS_DIETPI" = false ]; then
-    echo ""
-    echo "--== Wi-Fi configuration ==--"
-    if ! command -v rfkill &>/dev/null; then
-        apt install -y rfkill > /dev/null 2>&1 || { echo "Failed to install rfkill"; exit 1; }
-        echo "rfkill installed"
-    else
-        echo "rfkill is already installed"
-    fi
-    echo -n "Do you want to remove Wi-Fi rfkill block [y/N]: "
-    read -r answer
-    answer=$(echo "$answer" | tr '[:upper:]' '[:lower:]')
-    if [ "$answer" = "y" ]; then
-        if rfkill list wifi | grep -q "Soft blocked: yes"; then
-            echo "Wi-Fi is blocked by rfkill, configuring country code"
-            current_timezone=$(timedatectl show --property=Timezone --value 2>/dev/null || cat /etc/timezone 2>/dev/null || echo "Unknown")
-            ZONETAB=/usr/share/zoneinfo/zone.tab
-            CC=$(awk -v tz="$current_timezone" '$3 == tz {print $1}' $ZONETAB)
-            if [ -z "$CC" ]; then
-                echo "No country code found for timezone $current_timezone"
-            else
-                if command -v raspi-config >/dev/null; then
-                    raspi-config nonint do_wifi_country "$CC"
-                else
-                    sed -i "/^country=/d" /etc/wpa_supplicant/wpa_supplicant.conf
-                    echo "country=$CC" | tee -a /etc/wpa_supplicant/wpa_supplicant.conf >/dev/null
-                    wpa_cli -i wlan0 reconfigure
-                fi
-                rfkill unblock wifi
-                echo "Wi-Fi country set to $CC and unblocked"
-            fi
-        else
-            echo "Wi-Fi is not blocked, skipping configuration"
         fi
     fi
 fi
@@ -913,8 +1193,9 @@ Wants=network-online.target
 [Service]
 User=$USER
 Group=$USER
-Environment=CLIENT_NAME=$HOSTNAME
-ExecStart=/usr/bin/node /home/$USER/plexamp/js/index.js
+Environment=CLIENT_NAME=$(hostname -s)
+ExecStartPre=/bin/rm -f /home/$USER/.local/share/Plexamp/Settings/@Plexamp:state
+ExecStart=/bin/bash -c 'export CLIENT_NAME=$(hostname -s); exec /usr/bin/node /home/$USER/plexamp/js/index.js'
 WorkingDirectory=/home/$USER/plexamp
 Restart=on-failure
 RestartSec=5
@@ -924,7 +1205,7 @@ TimeoutStopSec=5
 [Install]
 WantedBy=multi-user.target
 EOF
-        systemctl daemon-reload
+	systemctl daemon-reload
         systemctl enable plexamp.service
         systemctl start plexamp.service
         echo "System-level plexamp.service enabled and started"
@@ -938,8 +1219,9 @@ After=network-online.target
 Wants=network-online.target
 
 [Service]
-Environment=CLIENT_NAME=$HOSTNAME
-ExecStart=/usr/bin/node /home/$USER/plexamp/js/index.js
+Environment=CLIENT_NAME=$(hostname -s)
+ExecStartPre=/bin/rm -f /home/$USER/.local/share/Plexamp/Settings/@Plexamp:state
+ExecStart=/bin/bash -c 'export CLIENT_NAME=\$(hostname -s); exec /usr/bin/node /home/$USER/plexamp/js/index.js'
 WorkingDirectory=/home/$USER/plexamp
 Restart=on-failure
 RestartSec=5
@@ -949,7 +1231,7 @@ TimeoutStopSec=5
 [Install]
 WantedBy=default.target
 EOF
-        chown -R "$USER":"$USER" /home/"$USER"/.config
+	chown -R "$USER":"$USER" /home/"$USER"/.config
         USER_UID=$(id -u "$USER")
         mkdir -p /run/user/"$USER_UID"
         chown "$USER":"$USER" /run/user/"$USER_UID"

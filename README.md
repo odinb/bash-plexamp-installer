@@ -80,7 +80,11 @@ Q:
 The RPi will show up in my cast list. However the moment I select a song to play, it either keeps loading forever (black screen with loading circle) or it flips back to the album overview without starting the selected song. This is the case for all file types tried.
 
 A:
-Go into the plexamp settings (via the web UI) and select the right audio output device. Rebooting the RPi a second time sometimes also helps (or restarting/verifying the PlexAmp service), this of course will only help if correct audio device is already chosen.
+Go into the plexamp settings (via the web UI) and select the right audio output device. Rebooting the RPi a second time sometimes also helps (or restarting/verifying the PlexAmp service), this of course will only help if correct audio device is already chosen. There are 2 of these settings that needs to be chosen:
+1) Settings > Playback > Audio Output > Audio Device. Select correct output here. Sometimes selecting something diofferent and then re-selecting the correct devices can fix issues.
+<br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/Audio_Device_Select.png" width="450">
+2) Player Selection. On the Plexamp Headless, after selecting the Audio device, select the correct player from the "Cast" icon. I.e. pick the Plexamp Headless player you are currently on!
+<br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/Audio_Player_Select.png" width="450">
 
 ======
 
