@@ -1187,18 +1187,18 @@ if [ "$answer" = "y" ]; then
         cat > /etc/systemd/system/plexamp.service << EOF
 [Unit]
 Description=Plexamp Headless (System Service)
-After=network-online.target
-Wants=network-online.target
+After=network-online.target nss-lookup.target
+Wants=network-online.target nss-lookup.target
 
 [Service]
 User=$USER
 Group=$USER
 Environment=CLIENT_NAME=$(hostname -s)
-ExecStartPre=/bin/rm -f /home/$USER/.local/share/Plexamp/Settings/@Plexamp:state
+ExecStartPre=/bin/bash -c 'for i in \$(seq 1 30); do getent hosts plex.tv > /dev/null 2>&1 && break || sleep 2; done'
 ExecStart=/bin/bash -c 'export CLIENT_NAME=$(hostname -s); exec /usr/bin/node /home/$USER/plexamp/js/index.js'
 WorkingDirectory=/home/$USER/plexamp
 Restart=on-failure
-RestartSec=5
+RestartSec=10
 KillSignal=SIGINT
 TimeoutStopSec=5
 
@@ -1215,16 +1215,16 @@ EOF
         cat > /home/"$USER"/.config/systemd/user/plexamp.service << EOF
 [Unit]
 Description=Plexamp Headless (User Service)
-After=network-online.target
-Wants=network-online.target
+After=network-online.target nss-lookup.target
+Wants=network-online.target nss-lookup.target
 
 [Service]
 Environment=CLIENT_NAME=$(hostname -s)
-ExecStartPre=/bin/rm -f /home/$USER/.local/share/Plexamp/Settings/@Plexamp:state
+ExecStartPre=/bin/bash -c 'for i in \$(seq 1 30); do getent hosts plex.tv > /dev/null 2>&1 && break || sleep 2; done'
 ExecStart=/bin/bash -c 'export CLIENT_NAME=\$(hostname -s); exec /usr/bin/node /home/$USER/plexamp/js/index.js'
 WorkingDirectory=/home/$USER/plexamp
 Restart=on-failure
-RestartSec=5
+RestartSec=10
 KillSignal=SIGINT
 TimeoutStopSec=5
 
