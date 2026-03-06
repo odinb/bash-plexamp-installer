@@ -968,6 +968,7 @@ if [ "$answer" = "y" ]; then
             grep -q "dtoverlay=disable-wifi" "$CNFFILE" || echo "dtoverlay=disable-wifi" >> "$CNFFILE"
             grep -q "dtoverlay=disable-bt"   "$CNFFILE" || echo "dtoverlay=disable-bt"   >> "$CNFFILE"
             echo "WiFi and Bluetooth disabled. Reboot to activate."
+            echo ""
         fi
     else
         echo "WiFi and Bluetooth are currently disabled."
@@ -978,6 +979,7 @@ if [ "$answer" = "y" ]; then
             sed -i '/dtoverlay=disable-wifi/d' "$CNFFILE"
             sed -i '/dtoverlay=disable-bt/d'   "$CNFFILE"
             echo "WiFi and Bluetooth re-enabled. Reboot to activate."
+            echo ""
         fi
     fi
 
