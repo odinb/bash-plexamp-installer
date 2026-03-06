@@ -25,37 +25,37 @@ Raspberry Pi Imager is the quick and easy way to install Raspberry Pi OS and oth
 [Download and install Raspberry Pi Imager](https://www.raspberrypi.com/software/) to a computer with an SD card reader. Put the SD card you'll use with your Raspberry Pi into the reader and run Raspberry Pi Imager.
 
 [The main screen of Pi-imager:](https://www.raspberrypi.com/software/)
-<br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/01-Select_Device.png" width="450">
+<br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/01-Select_Device.png" width="500">
 
 [Choose the Raspberry Pi OS (other):](https://www.raspberrypi.com/software/)
-<br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/02-Choose_OS_other.png" width="450">
+<br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/02-Choose_OS_other.png" width="500">
 
 [Then Raspberry Pi OS Lite (64-bit):](https://www.raspberrypi.com/software/)
-<br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/03-Choose_OS_Lite.png" width="450">
+<br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/03-Choose_OS_Lite.png" width="500">
 
 [Then select Storage Media:](https://www.raspberrypi.com/software/)
-<br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/04-Pick_target_Media.png" width="450">
+<br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/04-Pick_target_Media.png" width="500">
 
 [Then choose hostname:](https://www.raspberrypi.com/software/)
-<br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/05-Hostname.png" width="450">
+<br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/05-Hostname.png" width="500">
 
 [Then set localisation:](https://www.raspberrypi.com/software/)
-<br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/06-Localisation.png" width="450">
+<br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/06-Localisation.png" width="500">
 
 [Then choose username:](https://www.raspberrypi.com/software/)
-<br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/07-User.png" width="450">
+<br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/07-User.png" width="500">
 
 [Setup WiFi if needed:](https://www.raspberrypi.com/software/)
-<br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/08-WiFi.png" width="450">
+<br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/08-WiFi.png" width="500">
 
 [Enable SSH:](https://www.raspberrypi.com/software/)
-<br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/09-Enable_SSH.png" width="450">
+<br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/09-Enable_SSH.png" width="500">
 
 [Enable Pi Connect if needed:](https://www.raspberrypi.com/software/)
-<br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/10-Pi-Connect.png" width="450">
+<br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/10-Pi-Connect.png" width="500">
 
 [Finally write the Media:](https://www.raspberrypi.com/software/)
-<br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/11-Write_Media.png" width="450">
+<br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/11-Write_Media.png" width="500">
 
 Once done, unmount and insert SD-card/NVME into Raspberry Pi and boot it.
 
@@ -82,9 +82,9 @@ The RPi will show up in my cast list. However the moment I select a song to play
 A:
 Go into the plexamp settings (via the web UI) and select the right audio output device. Rebooting the RPi a second time sometimes also helps (or restarting/verifying the PlexAmp service), this of course will only help if correct audio device is already chosen. There are 2 of these settings that needs to be set properly:
 1) Settings > Playback > Audio Output > Audio Device. Select correct output here. Sometimes selecting something different and then re-selecting the correct devices can fix issues.
-<br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/Audio_Device_Select.png" width="300">
+<br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/Audio_Device_Select.png" width="350">
 2) Player Selection. On the Plexamp Headless, after selecting the Audio device, select the correct player from the "Cast" icon. I.e. pick the Plexamp Headless player you are currently on!
-<br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/Audio_Player_Select.png" width="300">
+<br /> <img src="https://github.com/odinb/bash-plexamp-installer/blob/main/Audio_Player_Select.png" width="350">
 
 ======
 
