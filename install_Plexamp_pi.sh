@@ -65,6 +65,7 @@
 #                                  - Added Plexamp API response validation. Added Pi model detection for Pi 3/4/5 compatibility.
 # Revision update: 2026-03-06 ODIN - Updated service file again to try and avoid all the "undefined" calls to DNS. Added firmware Update check, and inform user of state.
 #                                  - Added possible audio enhancement trix. Improved the "Wi-Fi is currently blocked by rfkill" section to allow country changes.
+# Revision update: 2026-03-10 ODIN - Removed firmware update part. Confusing and not belonging.
 
 # ============================================================
 #
@@ -380,70 +381,6 @@ if [ "$answer" = "y" ]; then
     lscpu
 else
     echo "Skipping hardware configuration"
-fi
-
-# Firmware update check
-echo ""
-echo "--== Firmware update check ==--"
-
-# Install rpi-update if not present
-if ! command -v rpi-update &>/dev/null; then
-    echo "rpi-update not found, installing..."
-    apt install -y rpi-update > /dev/null 2>&1 || true
-    if command -v rpi-update &>/dev/null; then
-        echo "rpi-update installed"
-    else
-        echo "rpi-update could not be installed, skipping firmware check."
-    fi
-else
-    echo "rpi-update is already installed"
-fi
-
-if command -v rpi-update &>/dev/null; then
-    echo ""
-
-    # Show current revision from known file locations
-    CURRENT_FW=""
-    for fw_file in \
-        /boot/firmware/.firmware_revision \
-        /boot/.firmware_revision; do
-        if [ -f "$fw_file" ]; then
-            CURRENT_FW=$(cat "$fw_file" 2>/dev/null | tr -d '[:space:]' || true)
-            [ -n "$CURRENT_FW" ] && break
-        fi
-    done
-    if [ -n "$CURRENT_FW" ]; then
-        echo "Current firmware revision : $CURRENT_FW"
-    else
-        echo "Current firmware revision : unable to determine"
-    fi
-
-    echo "Checking for firmware updates (this may take a moment)..."
-    # JUST_CHECK=1 makes rpi-update check and report without applying anything
-    # SKIP_BACKUP=1 prevents it from trying to write a backup during check
-    FW_CHECK=$(JUST_CHECK=1 SKIP_BACKUP=1 rpi-update 2>&1 || true)
-
-    if echo "$FW_CHECK" | grep -q "already up to date"; then
-        echo "Firmware is up to date."
-    elif echo "$FW_CHECK" | grep -q "update available\|would be updated\|Downloading"; then
-        echo ""
-        echo "      A firmware update is available!"
-        echo ""
-        echo "      NOTE: rpi-update installs pre-release firmware directly from GitHub."
-        echo "      It is NOT the same as the stable firmware delivered via apt, and it"
-        echo "      can confuse apt into thinking a downgrade is needed on next upgrade."
-        echo "      Only use rpi-update if you need a specific fix or have been asked"
-        echo "      to test pre-release firmware."
-        echo ""
-        echo "      To update firmware, run the following command and reboot:"
-        echo "      sudo rpi-update"
-    else
-        echo "rpi-update check output:"
-        echo "$FW_CHECK" | grep -v "^$" | head -20
-        echo ""
-        echo "      If an update is needed, run:"
-        echo "      sudo rpi-update"
-    fi
 fi
 
 # Wi-Fi rfkill configuration
