@@ -1,5 +1,12 @@
 # PlexAmp-installer for Raspberry Pi with ARMv8, 64-bit HW.
 
+## Table of Contents
+- [PlexAmp-installer for Raspberry Pi with ARMv8, 64-bit HW)](#plexamp-installer-for-raspberry-pi-with-armv8-64-bit-hw)
+  - [Install Raspberry Pi OS using Raspberry Pi Imager](#install-raspberry-pi-os-using-raspberry-pi-imager)
+  - [Executing the installer](#executing-the-installer)
+  - [Re-running the script](#re-running-the-script)
+- [Q & A](#q--a)
+
 For more information and hardware used, see here:<br /> https://github.com/odinb/bash-plexamp-installer/wiki
 
 Assumes 64-bit capable Raspberry Pi HW and Raspberry Pi OS that is 64-bit.<br />
@@ -76,7 +83,7 @@ If there is a new version, and script has been updated, you can upgrade by re-ru
 
 For hostname-change, please make sure to reboot in-between, or you might face issues with the service-file.
 
-## Q & A
+# Q & A
 
 Q:
 The RPi will show up in my cast list. However the moment I select a song to play, it either keeps loading forever (black screen with loading circle) or it flips back to the album overview without starting the selected song. This is the case for all file types tried.
