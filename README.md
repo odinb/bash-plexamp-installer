@@ -2,7 +2,7 @@
 
 ## Table of Contents
 - [PlexAmp-installer for Raspberry Pi with ARMv8, 64-bit HW)](#plexamp-installer-for-raspberry-pi-with-armv8-64-bit-hw)
-  - [Install Raspberry Pi OS using Raspberry Pi Imager](#install-raspberry-pi-os-using-raspberry-pi-imager)
+- [Install Raspberry Pi OS using Raspberry Pi Imager](#install-raspberry-pi-os-using-raspberry-pi-imager)
   - [Executing the installer](#executing-the-installer)
   - [Re-running the script](#re-running-the-script)
 - [Q & A](#q--a)
@@ -26,7 +26,7 @@ If newer version is available, and there have been major changes like support fo
 
 If your card is not detected after upgrade & reboot (no audio) ("aplay -l" to check), please do hard reboot (pull power), and re-select the card via web-GUI. Now there should be audio!
 
-## Install Raspberry Pi OS using Raspberry Pi Imager.
+# Install Raspberry Pi OS using Raspberry Pi Imager.
 Raspberry Pi Imager is the quick and easy way to install Raspberry Pi OS and other operating systems to a microSD card, ready to use with your Raspberry Pi.
 
 [Download and install Raspberry Pi Imager](https://www.raspberrypi.com/software/) to a computer with an SD card reader. Put the SD card you'll use with your Raspberry Pi into the reader and run Raspberry Pi Imager.
