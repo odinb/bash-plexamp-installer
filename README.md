@@ -74,7 +74,7 @@ If there is a new version, and script has been updated, you can upgrade by re-ru
 
 For hostname-change, please make sure to reboot in-between, or you might face issues with the service-file.
 
-### Q & A
+## Q & A
 
 Q:
 The RPi will show up in my cast list. However the moment I select a song to play, it either keeps loading forever (black screen with loading circle) or it flips back to the album overview without starting the selected song. This is the case for all file types tried.
