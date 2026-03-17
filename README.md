@@ -1,7 +1,7 @@
 # PlexAmp-installer for Raspberry Pi with ARMv8, 64-bit HW.
 
 ## Table of Contents
-- [PlexAmp-installer for Raspberry Pi with ARMv8, 64-bit HW)](#plexamp-installer-for-raspberry-pi-with-armv8-64-bit-hw)
+- [PlexAmp-installer for Raspberry Pi with ARMv8, 64-bit HW](#plexamp-installer-for-raspberry-pi-with-armv8-64-bit-hw)
 - [Install Raspberry Pi OS using Raspberry Pi Imager](#install-raspberry-pi-os-using-raspberry-pi-imager)
   - [Executing the installer](#executing-the-installer)
   - [Re-running the script](#re-running-the-script)
