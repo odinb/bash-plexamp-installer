@@ -59,6 +59,8 @@ Raspberry Pi Imager is the quick and easy way to install Raspberry Pi OS and oth
 
 Once done, unmount and insert SD-card/NVME into Raspberry Pi and boot it.
 
+## Executing the installer
+
 SSH access on "DietPi OS" as user: dietpi/dietpi and as root: root/dietpi<br />
 NOTE!!! DietPi is best effort, and was last tested on 2025-10-03 on DietPi v9.17.2 (Trixie).
 
@@ -66,7 +68,7 @@ After SSH-ing to the SBC, on the "Raspberry Pi OS", change to root (```sudo su -
 
 ```bash <(wget -qO- https://raw.githubusercontent.com/odinb/bash-plexamp-installer/main/install_Plexamp_pi.sh)```
 
-### Re-running the script
+## Re-running the script
 
 The script can be re-run to fix configuration/setup errors, just say no/bypass the sections you do not want to re-run!
 
